@@ -78,8 +78,22 @@ public:
 	/** get the virial **/
 	double Vi(unsigned short d) const override { return _Vi[d];}
 
+	/** get the virial term of the heatflux */
+	double jHFVirial(unsigned short d) const override { return _jHFVirial[d]; }
+
+	/** get the heatflux */
+	double jHF(unsigned short d) override { return (U_kin() + U_pot())*v(d) + jHFVirial(d); }
+	// double jHF(unsigned short d) override {
+	// 	if ( d == 0 ) { return jHFVirial(1); }
+	// 	else if ( d == 1 ) { return U_kin() * v(1); }
+	// 	else if ( d == 2 ) { return U_pot() * v(1); }
+	// 	else { std::cout << "ERROR in Virial HEATFLUX" << std::endl; }
+	// }
+
+	/** set coordinate of the rotatational speed */
 	void setD(unsigned short d, double D) override { this->_L[d] = D; }
 
+	/** move particle position in specific direction */
 	inline void move(int d, double dr) override { _r[d] += dr; }
 
 	/** get the moment of inertia of a particle */
@@ -120,6 +134,8 @@ public:
 	double U_rot_2() override ;
 	/** return total kinetic energy of the molecule */
 	double U_kin() override { return U_trans() + U_rot(); }
+	/** return total potential energy of the molecule */
+	double U_pot() override { return _upot; }
 	
 	void setupSoACache(CellDataSoABase * s, unsigned iLJ, unsigned iC, unsigned iD, unsigned iQ) override;
 
@@ -283,6 +299,14 @@ public:
 		_v[0] -= ax; _v[1] -= ay; _v[2] -= az;
 	}
 
+	void jHFVirialadd(unsigned short d, const double a) override { _jHFVirial[d] += a; }
+	void setjHFVirial(const double ax, const double ay, const double az) override {
+		_jHFVirial[0] = ax; _jHFVirial[1] = ay; _jHFVirial[2] = az;
+	}
+
+	void upotadd(const double upot) override { _upot += upot; }
+	void setupot(const double upot) override { _upot = upot; }
+
 	void Fljcenteradd(unsigned int i, double a[]) override;
 	void Fljcentersub(unsigned int i, double a[]) override;
 	void Fchargeadd(unsigned int i, double a[]) override;
@@ -346,6 +370,9 @@ protected:
 	double _L[3];  /**< angular momentum */
 	double _Vi[3]; /** Virial tensor **/
     unsigned long _id;  /**< IDentification number of that molecule */
+
+	double _jHFVirial[3]; /**< virial term of the heatflux */
+	double _upot; /**< potential energy */
 
 	double _m; /**< total mass */
 	double _I[3],_invI[3];  // moment of inertia for principal axes and it's inverse

@@ -286,9 +286,15 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 	double f[3];
 	double u;
 	double drs[3], dr2; // site distance vector & length^2
+
+	double upot = 0.;
+
 	Virial[0]=0.;
 	Virial[1]=0.;
 	Virial[2]=0.;
+
+	double virialAll[9] = {0}; // 2 * rxfx, rxfy, rxfz, ryfx, ryfy, ryfz, rzfx, rzfy, rzfz
+
 	// LJ centers
 	// no LJ interaction between solid atoms of the same component
 
@@ -306,14 +312,23 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			double shift6;
 			params >> shift6; // must be 0.0 for full LJ
 			if (calculateLJ) {
-				PotForceLJ(drs, dr2, eps24, sig2, f, u);
+				PotForceLJ(drs, dr2, eps24, sig2, f, u); // u is 6*pot.energy
 				u += shift6;
 
 				mi.Fljcenteradd(si, f);
 				mj.Fljcentersub(sj, f);
+
 				Upot6LJ += u;
-				for (unsigned short d = 0; d < 3; ++d)
+				upot += u/6;
+
+				for (unsigned short d = 0; d < 3; ++d) {
 					Virial[d] += 0.5*drm[d] * f[d];
+					for (unsigned e = 0; e < 3; ++e) {
+						virialAll[3*d+e] += drm[d] * f[e];
+					}
+				}
+				// std::cout << "virial    = " << Virial[0] << " " << Virial[1] << " " << Virial[2] << " " << std::endl;
+				// std::cout << "virialAll = " << virialAll[0] << " " << virialAll[4] << " " << virialAll[8] << " " << std::endl;
 			}
 		}
 	}
@@ -341,8 +356,14 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			mj.Fchargesub(sj, f);
 
 			UpotXpoles += u;
-			for (unsigned short d = 0; d < 3; d++)
+			upot += u;
+
+			for (unsigned short d = 0; d < 3; d++) {
 				Virial[d] += 0.5*drm[d] * f[d];
+				for (unsigned e = 0; e < 3; ++e) {
+						virialAll[3*d+e] += drm[d] * f[e];
+				}
+			}
 		}
 		// Charge-Quadrupole
 		for (unsigned sj = 0; sj < nq2; sj++) {
@@ -358,8 +379,14 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			mj.Madd(m2);
 
 			UpotXpoles += u;
-			for (unsigned short d = 0; d < 3; d++)
+			upot += u;
+
+			for (unsigned short d = 0; d < 3; d++) {
 				Virial[d] += 0.5*drm[d] * f[d];
+				for (unsigned e = 0; e < 3; ++e) {
+						virialAll[3*d+e] += drm[d] * f[e];
+				}
+			}
 		}
 		// Charge-Dipole
 		for (unsigned sj = 0; sj < nd2; sj++) {
@@ -375,8 +402,14 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			mj.Madd(m2);
 
 			UpotXpoles += u;
-			for (unsigned short d = 0; d < 3; d++)
+			upot += u;
+
+			for (unsigned short d = 0; d < 3; d++) {
 				Virial[d] += 0.5*drm[d] * f[d];
+				for (unsigned e = 0; e < 3; ++e) {
+						virialAll[3*d+e] += drm[d] * f[e];
+				}
+			}
 		}
 	}
 	for (unsigned int si = 0; si < nq1; ++si) {
@@ -396,8 +429,14 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			mi.Madd(m1);
 
 			UpotXpoles += u;
-			for (unsigned short d = 0; d < 3; d++)
+			upot += u;
+
+			for (unsigned short d = 0; d < 3; d++) {
 				Virial[d] -= 0.5*drm[d] * f[d];
+				for (unsigned e = 0; e < 3; ++e) {
+						virialAll[3*d+e] += drm[d] * f[e];
+				}
+			}
 		}
 		// Quadrupole-Quadrupole -------------------
 		for (unsigned int sj = 0; sj < nq2; ++sj) {
@@ -415,8 +454,14 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			mj.Madd(m2);
 
 			UpotXpoles += u;
-			for (unsigned short d = 0; d < 3; ++d)
+			upot += u;
+
+			for (unsigned short d = 0; d < 3; ++d) {
 				Virial[d] += 0.5*drm[d] * f[d];
+				for (unsigned e = 0; e < 3; ++e) {
+						virialAll[3*d+e] += drm[d] * f[e];
+				}
+			}
 		}
 		// Quadrupole-Dipole -----------------------
 		for (unsigned int sj = 0; sj < nd2; ++sj) {
@@ -432,9 +477,16 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			mj.Fdipoleadd(sj, f);
 			mi.Madd(m1);
 			mj.Madd(m2);
+
 			UpotXpoles += u;
-			for (unsigned short d = 0; d < 3; d++)
+			upot += u;
+
+			for (unsigned short d = 0; d < 3; d++) {
 				Virial[d] -= 0.5*drm[d] * f[d];
+				for (unsigned e = 0; e < 3; ++e) {
+						virialAll[3*d+e] += drm[d] * f[e];
+				}
+			}
 		}
 	}
 	for (unsigned int si = 0; si < nd1; ++si) {
@@ -453,8 +505,14 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			mi.Madd(m1);
 
 			UpotXpoles += u;
-			for (unsigned short d = 0; d < 3; d++)
+			upot += u;
+
+			for (unsigned short d = 0; d < 3; d++) {
 				Virial[d] -= 0.5*drm[d] * f[d];
+				for (unsigned e = 0; e < 3; ++e) {
+						virialAll[3*d+e] += drm[d] * f[e];
+				}
+			}
 		}
 		// Dipole-Quadrupole -----------------------
 		for (unsigned int sj = 0; sj < nq2; ++sj) {
@@ -470,9 +528,16 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			mj.Fquadrupolesub(sj, f);
 			mi.Madd(m1);
 			mj.Madd(m2);
+
 			UpotXpoles += u;
-			for (unsigned short d = 0; d < 3; ++d)
+			upot += u;
+
+			for (unsigned short d = 0; d < 3; ++d) {
 				Virial[d] += 0.5*drm[d] * f[d];
+				for (unsigned e = 0; e < 3; ++e) {
+						virialAll[3*d+e] += drm[d] * f[e];
+				}
+			}
 		}
 		// Dipole-Dipole ---------------------------
 		for (unsigned int sj = 0; sj < nd2; ++sj) {
@@ -489,14 +554,31 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			mj.Fdipolesub(sj, f);
 			mi.Madd(m1);
 			mj.Madd(m2);
+
 			UpotXpoles += u;
-			for (unsigned short d = 0; d < 3; ++d)
+			upot += u;
+
+			for (unsigned short d = 0; d < 3; ++d) {
 				Virial[d] += 0.5*drm[d] * f[d];
+				for (unsigned e = 0; e < 3; ++e) {
+						virialAll[3*d+e] += drm[d] * f[e];
+				}
+			}
 		}
 	}
 
 	mi.Viadd(Virial);
 	mj.Viadd(Virial);
+
+	mi.jHFVirialadd(0, 0.5*(virialAll[0] * mi.v(0) + virialAll[1] * mi.v(1) + virialAll[2] * mi.v(2)));
+	mj.jHFVirialadd(0, 0.5*(virialAll[0] * mj.v(0) + virialAll[1] * mj.v(1) + virialAll[2] * mj.v(2)));
+	mi.jHFVirialadd(1, 0.5*(virialAll[3] * mi.v(0) + virialAll[4] * mi.v(1) + virialAll[5] * mi.v(2)));
+	mj.jHFVirialadd(1, 0.5*(virialAll[3] * mj.v(0) + virialAll[4] * mj.v(1) + virialAll[5] * mj.v(2)));
+	mi.jHFVirialadd(2, 0.5*(virialAll[6] * mi.v(0) + virialAll[7] * mi.v(1) + virialAll[8] * mi.v(2)));
+	mj.jHFVirialadd(2, 0.5*(virialAll[6] * mj.v(0) + virialAll[7] * mj.v(1) + virialAll[8] * mj.v(2)));
+
+	mi.upotadd(0.5*upot);
+	mj.upotadd(0.5*upot);
 	
 	// check whether all parameters were used
 	mardyn_assert(params.eos());
@@ -528,6 +610,8 @@ inline void FluidPot(Molecule& mi, Molecule& mj, ParaStrm& params, double /*drm*
 				PotForceLJ(drs, dr2, eps24, sig2, f, u);
 				u += shift6;
 				Upot6LJ += u;
+				mi.upotadd(u/24);
+				mj.upotadd(u/24);
 			}
 		}
 	}
@@ -551,6 +635,8 @@ inline void FluidPot(Molecule& mi, Molecule& mj, ParaStrm& params, double /*drm*
 			SiteSiteDistanceAbs(dii.data(), djj.data(), drs, dr2);
 			PotForce2Charge(drs, dr2, q1q2per4pie0, f, u);
 			UpotXpoles += u;
+			mi.upotadd(u);
+			mj.upotadd(u);
 		}
 		// Charge-Quadrupole
 		for (unsigned sj = 0; sj < nq2; sj++) {
@@ -561,6 +647,8 @@ inline void FluidPot(Molecule& mi, Molecule& mj, ParaStrm& params, double /*drm*
 			const std::array<double,3> ejj = mj.quadrupole_e(sj);
 			PotForceChargeQuadrupole(drs, dr2, ejj.data(), qQ05per4pie0, f, m2, u);
 			UpotXpoles += u;
+			mi.upotadd(u);
+			mj.upotadd(u);
 		}
 		// Charge-Dipole
 		for (unsigned sj = 0; sj < nd2; sj++) {
@@ -571,6 +659,8 @@ inline void FluidPot(Molecule& mi, Molecule& mj, ParaStrm& params, double /*drm*
 			const std::array<double,3> ejj = mj.dipole_e(sj);
 			PotForceChargeDipole(drs, dr2, ejj.data(), minusqmyper4pie0, f, m2, u);
 			UpotXpoles += u;
+			mi.upotadd(u);
+			mj.upotadd(u);
 		}
 	}
 	for (unsigned int si = 0; si < nq1; ++si) {
@@ -585,6 +675,8 @@ inline void FluidPot(Molecule& mi, Molecule& mj, ParaStrm& params, double /*drm*
 			minusSiteSiteDistanceAbs(dii.data(), djj.data(), drs, dr2);
 			PotForceChargeQuadrupole(drs, dr2, eii.data(), qQ05per4pie0, f, m1, u);
 			UpotXpoles += u;
+			mi.upotadd(u);
+			mj.upotadd(u);
 		}
 		// Quadrupole-Quadrupole -------------------
 		for (unsigned int sj = 0; sj < nq2; ++sj) {
@@ -595,6 +687,8 @@ inline void FluidPot(Molecule& mi, Molecule& mj, ParaStrm& params, double /*drm*
 			const std::array<double,3> ejj = mj.quadrupole_e(sj);
 			PotForce2Quadrupole(drs, dr2, eii.data(), ejj.data(), q2075, f, m1, m2, u);
 			UpotXpoles += u;
+			mi.upotadd(u);
+			mj.upotadd(u);
 		}
 		// Quadrupole-Dipole -----------------------
 		for (unsigned int sj = 0; sj < nd2; ++sj) {
@@ -606,6 +700,8 @@ inline void FluidPot(Molecule& mi, Molecule& mj, ParaStrm& params, double /*drm*
 			//for(unsigned short d=0;d<3;++d) drs[d]=-drs[d]; // avoid that and toggle add/sub below
 			PotForceDiQuadrupole(drs, dr2, ejj.data(), eii.data(), qmy15, f, m2, m1, u);
 			UpotXpoles += u;
+			mi.upotadd(u);
+			mj.upotadd(u);
 		}
 	}
 	for (unsigned int si = 0; si < nd1; ++si) {
@@ -619,6 +715,8 @@ inline void FluidPot(Molecule& mi, Molecule& mj, ParaStrm& params, double /*drm*
 			minusSiteSiteDistanceAbs(dii.data(), djj.data(), drs, dr2);
 			PotForceChargeDipole(drs, dr2, eii.data(), minusqmyper4pie0, f, m1, u);
 			UpotXpoles += u;
+			mi.upotadd(u);
+			mj.upotadd(u);
 		}
 		// Dipole-Quadrupole -----------------------
 		for (unsigned int sj = 0; sj < nq2; ++sj) {
@@ -630,6 +728,8 @@ inline void FluidPot(Molecule& mi, Molecule& mj, ParaStrm& params, double /*drm*
 			const std::array<double,3> ejj = mj.quadrupole_e(sj);
 			PotForceDiQuadrupole(drs, dr2, eii.data(), ejj.data(), myq15, f, m1, m2, u);
 			UpotXpoles += u;
+			mi.upotadd(u);
+			mj.upotadd(u);
 		}
 		// Dipole-Dipole ---------------------------
 		for (unsigned int sj = 0; sj < nd2; ++sj) {
@@ -643,6 +743,8 @@ inline void FluidPot(Molecule& mi, Molecule& mj, ParaStrm& params, double /*drm*
 			const std::array<double,3> ejj = mj.dipole_e(sj);
 			PotForce2Dipole(drs, dr2, eii.data(), ejj.data(), my2, rffac, f, m1, m2, u, MyRF);
 			UpotXpoles += u;
+			mi.upotadd(u);
+			mj.upotadd(u);
 		}
 	}
 

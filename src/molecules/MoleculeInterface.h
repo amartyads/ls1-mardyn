@@ -83,6 +83,8 @@ public:
 	}
 	virtual double M(unsigned short d) const = 0;
 	virtual double Vi(unsigned short d) const = 0;
+	virtual double jHFVirial(unsigned short d) const = 0;
+	virtual double jHF(unsigned short d) = 0;
 
 	virtual void setD(unsigned short d, double D) = 0;
 
@@ -102,6 +104,7 @@ public:
 	virtual double U_rot() = 0;
 	virtual double U_rot_2() = 0;
 	virtual double U_kin() { return U_trans() + U_rot(); }
+	virtual double U_pot() = 0;
 
 	virtual void updateMassInertia() = 0;
 
@@ -220,6 +223,13 @@ public:
 	virtual void Viadd(const double a[]) = 0;
 	virtual void vadd(const double ax, const double ay, const double az) = 0;
 	virtual void vsub(const double ax, const double ay, const double az) = 0;
+
+	virtual void jHFVirialadd(unsigned short d, const double a) = 0;
+	virtual void setjHFVirial(const double ax, const double ay, const double az) = 0;
+
+	virtual void upotadd(const double upot) = 0;
+	virtual void setupot(const double upot) = 0;
+
 	virtual void Fljcenteradd(unsigned int i, double a[]) = 0;
 	virtual void Fljcentersub(unsigned int i, double a[]) = 0;
 	virtual void Fchargeadd(unsigned int i, double a[]) = 0;

@@ -32,6 +32,10 @@ FullMolecule::FullMolecule(unsigned long id, Component *component,
 	_Vi[0]= 0.;
 	_Vi[1]= 0.;
 	_Vi[2]= 0.;
+	_upot = 0;
+	_jHFVirial[0] = 0;
+	_jHFVirial[1] = 0;
+	_jHFVirial[2] = 0;
 
 	_soa = nullptr;
 	_soa_index_lj = 0;
@@ -67,6 +71,10 @@ FullMolecule::FullMolecule(const FullMolecule& m) {
 	_Vi[0]= m._Vi[0];
 	_Vi[1]= m._Vi[1];
 	_Vi[2]= m._Vi[2];
+	_upot = m._upot;
+	_jHFVirial[0] = m._jHFVirial[0];
+	_jHFVirial[1] = m._jHFVirial[1];
+	_jHFVirial[2] = m._jHFVirial[2];
 
 	_soa = m._soa;
 	_soa_index_lj = m._soa_index_lj;
@@ -105,6 +113,10 @@ FullMolecule& FullMolecule::operator=(const FullMolecule& m) {
 	_Vi[0]= m._Vi[0];
 	_Vi[1]= m._Vi[1];
 	_Vi[2]= m._Vi[2];
+	_upot = m._upot;
+	_jHFVirial[0] = m._jHFVirial[0];
+	_jHFVirial[1] = m._jHFVirial[1];
+	_jHFVirial[2] = m._jHFVirial[2];
 
 	_soa = m._soa;
 	_soa_index_lj = m._soa_index_lj;
@@ -481,6 +493,8 @@ void FullMolecule::clearFM() {
 	_F[0] = _F[1] = _F[2] = 0.;
 	_M[0] = _M[1] = _M[2] = 0.;
 	_Vi[0]= _Vi[1]= _Vi[2]= 0.;
+	_upot = 0.;
+	_jHFVirial[0] = _jHFVirial[1] = _jHFVirial[2] = 0.;
 
 	std::array<vcp_real_accum, 3> clearance = {0.0, 0.0, 0.0};
 

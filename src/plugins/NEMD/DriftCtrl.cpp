@@ -235,9 +235,9 @@ void DriftCtrl::beforeForces(ParticleContainer* particleContainer, DomainDecompB
 			
 			uint32_t yPosID = floor( (yPos-_range.yl) / _range.subdivision.binWidth.actual);
 
-			//~ it->setv(0, it->v(0) + _sampling.at(cid_ub).mom_corr.at(0).at(yPosID) ); 
+			it->setv(0, it->v(0) + _sampling.at(cid_ub).mom_corr.at(0).at(yPosID) ); 
 			it->setv(1, it->v(1) + _sampling.at(cid_ub).mom_corr.at(1).at(yPosID) );
-			//~ it->setv(2, it->v(2) + _sampling.at(cid_ub).mom_corr.at(2).at(yPosID) );
+			it->setv(2, it->v(2) + _sampling.at(cid_ub).mom_corr.at(2).at(yPosID) );
 		}
 	}
 	
