@@ -57,6 +57,7 @@ private:
 	std::vector<double> uLJ;
 	std::vector<double> vNLJ;
 	std::vector<double> vTLJ;
+	std::vector<double> vNDLJ;
 	std::vector<double> fLJ;
 	std::vector<double> rho_g;
 	std::vector<double> rho_l;

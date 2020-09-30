@@ -83,7 +83,9 @@ public:
 	}
 	virtual double M(unsigned short d) const = 0;
 	virtual double Vi(unsigned short d) const = 0;
-	virtual double jHFVirial(unsigned short d) const = 0;
+	virtual double ViAll(unsigned short d) const = 0;
+	virtual double UpotConstCorr() const  = 0;
+	virtual double ViConstCorr() const  = 0;
 	virtual double jHF(unsigned short d) = 0;
 
 	virtual void setD(unsigned short d, double D) = 0;
@@ -224,11 +226,14 @@ public:
 	virtual void vadd(const double ax, const double ay, const double az) = 0;
 	virtual void vsub(const double ax, const double ay, const double az) = 0;
 
-	virtual void jHFVirialadd(unsigned short d, const double a) = 0;
-	virtual void setjHFVirial(const double ax, const double ay, const double az) = 0;
+	virtual void ViAlladd(unsigned short d, const double a) = 0;
+	virtual void setViAll(unsigned short d, const double a) = 0;
 
-	virtual void upotadd(const double upot) = 0;
-	virtual void setupot(const double upot) = 0;
+	virtual void setUConstCorr(const double a) = 0;
+	virtual void setViConstCorr(const double a) = 0;
+
+	virtual void Uadd(const double upot) = 0;
+	virtual void setU(const double upot) = 0;
 
 	virtual void Fljcenteradd(unsigned int i, double a[]) = 0;
 	virtual void Fljcentersub(unsigned int i, double a[]) = 0;

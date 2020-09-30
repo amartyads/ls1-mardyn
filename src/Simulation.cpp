@@ -71,6 +71,7 @@
 #include "longRange/LongRangeCorrection.h"
 #include "longRange/Homogeneous.h"
 #include "longRange/Planar.h"
+#include "longRange/NoLRC.h"
 
 #include "bhfmm/FastMultipoleMethod.h"
 #include "bhfmm/cellProcessors/VectorizedLJP2PCellProcessor.h"
@@ -495,7 +496,12 @@ void Simulation::readXML(XMLfileUnits& xmlconfig) {
 				global_log->error() << "LongRangeCorrection: Missing type specification. Program exit ..." << endl;
 				Simulation::exit(-1);
 			}
-			if("planar" == type)
+			if("none" == type)
+			{
+				delete _longRangeCorrection;
+				_longRangeCorrection = new NoLRC(_cutoffRadius, _LJCutoffRadius, _domain, this);
+			}
+			else if("planar" == type)
 			{
 				unsigned int nSlabs = 10;
 				delete _longRangeCorrection;
@@ -513,7 +519,7 @@ void Simulation::readXML(XMLfileUnits& xmlconfig) {
 			}
 			else
 			{
-				global_log->error() << "LongRangeCorrection: Wrong type. Expected type == homogeneous|planar. Program exit ..." << endl;
+				global_log->error() << "LongRangeCorrection: Wrong type. Expected type == none|homogeneous|planar. Program exit ..." << endl;
                 Simulation::exit(-1);
 			}
 			xmlconfig.changecurrentnode("..");
@@ -788,7 +794,7 @@ void Simulation::prepare_start() {
 	global_log->info() << "Performing initial FLOP count (if necessary)" << endl;
 
 	if (_longRangeCorrection == nullptr) {
-		_longRangeCorrection = new Homogeneous(_cutoffRadius, _LJCutoffRadius, _domain, this);
+		_longRangeCorrection = new Homogeneous(_cutoffRadius, _LJCutoffRadius, _domain, _moleculeContainer, this);
 	}
 	// longRangeCorrection is a site-wise force plugin, so we have to call it before updateForces()
 	_longRangeCorrection->calculateLongRange();
@@ -1178,9 +1184,10 @@ void Simulation::pluginEndStepCall(unsigned long simstep) {
 		global_log->warning() << "Thermostat!" << endl;
 	/* TODO: thermostat */
 	global_log->info() << "Simstep = " << simstep << "\tT = "
-					   << _domain->getGlobalCurrentTemperature() << "\tU_pot = "
+					   << std::fixed << std::setprecision(3) << _domain->getGlobalCurrentTemperature() << "\tU_pot = "
 					   << _domain->getGlobalUpot() << "\tp = "
-					   << _domain->getGlobalPressure() << endl;
+					   << _domain->getGlobalPressure() << "\tVi = "
+					   << _domain->getAverageGlobalVirial()*_domain->N() << endl;
 	using std::isnan;
 	if (isnan(_domain->getGlobalCurrentTemperature()) || isnan(_domain->getGlobalUpot()) || isnan(_domain->getGlobalPressure())) {
 		global_log->error() << "NaN detected, exiting." << std::endl;

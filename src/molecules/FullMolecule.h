@@ -75,20 +75,29 @@ public:
 	/** get coordinate of the current angular momentum  onto molecule */
 	double M(unsigned short d) const override { return _M[d]; }
 
-	/** get the virial **/
-	double Vi(unsigned short d) const override { return _Vi[d];}
+	/** get the virial */
+	double Vi(unsigned short d) const override { return _Vi[d] + _ViConstCorr; }
 
-	/** get the virial term of the heatflux */
-	double jHFVirial(unsigned short d) const override { return _jHFVirial[d]; }
+	/** get the full virial */
+	double ViAll(unsigned short d) const override {
+		if (d % 4 == 0) {
+			return _ViAll[d] + _ViConstCorr;
+		}
+		else {
+			return _ViAll[d];
+		}
+	}
+
+	/** get the constant correction of potential energy */
+	double UpotConstCorr() const override { return _upotConstCorr; }
+
+	/** get the constant correction of one virial element */
+	double ViConstCorr() const override { return _ViConstCorr; }
 
 	/** get the heatflux */
-	double jHF(unsigned short d) override { return (U_kin() + U_pot())*v(d) + jHFVirial(d); }
-	// double jHF(unsigned short d) override {
-	// 	if ( d == 0 ) { return jHFVirial(1); }
-	// 	else if ( d == 1 ) { return U_kin() * v(1); }
-	// 	else if ( d == 2 ) { return U_pot() * v(1); }
-	// 	else { std::cout << "ERROR in Virial HEATFLUX" << std::endl; }
-	// }
+	double jHF(unsigned short d) override {
+		return (U_kin() + U_pot())*v(d) + (ViAll(3*d) * v(0) + ViAll(3*d+1) * v(1) + ViAll(3*d+2) * v(2));
+	}
 
 	/** set coordinate of the rotatational speed */
 	void setD(unsigned short d, double D) override { this->_L[d] = D; }
@@ -135,7 +144,7 @@ public:
 	/** return total kinetic energy of the molecule */
 	double U_kin() override { return U_trans() + U_rot(); }
 	/** return total potential energy of the molecule */
-	double U_pot() override { return _upot; }
+	double U_pot() override { return _upot + _upotConstCorr; }
 	
 	void setupSoACache(CellDataSoABase * s, unsigned iLJ, unsigned iC, unsigned iD, unsigned iQ) override;
 
@@ -299,13 +308,14 @@ public:
 		_v[0] -= ax; _v[1] -= ay; _v[2] -= az;
 	}
 
-	void jHFVirialadd(unsigned short d, const double a) override { _jHFVirial[d] += a; }
-	void setjHFVirial(const double ax, const double ay, const double az) override {
-		_jHFVirial[0] = ax; _jHFVirial[1] = ay; _jHFVirial[2] = az;
-	}
+	void ViAlladd(unsigned short d, const double a) override { _ViAll[d] += a; }
+	void setViAll(unsigned short d, const double a) override { _ViAll[d] = a; }
 
-	void upotadd(const double upot) override { _upot += upot; }
-	void setupot(const double upot) override { _upot = upot; }
+	void setUConstCorr(const double a) override { _upotConstCorr = a; }
+	void setViConstCorr(const double a) override { _ViConstCorr = a/3; } // Correction term assigned to the 3 diagonal elements
+
+	void Uadd(const double upot) override { _upot += upot; }
+	void setU(const double upot) override { _upot = upot; }
 
 	void Fljcenteradd(unsigned int i, double a[]) override;
 	void Fljcentersub(unsigned int i, double a[]) override;
@@ -371,8 +381,11 @@ protected:
 	double _Vi[3]; /** Virial tensor **/
     unsigned long _id;  /**< IDentification number of that molecule */
 
-	double _jHFVirial[3]; /**< virial term of the heatflux */
+	double _ViAll[9]; /**< Virial tensor all elements: rxfx, rxfy, rxfz, ryfx, ryfy, ryfz, rzfx, rzfy, rzfz */
 	double _upot; /**< potential energy */
+
+	double _ViConstCorr; /** Correction of one virial element, not changing during simulation (homogeneous system) **/
+	double _upotConstCorr; /** Correction of potential energy, not changing during simulation (homogeneous system) **/
 
 	double _m; /**< total mass */
 	double _I[3],_invI[3];  // moment of inertia for principal axes and it's inverse

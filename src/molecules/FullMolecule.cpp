@@ -33,9 +33,17 @@ FullMolecule::FullMolecule(unsigned long id, Component *component,
 	_Vi[1]= 0.;
 	_Vi[2]= 0.;
 	_upot = 0;
-	_jHFVirial[0] = 0;
-	_jHFVirial[1] = 0;
-	_jHFVirial[2] = 0;
+	_ViAll[0] = 0;
+	_ViAll[1] = 0;
+	_ViAll[2] = 0;
+	_ViAll[3] = 0;
+	_ViAll[4] = 0;
+	_ViAll[5] = 0;
+	_ViAll[6] = 0;
+	_ViAll[7] = 0;
+	_ViAll[8] = 0;
+	_ViConstCorr = 0;
+	_upotConstCorr = 0;
 
 	_soa = nullptr;
 	_soa_index_lj = 0;
@@ -72,9 +80,17 @@ FullMolecule::FullMolecule(const FullMolecule& m) {
 	_Vi[1]= m._Vi[1];
 	_Vi[2]= m._Vi[2];
 	_upot = m._upot;
-	_jHFVirial[0] = m._jHFVirial[0];
-	_jHFVirial[1] = m._jHFVirial[1];
-	_jHFVirial[2] = m._jHFVirial[2];
+	_ViAll[0] = m._ViAll[0];
+	_ViAll[1] = m._ViAll[1];
+	_ViAll[2] = m._ViAll[2];
+	_ViAll[3] = m._ViAll[3];
+	_ViAll[4] = m._ViAll[4];
+	_ViAll[5] = m._ViAll[5];
+	_ViAll[6] = m._ViAll[6];
+	_ViAll[7] = m._ViAll[7];
+	_ViAll[8] = m._ViAll[8];
+	_ViConstCorr = m._ViConstCorr;
+	_upotConstCorr = m._upotConstCorr;
 
 	_soa = m._soa;
 	_soa_index_lj = m._soa_index_lj;
@@ -114,9 +130,17 @@ FullMolecule& FullMolecule::operator=(const FullMolecule& m) {
 	_Vi[1]= m._Vi[1];
 	_Vi[2]= m._Vi[2];
 	_upot = m._upot;
-	_jHFVirial[0] = m._jHFVirial[0];
-	_jHFVirial[1] = m._jHFVirial[1];
-	_jHFVirial[2] = m._jHFVirial[2];
+	_ViAll[0] = m._ViAll[0];
+	_ViAll[1] = m._ViAll[1];
+	_ViAll[2] = m._ViAll[2];
+	_ViAll[3] = m._ViAll[3];
+	_ViAll[4] = m._ViAll[4];
+	_ViAll[5] = m._ViAll[5];
+	_ViAll[6] = m._ViAll[6];
+	_ViAll[7] = m._ViAll[7];
+	_ViAll[8] = m._ViAll[8];
+	_ViConstCorr = m._ViConstCorr;
+	_upotConstCorr = m._upotConstCorr;
 
 	_soa = m._soa;
 	_soa_index_lj = m._soa_index_lj;
@@ -494,7 +518,15 @@ void FullMolecule::clearFM() {
 	_M[0] = _M[1] = _M[2] = 0.;
 	_Vi[0]= _Vi[1]= _Vi[2]= 0.;
 	_upot = 0.;
-	_jHFVirial[0] = _jHFVirial[1] = _jHFVirial[2] = 0.;
+	_ViAll[0] = 0.;
+	_ViAll[1] = 0.;
+	_ViAll[2] = 0.;
+	_ViAll[3] = 0.;
+	_ViAll[4] = 0.;
+	_ViAll[5] = 0.;
+	_ViAll[6] = 0.;
+	_ViAll[7] = 0.;
+	_ViAll[8] = 0.;
 
 	std::array<vcp_real_accum, 3> clearance = {0.0, 0.0, 0.0};
 
