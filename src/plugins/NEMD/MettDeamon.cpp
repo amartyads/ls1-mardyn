@@ -246,6 +246,7 @@ void update_velocity_vectors(Random* rnd, const uint64_t& numSamples, const doub
 MettDeamon::MettDeamon() :
 		_bIsRestart(false),
 		_bInitFeedrateLog(false),
+		_bInitRestartLog(false),
 		_dAreaXZ(0.),
 		_dInvDensityArea(0.),
 		_dDeletedMolsPerTimestep(0.),
@@ -265,15 +266,6 @@ MettDeamon::MettDeamon() :
 		_nDeleteNonVolatile(0)
 {
 	_dAreaXZ = global_simulation->getDomain()->getGlobalLength(0) * global_simulation->getDomain()->getGlobalLength(2);
-
-	// init restart file
-	std::stringstream fnamestream;
-	fnamestream << "MettDeamonRestart_movdir-" << (uint32_t)_nMovingDirection << ".dat";
-	std::ofstream ofs(fnamestream.str().c_str(), std::ios::out);
-	std::stringstream outputstream;
-	outputstream << "     simstep" << "   slabIndex" << "                  deltaY" << std::endl;
-	ofs << outputstream.str();
-	ofs.close();
 
 	// summation of deleted molecules
 	_listDeletedMolecules.clear();
@@ -326,6 +318,12 @@ MettDeamon::MettDeamon() :
 
 void MettDeamon::readXML(XMLfileUnits& xmlconfig)
 {
+#ifdef MARDYN_AUTOPAS
+    global_log->error() << "MettDeamon: error the MettDeamon is not compatible with AutoPas mode (ENABLE_AUTOPAS)." << std::endl;
+	global_log->error() << "Please either disable AutoPas or the MettDeamon plugin." << std::endl;
+	global_log->error() << "For details see: https://github.com/ls1mardyn/ls1-mardyn/issues/138" << std::endl;
+	Simulation::exit(483);
+#endif
 	// control
 	xmlconfig.getNodeValue("control/updatefreq", _nUpdateFreq);
 	xmlconfig.getNodeValue("control/logfreqfeed", _feedrate.log_freq);
@@ -1025,6 +1023,19 @@ void MettDeamon::writeRestartfile()
 
 	if(domainDecomp.getRank() != 0)
 		return;
+
+	// init restart file
+	if(not _bInitRestartLog)
+	{
+		std::stringstream fnamestream;
+		fnamestream << "MettDeamonRestart_movdir-" << (uint32_t)_nMovingDirection << ".dat";
+		std::ofstream ofs(fnamestream.str().c_str(), std::ios::out);
+		std::stringstream outputstream;
+		outputstream << "     simstep" << "   slabIndex" << "                  deltaY" << std::endl;
+		ofs << outputstream.str();
+		ofs.close();
+		_bInitRestartLog = true;
+	}
 
 	std::stringstream fnamestream;
 	fnamestream << "MettDeamonRestart_movdir-" << (uint32_t)_nMovingDirection << ".dat";
