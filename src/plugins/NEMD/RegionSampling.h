@@ -183,8 +183,6 @@ private:
 	std::vector<double> _d2EkinRotGlobal;
 	std::vector<double> _dEpotLocal;
 	std::vector<double> _dEpotGlobal;
-	std::vector<double> _dVirialLocal;
-	std::vector<double> _dVirialGlobal;
 
 	// output profiles
 	std::vector<double> _dDensity;
@@ -197,7 +195,6 @@ private:
 	std::vector<double> _dTemperature;
 	std::vector<double> _dTemperatureTrans;
 	std::vector<double> _dTemperatureRot;
-	std::vector<double> _dVirial;
 
 	// Vector quantities
 	// [dimension x|y|z][direction all|+|-][component][position]
@@ -209,6 +206,8 @@ private:
 	std::vector<double> _dForceGlobal;
 	std::vector<double> _dHeatfluxLocal;
 	std::vector<double> _dHeatfluxGlobal;
+	std::vector<double> _dVirialLocal;
+	std::vector<double> _dVirialGlobal;
 
 	// output profiles
 	std::vector<double> _dForce;
@@ -217,6 +216,7 @@ private:
 	std::vector<double> _d2EkinTransComp;
 	std::vector<double> _d2EkinDriftComp;
 	std::vector<double> _dTemperatureComp;
+	std::vector<double> _dVirial;
 
 	// --- VDF ---
 

@@ -83,7 +83,6 @@ public:
 	}
 	virtual double M(unsigned short d) const = 0;
 	virtual double Vi(unsigned short d) const = 0;
-	virtual double ViAll(unsigned short d) const = 0;
 	virtual double UpotConstCorr() const  = 0;
 	virtual double ViConstCorr() const  = 0;
 	virtual double jHF(unsigned short d) = 0;
@@ -196,7 +195,8 @@ public:
 	
 	virtual void setF(double F[3]) = 0;
 	virtual void setM(double M[3]) = 0;
-	virtual void setVi(double Vi[3]) = 0;
+	virtual void setVi(double Vi[9]) = 0;
+
 	void scale_v(double s) {
 		for(int d = 0; d < 3; ++d) {
 			setv(d, v(d) * s);
@@ -223,11 +223,9 @@ public:
 	virtual void Fadd(const double a[]) = 0;
 	virtual void Madd(const double a[]) = 0;
 	virtual void Viadd(const double a[]) = 0;
+
 	virtual void vadd(const double ax, const double ay, const double az) = 0;
 	virtual void vsub(const double ax, const double ay, const double az) = 0;
-
-	virtual void ViAlladd(unsigned short d, const double a) = 0;
-	virtual void setViAll(unsigned short d, const double a) = 0;
 
 	virtual void setUConstCorr(const double a) = 0;
 	virtual void setViConstCorr(const double a) = 0;

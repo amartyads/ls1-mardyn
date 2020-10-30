@@ -76,15 +76,12 @@ public:
 	double M(unsigned short d) const override { return _M[d]; }
 
 	/** get the virial */
-	double Vi(unsigned short d) const override { return _Vi[d] + _ViConstCorr; }
-
-	/** get the full virial */
-	double ViAll(unsigned short d) const override {
-		if (d % 4 == 0) {
-			return _ViAll[d] + _ViConstCorr;
+	double Vi(unsigned short d) const override {
+		if (d < 3) { // Correction term only added to diagonal elements
+			return _Vi[d] + _ViConstCorr;
 		}
 		else {
-			return _ViAll[d];
+			return _Vi[d];
 		}
 	}
 
@@ -96,7 +93,10 @@ public:
 
 	/** get the heatflux */
 	double jHF(unsigned short d) override {
-		return (U_kin() + U_pot())*v(d) + (ViAll(3*d) * v(0) + ViAll(3*d+1) * v(1) + ViAll(3*d+2) * v(2));
+		if (d == 0) 	 { return (U_kin() + U_pot())*v(0) + (Vi(0) * v(0) + Vi(3) * v(1) + Vi(4) * v(2)); }
+		else if (d == 1) { return (U_kin() + U_pot())*v(1) + (Vi(5) * v(0) + Vi(1) * v(1) + Vi(6) * v(2)); }
+		else if (d == 2) { return (U_kin() + U_pot())*v(2) + (Vi(7) * v(0) + Vi(8) * v(1) + Vi(2) * v(2)); }
+		else { return 0.; }
 	}
 
 	/** set coordinate of the rotatational speed */
@@ -296,11 +296,12 @@ public:
 	 * @param M force vector (x,y,z)
 	 */
 	void setM(double M[3]) override { for(int d = 0; d < 3; d++ ) { _M[d] = M[d]; } }
-	void setVi(double Vi[3]) override { for(int d = 0; d < 3; d++) { _Vi[d] = Vi[d]; } }
+	void setVi(double Vi[9]) override { for(int d = 0; d < 9; d++) { _Vi[d] = Vi[d]; } }
 
 	void Fadd(const double a[]) override { for(unsigned short d=0;d<3;++d) _F[d]+=a[d]; }
 	void Madd(const double a[]) override { for(unsigned short d=0;d<3;++d) _M[d]+=a[d]; }
-	void Viadd(const double a[]) override { for(unsigned short d=0;d<3;++d) _Vi[d]+=a[d]; }
+	void Viadd(const double a[]) override { for(unsigned short d=0;d<9;++d) _Vi[d]+=a[d]; }
+
 	void vadd(const double ax, const double ay, const double az) override {
 		_v[0] += ax; _v[1] += ay; _v[2] += az;
 	}
@@ -308,8 +309,6 @@ public:
 		_v[0] -= ax; _v[1] -= ay; _v[2] -= az;
 	}
 
-	void ViAlladd(unsigned short d, const double a) override { _ViAll[d] += a; }
-	void setViAll(unsigned short d, const double a) override { _ViAll[d] = a; }
 
 	void setUConstCorr(const double a) override { _upotConstCorr = a; }
 	void setViConstCorr(const double a) override { _ViConstCorr = a/3; } // Correction term assigned to the 3 diagonal elements
@@ -378,10 +377,9 @@ protected:
 	Quaternion _q; /**< angular orientation */
 	double _M[3];  /**< torsional moment */
 	double _L[3];  /**< angular momentum */
-	double _Vi[3]; /** Virial tensor **/
+	double _Vi[9];  /**< Virial tensor all elements: rxfx, ryfy, rzfz, rxfy, rxfz, ryfx, ryfz, rzfx, rzfy */
     unsigned long _id;  /**< IDentification number of that molecule */
 
-	double _ViAll[9]; /**< Virial tensor all elements: rxfx, rxfy, rxfz, ryfx, ryfy, ryfz, rzfx, rzfy, rzfz */
 	double _upot; /**< potential energy */
 
 	double _ViConstCorr; /** Correction of one virial element, not changing during simulation (homogeneous system) **/

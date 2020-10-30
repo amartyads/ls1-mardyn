@@ -1179,7 +1179,7 @@ void Simulation::pluginEndStepCall(unsigned long simstep) {
 		global_log->warning() << "Thermostat!" << endl;
 	/* TODO: thermostat */
 	global_log->info() << "Simstep = " << simstep << "\tT = "
-					   << std::fixed << std::setprecision(3) << _domain->getGlobalCurrentTemperature() << "\tU_pot = "
+					   << std::fixed << std::setprecision(6) << _domain->getGlobalCurrentTemperature() << "\tU_pot = "
 					   << _domain->getGlobalUpot() << "\tp = "
 					   << _domain->getGlobalPressure() << "\tVi = "
 					   << _domain->getAverageGlobalVirial()*_domain->N() << endl;
