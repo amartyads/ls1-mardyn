@@ -1179,10 +1179,9 @@ void Simulation::pluginEndStepCall(unsigned long simstep) {
 		global_log->warning() << "Thermostat!" << endl;
 	/* TODO: thermostat */
 	global_log->info() << "Simstep = " << simstep << "\tT = "
-					   << std::fixed << std::setprecision(6) << _domain->getGlobalCurrentTemperature() << "\tU_pot = "
+					   << _domain->getGlobalCurrentTemperature() << "\tU_pot = "
 					   << _domain->getGlobalUpot() << "\tp = "
-					   << _domain->getGlobalPressure() << "\tVi = "
-					   << _domain->getAverageGlobalVirial()*_domain->N() << endl;
+					   << _domain->getGlobalPressure() << endl;
 	using std::isnan;
 	if (isnan(_domain->getGlobalCurrentTemperature()) || isnan(_domain->getGlobalUpot()) || isnan(_domain->getGlobalPressure())) {
 		global_log->error() << "NaN detected, exiting." << std::endl;
