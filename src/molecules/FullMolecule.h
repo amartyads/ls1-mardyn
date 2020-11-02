@@ -94,7 +94,7 @@ public:
 	/** get the heatflux */
 	double jHF(unsigned short d) override {
 		if (d == 0) 	 { return (U_kin() + U_pot())*v(0) + (Vi(0) * v(0) + Vi(3) * v(1) + Vi(4) * v(2)); }
-		else if (d == 1) { return (U_kin() + U_pot())*v(1) + (Vi(5) * v(0) + Vi(1) * v(1) + Vi(6) * v(2)); }
+		else if (d == 1) { return (U_kin() + U_pot())*v(1) + (Vi(6) * v(0) + Vi(1) * v(1) + Vi(5) * v(2)); }
 		else if (d == 2) { return (U_kin() + U_pot())*v(2) + (Vi(7) * v(0) + Vi(8) * v(1) + Vi(2) * v(2)); }
 		else { return 0.; }
 	}
@@ -377,7 +377,7 @@ protected:
 	Quaternion _q; /**< angular orientation */
 	double _M[3];  /**< torsional moment */
 	double _L[3];  /**< angular momentum */
-	double _Vi[9];  /**< Virial tensor all elements: rxfx, ryfy, rzfz, rxfy, rxfz, ryfx, ryfz, rzfx, rzfy */
+	double _Vi[9];  /**< Virial tensor all elements: rxfx, ryfy, rzfz, rxfy, rxfz, ryfz, ryfx, rzfx, rzfy */
     unsigned long _id;  /**< IDentification number of that molecule */
 
 	double _upot; /**< potential energy */

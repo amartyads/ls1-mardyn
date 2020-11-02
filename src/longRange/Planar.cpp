@@ -396,7 +396,7 @@ void Planar::calculateLongRange(){
 			Fa[1] = fLJ[index];
 			Upot_c += uLJ[index];
 			Virial_c += 2 * vTLJ[index] + vNLJ[index];
-			double Via[9] = {0}; /**< Virial tensor all elements: rxfx, ryfy, rzfz, rxfy, rxfz, ryfx, ryfz, rzfx, rzfy */
+			double Via[9] = {0}; /**< Virial tensor all elements: rxfx, ryfy, rzfz, rxfy, rxfz, ryfz, ryfx, rzfx, rzfy */
 			Via[0] = vTLJ[index];
 			Via[1] = vNLJ[index];
 			Via[2] = vTLJ[index];
@@ -409,7 +409,6 @@ void Planar::calculateLongRange(){
 			tempMol->Fljcenteradd(i, Fa);
 //			Virial_c=Via[1]; TODO: I, tchipevn, think that this line is a bug, so I'm commenting it out. Virial_c is a summation variable, it should not be overwritten by a value, dependent on the last molecule in the system.
 			tempMol->Viadd(Via);
-//			tempMol->Uadd(uLJ[loc+i*s+_slabs*numLJSum2[cid]]);	// Storing potential energy onto the molecules is currently not implemented!
 			tempMol->Uadd(uLJ[index]);
 		}
 		if (numDipole[cid] != 0){
@@ -419,7 +418,7 @@ void Planar::calculateLongRange(){
 			Fa[1] = fDipole[index];
 			Upot_c += uDipole[index];
 			Virial_c += 2 * vTDipole[index] + vNDipole[index];
-			double Via[9] = {0}; /**< Virial tensor all elements: rxfx, ryfy, rzfz, rxfy, rxfz, ryfx, ryfz, rzfx, rzfy */
+			double Via[9] = {0}; /**< Virial tensor all elements: rxfx, ryfy, rzfz, rxfy, rxfz, ryfz, ryfx, rzfx, rzfy */
 			Via[0] = vTDipole[index];
 			Via[1] = vNDipole[index];
 			Via[2] = vTDipole[index];
@@ -427,7 +426,6 @@ void Planar::calculateLongRange(){
 			Via[7] = vTDipole[index];
 			tempMol->Fadd(Fa); // Force is stored on the center of mass of the molecule!
 			tempMol->Viadd(Via);
-//			tempMol->Uadd(uDipole[loc+i*_slabs+_slabs*numDipoleSum2[cid]]);	// Storing potential energy onto the molecules is currently not implemented!
 			tempMol->Uadd(uDipole[index]);
 		}				
 	}

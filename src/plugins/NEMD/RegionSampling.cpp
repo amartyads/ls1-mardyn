@@ -1017,11 +1017,13 @@ void SampleRegion::sampleProfiles(Molecule* molecule, int nDimension, unsigned l
 	virial[1] = molecule->Vi(1);
 	virial[2] = molecule->Vi(2);
 
-	// for (unsigned e = 0; e < 9; ++e) {
-	// double tempZero[9] = {0};
-	// 	molecule->setVi(0);
-	// }
-	// molecule->setU(0); // woanders hin: an zentralere Stelle!
+	if (molecule->getID() == 50 ) {
+		std::cout << molecule->Vi(0) << " " << molecule->Vi(3) << " " << molecule->Vi(4) << std::endl;
+		std::cout << molecule->Vi(6) << " " << molecule->Vi(1) << " " << molecule->Vi(5) << std::endl;
+		std::cout << molecule->Vi(7) << " " << molecule->Vi(8) << " " << molecule->Vi(2) << std::endl;
+		
+		std::cout << "Heatflux: " << molecule->jHF(0) << " " << molecule->jHF(1) << " " << molecule->jHF(2) << std::endl;
+	}
 
 	// Loop over directions: all (+/-) | only (+) | only (-)
 	for(unsigned int dir = 0; dir < 3; ++dir)

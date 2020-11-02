@@ -559,14 +559,15 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 	Virial[1] = 0.5*virialAll[4];
 	Virial[2] = 0.5*virialAll[8];
 
+	// mapping the element order of virialAll to the order of the virial in "FullMolecule" class
 	double tempVi[9] = {0};
 	tempVi[0]=0.5*virialAll[0];
 	tempVi[1]=0.5*virialAll[4];
 	tempVi[2]=0.5*virialAll[8];
 	tempVi[3]=0.5*virialAll[1];
 	tempVi[4]=0.5*virialAll[2];
-	tempVi[5]=0.5*virialAll[3];
-	tempVi[6]=0.5*virialAll[5];
+	tempVi[5]=0.5*virialAll[5];
+	tempVi[6]=0.5*virialAll[3];
 	tempVi[7]=0.5*virialAll[6];
 	tempVi[8]=0.5*virialAll[7];
 

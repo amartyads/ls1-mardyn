@@ -66,8 +66,8 @@ public:
 		std::array<double, 3> m_ret{M(0), M(1), M(2)};
 		return m_ret;
 	}
-	virtual std::array<double, 3> Vi_arr() {
-		std::array<double, 3> vi_ret{Vi(0), Vi(1), Vi(2)};
+	virtual std::array<double, 9> Vi_arr() {
+		std::array<double, 9> vi_ret{Vi(0), Vi(1), Vi(2), Vi(3), Vi(4), Vi(5), Vi(6), Vi(7), Vi(8)};
 		return vi_ret;
 	}
 
