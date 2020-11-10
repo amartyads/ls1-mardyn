@@ -289,11 +289,15 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 
 	double upot = 0.;
 
+	double m[3] = {0.}; // angular momentum
+
 	Virial[0]=0.;
 	Virial[1]=0.;
 	Virial[2]=0.;
 
 	double virialAll[9] = {0.}; // 2 * rxfx, rxfy, rxfz, ryfx, ryfy, ryfz, rzfx, rzfy, rzfz
+	double virialRot1[9] = {0.}; // rxMx, rxMy, rxMz, ryMx, ryMy, ryMz, rzMx, rzMy, rzMz
+	double virialRot2[9] = {0.}; // rxMx, rxMy, rxMz, ryMx, ryMy, ryMz, rzMx, rzMy, rzMz
 
 	// LJ centers
 	// no LJ interaction between solid atoms of the same component
@@ -321,9 +325,15 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 				Upot6LJ += u;
 				upot += u/6;
 
+				m[0] += drm[1] * f[2] - drm[2] * f[1];
+				m[1] += drm[2] * f[0] - drm[0] * f[2];
+				m[2] += drm[0] * f[1] - drm[1] * f[0];
+
 				for (unsigned short d = 0; d < 3; ++d) {
 					for (unsigned e = 0; e < 3; ++e) {
 						virialAll[3*d+e] += drm[d] * f[e];
+						virialRot1[3*d+e] += drm[d] * m[e];
+						virialRot2[3*d+e] -= drm[d] * m[e];
 					}
 				}
 			}
@@ -380,6 +390,7 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			for (unsigned short d = 0; d < 3; d++) {
 				for (unsigned e = 0; e < 3; ++e) {
 						virialAll[3*d+e] += drm[d] * f[e];
+						virialRot2[3*d+e] += drm[d] * m2[e];
 				}
 			}
 		}
@@ -402,6 +413,7 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			for (unsigned short d = 0; d < 3; d++) {
 				for (unsigned e = 0; e < 3; ++e) {
 						virialAll[3*d+e] += drm[d] * f[e];
+						virialRot2[3*d+e] += drm[d] * m2[e];
 				}
 			}
 		}
@@ -428,6 +440,7 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			for (unsigned short d = 0; d < 3; d++) {
 				for (unsigned e = 0; e < 3; ++e) {
 						virialAll[3*d+e] -= drm[d] * f[e];
+						virialRot1[3*d+e] -= drm[d] * m1[e];
 				}
 			}
 		}
@@ -452,6 +465,8 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			for (unsigned short d = 0; d < 3; ++d) {
 				for (unsigned e = 0; e < 3; ++e) {
 						virialAll[3*d+e] += drm[d] * f[e];
+						virialRot1[3*d+e] += drm[d] * m1[e];
+						virialRot2[3*d+e] += drm[d] * m2[e];
 				}
 			}
 		}
@@ -476,6 +491,8 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			for (unsigned short d = 0; d < 3; d++) {
 				for (unsigned e = 0; e < 3; ++e) {
 						virialAll[3*d+e] -= drm[d] * f[e];
+						virialRot1[3*d+e] -= drm[d] * m1[e];
+						virialRot2[3*d+e] -= drm[d] * m2[e];
 				}
 			}
 		}
@@ -501,6 +518,7 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			for (unsigned short d = 0; d < 3; d++) {
 				for (unsigned e = 0; e < 3; ++e) {
 						virialAll[3*d+e] -= drm[d] * f[e];
+						virialRot1[3*d+e] -= drm[d] * m1[e];
 				}
 			}
 		}
@@ -525,6 +543,8 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			for (unsigned short d = 0; d < 3; ++d) {
 				for (unsigned e = 0; e < 3; ++e) {
 						virialAll[3*d+e] += drm[d] * f[e];
+						virialRot1[3*d+e] += drm[d] * m1[e];
+						virialRot2[3*d+e] += drm[d] * m2[e];
 				}
 			}
 		}
@@ -550,6 +570,8 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			for (unsigned short d = 0; d < 3; ++d) {
 				for (unsigned e = 0; e < 3; ++e) {
 						virialAll[3*d+e] += drm[d] * f[e];
+						virialRot1[3*d+e] += drm[d] * m1[e];
+						virialRot2[3*d+e] += drm[d] * m2[e];
 				}
 			}
 		}
@@ -573,6 +595,14 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 
 	mi.Viadd(tempVi);
 	mj.Viadd(tempVi);
+
+	for (unsigned short d = 0; d < 9; ++d) { virialRot1[d] *= 0.5; virialRot2[d] *= 0.5; }
+
+	mi.ViRotadd(virialRot1);
+	mj.ViRotadd(virialRot2);
+
+	// if (mi.getID() == 50) {std::cout << "virialRot1: " << virialRot1[0] << " virialRot2: " << virialRot2[0] << std::endl;
+	// 	std::cout << "Virial: " << Virial[0] << " virial3: " << virialAll[1] << std::endl; }
 
 	mi.Uadd(0.5*upot);
 	mj.Uadd(0.5*upot);

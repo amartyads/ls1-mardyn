@@ -339,7 +339,7 @@ void Planar::calculateLongRange(){
 	 	} 
 	     
 		// Distribution of the Force, Energy and Virial to every Node
-		_domainDecomposition->collCommInit(_slabs*(4*numLJSum+4*numDipoleSum));
+		_domainDecomposition->collCommInit(_slabs*(5*numLJSum+4*numDipoleSum));
 		for (unsigned i=0; i<_slabs*numLJSum; i++){
 			_domainDecomposition->collCommAppendDouble(uLJ[i]);
 			_domainDecomposition->collCommAppendDouble(vNLJ[i]);

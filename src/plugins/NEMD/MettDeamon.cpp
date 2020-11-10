@@ -143,9 +143,9 @@ void update_velocity_vectors(Random* rnd, const uint64_t& numSamples, const doub
 	double vxd = sum_vxi * dInvNumSamples;
 	double vyd = sum_vyi * dInvNumSamples;
 	double vzd = sum_vzi * dInvNumSamples;
-
+#ifndef NDEBUG
 	cout << "vxd,vyd,vzd = " << vxd << "," << vyd << "," << vzd << endl;
-
+#endif
 	// correct drift
 	for(double & it : vxi)
 		it += (0.0 - vxd);
@@ -164,9 +164,9 @@ void update_velocity_vectors(Random* rnd, const uint64_t& numSamples, const doub
 	vxd = sum_vxi * dInvNumSamples;
 	vyd = sum_vyi * dInvNumSamples;
 	vzd = sum_vzi * dInvNumSamples;
-
+#ifndef NDEBUG
 	cout << "vxd,vyd,vzd = " << vxd << "," << vyd << "," << vzd << endl;
-
+#endif
 	// update v2 vectors
 	for(uint64_t i=0; i<numSamples; i++)
 	{
@@ -190,9 +190,9 @@ void update_velocity_vectors(Random* rnd, const uint64_t& numSamples, const doub
 	double v2x = sum_v2xi * dInvNumSamples;
 	double v2y = sum_v2yi * dInvNumSamples;
 	double v2z = sum_v2zi * dInvNumSamples;
-
+#ifndef NDEBUG
 	cout << "v2x,v2y,v2z = " << v2x << "," << v2y << "," << v2z << endl;
-
+#endif
 	// correct ekin
 	double scale_vx = sqrt(numSamples*T/sum_v2xi);
 	for(double & it : vxi)
@@ -226,9 +226,10 @@ void update_velocity_vectors(Random* rnd, const uint64_t& numSamples, const doub
 	v2x = sum_v2xi * dInvNumSamples;
 	v2y = sum_v2yi * dInvNumSamples;
 	v2z = sum_v2zi * dInvNumSamples;
-
+#ifndef NDEBUG
 	cout << "scale x,y,z = " << scale_vx << "," << scale_vy << "," << scale_vz << endl;
 	cout << "v2x,v2y,v2z = " << v2x << "," << v2y << "," << v2z << endl;
+#endif
 	// <-- EKIN
 
 	// calc drift again
@@ -239,8 +240,9 @@ void update_velocity_vectors(Random* rnd, const uint64_t& numSamples, const doub
 	vxd = sum_vxi * dInvNumSamples;
 	vyd = sum_vyi * dInvNumSamples;
 	vzd = sum_vzi * dInvNumSamples;
-
+#ifndef NDEBUG
 	cout << "vxd,vyd,vzd = " << vxd << "," << vyd << "," << vzd << endl;
+#endif
 }
 
 MettDeamon::MettDeamon() :
@@ -384,8 +386,10 @@ void MettDeamon::readXML(XMLfileUnits& xmlconfig)
 				shuffle(_norm.vy);   // same here
 				DomainDecompBase& domainDecomp = global_simulation->domainDecomposition();
 				int nRank = domainDecomp.getRank();
+#ifndef NDEBUG
 				cout << "[" << nRank << "]: First vxz = " << _norm.vxz.front() << endl;
 				cout << "[" << nRank << "]: First vy = " << _norm.vy.front() << endl;
+#endif
 			}
 		}
 		else if (5 == nVal)
@@ -472,7 +476,7 @@ void MettDeamon::readXML(XMLfileUnits& xmlconfig)
 		numChanges = query.card();
 		global_log->info() << "Number of fixed molecules components: " << (uint32_t)numChanges << endl;
 		if(numChanges < 1) {
-			global_log->error() << "No component change defined in XML-config file. Program exit ..." << endl;
+			global_log->error() << "[MettDaemon] No component change defined in XML-config file. Program exit ..." << endl;
 			Simulation::exit(-1);
 		}
 		string oldpath = xmlconfig.getcurrentnodepath();
@@ -490,7 +494,7 @@ void MettDeamon::readXML(XMLfileUnits& xmlconfig)
 		xmlconfig.changecurrentnode("..");
 	}
 	else {
-		global_log->error() << "No component changes defined in XML-config file. Program exit ..." << endl;
+		global_log->error() << "[MettDaemon] No component changes defined in XML-config file. Program exit ..." << endl;
 		Simulation::exit(-1);
 	}
 
@@ -568,8 +572,10 @@ void MettDeamon::prepare_start(DomainDecompBase* domainDecomp, ParticleContainer
 	_feedrate.feed.actual = _feedrate.feed.init;
 
 	_reservoir->readParticleData(domainDecomp);
-	if(_reservoir->getDensity(0) < 0.000000001)
-		cout << "["<<ownRank<<"]: ERROR: Reservoir density too low, _reservoir->getDensity(0)=" << _reservoir->getDensity(0) << endl;
+	if(_reservoir->getDensity(0) < 0.000000001) {
+		global_log->error() << "[MettDaemon] Reservoir density too low, _reservoir->getDensity(0)=" << _reservoir->getDensity(0) << endl;
+		Simulation::exit(1);
+	}
 
 	_dInvDensityArea = 1. / (_dAreaXZ * _reservoir->getDensity(0) );
 //	cout << "["<<ownRank<<"]: _dInvDensityArea = " << _dInvDensityArea << endl;
@@ -1025,35 +1031,33 @@ void MettDeamon::writeRestartfile()
 		return;
 
 	// init restart file
+	std::stringstream fnamestream;
+	fnamestream << "MettDeamonRestart_movdir-" << (uint32_t)_nMovingDirection << ".dat";
 	if(not _bInitRestartLog)
 	{
-		std::stringstream fnamestream;
-		fnamestream << "MettDeamonRestart_movdir-" << (uint32_t)_nMovingDirection << ".dat";
 		std::ofstream ofs(fnamestream.str().c_str(), std::ios::out);
 		std::stringstream outputstream;
 		outputstream << "     simstep" << "   slabIndex" << "                  deltaY" << std::endl;
+		outputstream << setw(12) << simstep << setw(12) << _reservoir->getActualBinIndex();
+		outputstream << FORMAT_SCI_MAX_DIGITS << _feedrate.feed.sum << std::endl;
 		ofs << outputstream.str();
 		ofs.close();
 		_bInitRestartLog = true;
+	} else {
+		std::ofstream ofs(fnamestream.str().c_str(), std::ios::app);
+		std::stringstream outputstream;
+		outputstream << setw(12) << simstep << setw(12) << _reservoir->getActualBinIndex();
+		outputstream << FORMAT_SCI_MAX_DIGITS << _feedrate.feed.sum << std::endl;
+		ofs << outputstream.str();
+		ofs.close();
 	}
-
-	std::stringstream fnamestream;
-	fnamestream << "MettDeamonRestart_movdir-" << (uint32_t)_nMovingDirection << ".dat";
-	std::ofstream ofs(fnamestream.str().c_str(), std::ios::app);
-	std::stringstream outputstream;
-
-	outputstream << setw(12) << simstep << setw(12) << _reservoir->getActualBinIndex();
-	outputstream << FORMAT_SCI_MAX_DIGITS << _feedrate.feed.sum << std::endl;
-
-	ofs << outputstream.str();
-	ofs.close();
 
 	// write restart info in XML format
 	{
-		std::stringstream fnamestream;
-		fnamestream << "MettDeamonRestart_movdir-" << (uint32_t)_nMovingDirection << "_TS" << fill_width('0', 9) << simstep << ".xml";
-		std::ofstream ofs(fnamestream.str().c_str(), std::ios::out);
-		std::stringstream outputstream;
+		std::stringstream fnamestreamXML;
+		fnamestreamXML << "MettDeamonRestart_movdir-" << (uint32_t)_nMovingDirection << "_TS" << fill_width('0', 9) << simstep << ".xml";
+		std::ofstream ofs(fnamestreamXML.str().c_str(), std::ios::out);
+		std::stringstream outputstreamXML;
 		ofs << "<?xml version='1.0' encoding='UTF-8'?>" << endl;
 		ofs << "<restart>" << endl;
 		ofs << "\t<binindex>" << _reservoir->getActualBinIndex() << "</binindex>" << endl;
@@ -1062,7 +1066,7 @@ void MettDeamon::writeRestartfile()
 		ofs.flags(f);  // restore default format flags
 		ofs << "</restart>" << endl;
 
-		ofs << outputstream.str();
+		ofs << outputstreamXML.str();
 		ofs.close();
 	}
 }
@@ -1387,8 +1391,7 @@ void MettDeamon::InsertReservoirSlab(ParticleContainer* particleContainer)
 	numAdded.global = domainDecomp.collCommGetUnsLong();
 	domainDecomp.collCommFinalize();
 
-	if(0 == nRank)
-		cout << "[" << nRank << "]: ADDED " << numAdded.global << "/" << numParticlesCurrentSlab.global << " particles (" << numAdded.global/static_cast<float>(numParticlesCurrentSlab.global)*100 << ")%." << endl;
+	global_log->info() << "[MettDaemon] Added " << numAdded.global << "/" << numParticlesCurrentSlab.global << " particles (" << numAdded.global/static_cast<float>(numParticlesCurrentSlab.global)*100 << ")%." << endl;
 }
 
 void MettDeamon::initRestart()
@@ -1396,7 +1399,7 @@ void MettDeamon::initRestart()
 	bool bRet = _reservoir->activateBin(_restartInfo.nBindindex);
 	if(not bRet)
 	{
-		global_log->info() << "Failed to activate reservoir bin after restart! Program exit ... " << endl;
+		global_log->error() << "Failed to activate reservoir bin after restart! Program exit ... " << endl;
 		Simulation::exit(-1);
 	}
 	_feedrate.feed.sum = _restartInfo.dYsum;
@@ -1503,7 +1506,7 @@ void Reservoir::readXML(XMLfileUnits& xmlconfig)
 			_nReadMethod = RRM_EMPTY;
 		}
 		else {
-			global_log->error() << "Wrong file type='" << strType << "' specified. Programm exit ..." << endl;
+			global_log->error() << "[MettDaemon] Wrong file type='" << strType << "' specified. Programm exit ..." << endl;
 			Simulation::exit(-1);
 		}
 	}
@@ -1518,7 +1521,7 @@ void Reservoir::readXML(XMLfileUnits& xmlconfig)
 		XMLfile::Query query = xmlconfig.query("change");
 		numChanges = query.card();
 		if(numChanges < 1) {
-			global_log->error() << "No component change defined in XML-config file. Program exit ..." << endl;
+			global_log->error() << "[MettDaemon] No component change defined in XML-config file. Program exit ..." << endl;
 			Simulation::exit(-1);
 		}
 		string oldpath = xmlconfig.getcurrentnodepath();
@@ -1553,7 +1556,7 @@ void Reservoir::readParticleData(DomainDecompBase* domainDecomp)
 	case RRM_UNKNOWN:
 	case RRM_AMBIGUOUS:
 	default:
-		global_log->error() << "Unknown (or ambiguous) method to read reservoir for feature MettDeamon. Program exit ..." << endl;
+		global_log->error() << "[MettDaemon] Unknown (or ambiguous) method to read reservoir. Program exit ..." << endl;
 		Simulation::exit(-1);
 	}
 
@@ -1577,6 +1580,7 @@ void Reservoir::sortParticlesToBins()
 
 	uint32_t numBins = _box.length.at(1) / _dBinWidthInit;
 	_dBinWidth = _box.length.at(1) / (double)(numBins);
+	if (_dBinWidth != _dBinWidthInit) { global_log->warning() << "[MettDaemon] Binwidth changed to " << _dBinWidth << endl; }
 #ifndef NDEBUG
 	cout << "["<<ownRank<<"]: _arrBoxLength[1]="<<_box.length.at(1)<<endl;
 	cout << "["<<ownRank<<"]: _dBinWidthInit="<<_dBinWidthInit<<endl;
@@ -1685,7 +1689,7 @@ void Reservoir::readFromFile(DomainDecompBase* domainDecomp)
 	global_log->info() << "Opening Mettdeamon Reservoirfile " << _filepath.data << endl;
 	ifs.open( _filepath.data.c_str() );
 	if (!ifs.is_open()) {
-		global_log->error() << "Could not open Mettdeamon Reservoirfile " << _filepath.data << endl;
+		global_log->error() << "[MettDaemon] Could not open reservoir file " << _filepath.data << endl;
 		Simulation::exit(1);
 	}
 	global_log->info() << "Reading Mettdeamon Reservoirfile " << _filepath.data << endl;
@@ -1711,7 +1715,7 @@ void Reservoir::readFromFile(DomainDecompBase* domainDecomp)
 	}
 
 	if((token != "NumberOfMolecules") && (token != "N")) {
-		global_log->error() << "Expected the token 'NumberOfMolecules (N)' instead of '" << token << "'" << endl;
+		global_log->error() << "[MettDaemon] Expected the token 'NumberOfMolecules (N)' instead of '" << token << "'" << endl;
 		Simulation::exit(1);
 	}
 	ifs >> _numMoleculesRead;
@@ -1729,7 +1733,7 @@ void Reservoir::readFromFile(DomainDecompBase* domainDecomp)
 		else if (ntypestring == "ICRV") ntype = ICRV;
 		else if (ntypestring == "IRV")  ntype = IRV;
 		else {
-			global_log->error() << "Unknown molecule format '" << ntypestring << "'" << endl;
+			global_log->error() << "[MettDaemon] Unknown molecule format '" << ntypestring << "'" << endl;
 			Simulation::exit(1);
 		}
 	} else {
@@ -1738,7 +1742,7 @@ void Reservoir::readFromFile(DomainDecompBase* domainDecomp)
 	global_log->info() << " molecule format: " << ntypestring << endl;
 
 	if( numcomponents < 1 ) {
-		global_log->warning() << "No components defined! Setting up single one-centered LJ" << endl;
+		global_log->warning() << "[MettDaemon] No components defined! Setting up single one-centered LJ" << endl;
 		numcomponents = 1;
 		dcomponents.resize( numcomponents );
 		dcomponents[0].setID(0);
@@ -1771,7 +1775,7 @@ void Reservoir::readFromFile(DomainDecompBase* domainDecomp)
 		}
 
 		if( componentid > numcomponents ) {
-			global_log->error() << "Molecule id " << id << " has wrong componentid: " << componentid << ">" << numcomponents << endl;
+			global_log->error() << "[MettDaemon] Molecule id " << id << " has wrong componentid: " << componentid << ">" << numcomponents << endl;
 			Simulation::exit(1);
 		}
 		componentid --; // TODO: Component IDs start with 0 in the program.
@@ -1839,7 +1843,7 @@ void Reservoir::readFromFileBinaryHeader()
 
 	if(not bInputOk)
 	{
-		global_log->error() << "Content of file: '" << _filepath.header << "' corrupted! Program exit ..." << endl;
+		global_log->error() << "[MettDaemon] Content of file: '" << _filepath.header << "' corrupted! Program exit ..." << endl;
 		Simulation::exit(1);
 	}
 
@@ -1851,7 +1855,7 @@ void Reservoir::readFromFileBinaryHeader()
 		_nMoleculeFormat = ICRV;
 	else
 	{
-		global_log->error() << "Not a valid molecule format: " << strMoleculeFormat << ", program exit ..." << endl;
+		global_log->error() << "[MettDaemon] Not a valid molecule format: " << strMoleculeFormat << ", program exit ..." << endl;
 		Simulation::exit(1);
 	}
 }
@@ -1869,7 +1873,7 @@ void Reservoir::readFromFileBinary(DomainDecompBase* domainDecomp)
 	std::ifstream ifs;
 	ifs.open(_filepath.data.c_str(), ios::binary | ios::in);
 	if (!ifs.is_open()) {
-		global_log->error() << "Could not open phaseSpaceFile " << _filepath.data << endl;
+		global_log->error() << "[MettDaemon] Could not open phaseSpaceFile " << _filepath.data << endl;
 		Simulation::exit(1);
 	}
 
