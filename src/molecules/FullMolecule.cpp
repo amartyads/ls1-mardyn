@@ -38,6 +38,15 @@ FullMolecule::FullMolecule(unsigned long id, Component *component,
 	_Vi[6]= 0.;
 	_Vi[7]= 0.;
 	_Vi[8]= 0.;
+	_ViRot[0]= 0.;
+	_ViRot[1]= 0.;
+	_ViRot[2]= 0.;
+	_ViRot[3]= 0.;
+	_ViRot[4]= 0.;
+	_ViRot[5]= 0.;
+	_ViRot[6]= 0.;
+	_ViRot[7]= 0.;
+	_ViRot[8]= 0.;
 	_upot = 0;
 	_ViConstCorr = 0;
 	_upotConstCorr = 0;
@@ -82,6 +91,15 @@ FullMolecule::FullMolecule(const FullMolecule& m) {
 	_Vi[6]= m._Vi[6];
 	_Vi[7]= m._Vi[7];
 	_Vi[8]= m._Vi[8];
+	_ViRot[0]= m._ViRot[0];
+	_ViRot[1]= m._ViRot[1];
+	_ViRot[2]= m._ViRot[2];
+	_ViRot[3]= m._ViRot[3];
+	_ViRot[4]= m._ViRot[4];
+	_ViRot[5]= m._ViRot[5];
+	_ViRot[6]= m._ViRot[6];
+	_ViRot[7]= m._ViRot[7];
+	_ViRot[8]= m._ViRot[8];
 	_upot = m._upot;
 	_ViConstCorr = m._ViConstCorr;
 	_upotConstCorr = m._upotConstCorr;
@@ -129,6 +147,15 @@ FullMolecule& FullMolecule::operator=(const FullMolecule& m) {
 	_Vi[6]= m._Vi[6];
 	_Vi[7]= m._Vi[7];
 	_Vi[8]= m._Vi[8];
+	_ViRot[0]= m._ViRot[0];
+	_ViRot[1]= m._ViRot[1];
+	_ViRot[2]= m._ViRot[2];
+	_ViRot[3]= m._ViRot[3];
+	_ViRot[4]= m._ViRot[4];
+	_ViRot[5]= m._ViRot[5];
+	_ViRot[6]= m._ViRot[6];
+	_ViRot[7]= m._ViRot[7];
+	_ViRot[8]= m._ViRot[8];
 	_upot = m._upot;
 	_ViConstCorr = m._ViConstCorr;
 	_upotConstCorr = m._upotConstCorr;
@@ -508,6 +535,7 @@ void FullMolecule::clearFM() {
 	_F[0] = _F[1] = _F[2] = 0.;
 	_M[0] = _M[1] = _M[2] = 0.;
 	_Vi[0]= _Vi[1]= _Vi[2]=_Vi[3]= _Vi[4]= _Vi[5]=_Vi[6]= _Vi[7]= _Vi[8]= 0.;
+	_ViRot[0]= _ViRot[1]= _ViRot[2]=_ViRot[3]= _ViRot[4]= _ViRot[5]=_ViRot[6]= _ViRot[7]= _ViRot[8]= 0.;
 	_upot = 0.;
 
 	std::array<vcp_real_accum, 3> clearance = {0.0, 0.0, 0.0};
@@ -745,6 +773,20 @@ void FullMolecule::check(unsigned long id) {
 	_Vi[6] = 0.0;
     _Vi[7] = 0.0;
     _Vi[8] = 0.0;
+    mardyn_assert(false);
+  }
+  if (!isfinite(_ViRot[0]) || !isfinite(_ViRot[1]) || !isfinite(_ViRot[2]) || !isfinite(_ViRot[3]) || !isfinite(_ViRot[4]) || !isfinite(_ViRot[5]) || !isfinite(_ViRot[6]) || !isfinite(_ViRot[7]) || !isfinite(_ViRot[8])) {
+    cout << "\talert: molecule id " << id << " (internal cid " << this->_component->ID() << ") has virial _ViRot = ("
+         << _ViRot[0] << ", " << _ViRot[1] << ", " << _ViRot[2] << ", " << _ViRot[3] << ", " << _ViRot[4] << ", " << _ViRot[5] << ", " << _ViRot[6] << ", " << _ViRot[7] << ", " << _ViRot[8] << ")" << endl;
+    _ViRot[0] = 0.0;
+    _ViRot[1] = 0.0;
+    _ViRot[2] = 0.0;
+	_ViRot[3] = 0.0;
+    _ViRot[4] = 0.0;
+    _ViRot[5] = 0.0;
+	_ViRot[6] = 0.0;
+    _ViRot[7] = 0.0;
+    _ViRot[8] = 0.0;
     mardyn_assert(false);
   }
 }

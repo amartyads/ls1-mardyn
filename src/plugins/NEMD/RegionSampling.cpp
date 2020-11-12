@@ -1017,6 +1017,19 @@ void SampleRegion::sampleProfiles(Molecule* molecule, int nDimension, unsigned l
 	virial[1] = molecule->Vi(1);
 	virial[2] = molecule->Vi(2);
 
+	// if (molecule->getID() == 30) {
+	// 	std::cout << "jHF" << std::endl;
+	// 	std::cout << " x " << molecule->jHF(0) << " y " << molecule->jHF(1) << " z " << molecule->jHF(2) << std::endl;
+	// 	std::cout << "VirRot" << std::endl;
+	// 	std::cout << " " << molecule->ViRot(0) << " " << molecule->ViRot(1) << " " << molecule->ViRot(2) << std::endl;
+	// 	std::cout << " " << molecule->ViRot(3) << " " << molecule->ViRot(4) << " " << molecule->ViRot(5) << std::endl;
+	// 	std::cout << " " << molecule->ViRot(6) << " " << molecule->ViRot(7) << " " << molecule->ViRot(8) << std::endl;
+	// 	std::cout << "Virial" << std::endl;
+	// 	std::cout << " " << molecule->Vi(0) << " " << molecule->Vi(3) << " " << molecule->Vi(4) << std::endl;
+	// 	std::cout << " " << molecule->Vi(6) << " " << molecule->Vi(1) << " " << molecule->Vi(5) << std::endl;
+	// 	std::cout << " " << molecule->Vi(7) << " " << molecule->Vi(8) << " " << molecule->Vi(2) << std::endl;
+	// }
+
 	// Loop over directions: all (+/-) | only (+) | only (-)
 	for(unsigned int dir = 0; dir < 3; ++dir)
 	{
@@ -1706,7 +1719,7 @@ void SampleRegion::writeDataProfiles(DomainDecompBase* domainDecomp, unsigned lo
 				outputstream_vect << std::setw(24) << std::scientific << std::setprecision(std::numeric_limits<double>::digits10) << _dForce[offset_x];
 				outputstream_vect << std::setw(24) << std::scientific << std::setprecision(std::numeric_limits<double>::digits10) << _dForce[offset_y];
 				outputstream_vect << std::setw(24) << std::scientific << std::setprecision(std::numeric_limits<double>::digits10) << _dForce[offset_z];
-				outputstream_vect << std::setw(24) << std::scientific << std::setprecision(std::numeric_limits<double>::digits10) << _dHeatflux[offset_x] * 1;
+				outputstream_vect << std::setw(24) << std::scientific << std::setprecision(std::numeric_limits<double>::digits10) << _dHeatflux[offset_x] * _dInvertBinVolSamplesProfiles;
 				outputstream_vect << std::setw(24) << std::scientific << std::setprecision(std::numeric_limits<double>::digits10) << _dHeatflux[offset_y] * _dInvertBinVolSamplesProfiles;
 				outputstream_vect << std::setw(24) << std::scientific << std::setprecision(std::numeric_limits<double>::digits10) << _dHeatflux[offset_z] * _dInvertBinVolSamplesProfiles;
 				outputstream_vect << std::setw(24) << std::scientific << std::setprecision(std::numeric_limits<double>::digits10) << _dDriftVelocity[offset_x];

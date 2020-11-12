@@ -105,8 +105,8 @@ public:
 		// else if (d == 1) { return (U_kin() + U_pot())*v(1) + (Vi(6)*v(0) + Vi(1)*v(1) + Vi(5)*v(2)) + (ViRot(3)*w[0] + ViRot(4)*w[1] + ViRot(5)*w[2]); } // in y direction
 		// else if (d == 2) { return (U_kin() + U_pot())*v(2) + (Vi(7)*v(0) + Vi(8)*v(1) + Vi(2)*v(2)) + (ViRot(6)*w[0] + ViRot(7)*w[1] + ViRot(8)*w[2]); } // in z direction
 		if (d == 0) 	 { return (ViRot(3)*w[0] + ViRot(4)*w[1] + ViRot(5)*w[2]); } // in x direction
-		else if (d == 1) { return (U_kin() + U_pot())*v(1) + (Vi(6)*v(0) + Vi(1)*v(1) + Vi(5)*v(2)) + (ViRot(3)*w[0] + ViRot(4)*w[1] + ViRot(5)*w[2]); } // in y direction
-		else if (d == 2) { return (U_kin() + U_pot())*v(1) + (Vi(6)*v(0) + Vi(1)*v(1) + Vi(5)*v(2)); } // in z direction
+		else if (d == 1) { return (Vi(6)*v(0) + Vi(1)*v(1) + Vi(5)*v(2)); } // in y direction
+		else if (d == 2) { return (U_kin() + U_pot())*v(1); } // in z direction
 		else { return 0.; }
 	}
 
