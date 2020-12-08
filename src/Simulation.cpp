@@ -311,7 +311,7 @@ void Simulation::readXML(XMLfileUnits& xmlconfig) {
 			}
 			else if(parallelisationtype == "KDDecomposition") {
 				delete _domainDecomposition;
-				_domainDecomposition = new KDDecomposition(getcutoffRadius(), _domain, _ensemble->getComponents()->size());
+				_domainDecomposition = new KDDecomposition(getcutoffRadius(), _ensemble->getComponents()->size());
 			} else if (parallelisationtype == "GeneralDomainDecomposition") {
 				double skin = 0.;
 				// we need the skin here, so we extract it from the AutoPas container's xml,
@@ -354,6 +354,11 @@ void Simulation::readXML(XMLfileUnits& xmlconfig) {
 			//_domainDecomposition = new DomainDecompBase();  // already set in initialize()
 		#endif
 			_domainDecomposition->readXML(xmlconfig);
+        #ifdef ENABLE_MPI
+            if(auto kdd = dynamic_cast<KDDecomposition*>(_domainDecomposition)) {
+                kdd->init(_domain);
+			}
+        #endif
 
 			string loadTimerStr("SIMULATION_COMPUTATION");
 			xmlconfig.getNodeValue("timerForLoad", loadTimerStr);
@@ -1332,33 +1337,14 @@ CellProcessor *Simulation::getCellProcessor() const {
 
 void Simulation::refreshParticleIDs()
 {
-	uint64_t prevMaxID = 0;  // max ID of previous process
-	int ownRank = _domainDecomposition->getRank();
-
+    unsigned long start_ID = 0;
 #ifdef ENABLE_MPI
-	int numProcs = _domainDecomposition->getNumProcs();
-	if (ownRank != 0) {
-		MPI_Recv(&prevMaxID, 1, MPI_UNSIGNED_LONG, (ownRank-1), 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-#ifndef NDEBUG
-		cout << "Process " << ownRank << " received maxID=" << prevMaxID << " from process " << (ownRank-1) << "." << endl;
-#endif
-	}
+    unsigned long num_molecules_local = _moleculeContainer->getNumberOfParticles();
+    MPI_Exscan(&num_molecules_local, &start_ID, 1, MPI_UNSIGNED_LONG, MPI_SUM, MPI_COMM_WORLD);
 #endif
 
-	uint64_t tmpID = prevMaxID;
-
-#ifdef ENABLE_MPI
-	if(ownRank < (numProcs-1) ) {
-		prevMaxID += _moleculeContainer->getNumberOfParticles();
-		MPI_Send(&prevMaxID, 1, MPI_UNSIGNED_LONG, (ownRank+1), 0, MPI_COMM_WORLD);
-	}
-#endif
-
-#ifndef NDEBUG
-	cout << "["<<ownRank<<"]tmpID=" << tmpID << endl;
-#endif
 	for (auto pit = _moleculeContainer->iterator(ParticleIterator::ONLY_INNER_AND_BOUNDARY); pit.isValid(); ++pit)
 	{
-		pit->setid(++tmpID);
+		pit->setid(++start_ID);
 	}
 }

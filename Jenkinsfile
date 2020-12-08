@@ -239,10 +239,11 @@ pipeline {
                   def build_result = "not run"
                   def unit_test_result = "not run"
                   def validation_test_result = "not run"
-                  try {
-                    stage("${it.join('-')}") {
-                      sh "rm -rf ${it.join('-')} || echo ''"
-                      ws("${WORKSPACE}/${it.join('-')}") {
+
+                  stage("${it.join('-')}") {
+                    sh "rm -rf ${it.join('-')} || echo ''"
+                    ws("${WORKSPACE}/${it.join('-')}") {
+                      try {
                         unstash 'repo'
                         stage("build/${it.join('-')}") {
                           try {
@@ -425,23 +426,22 @@ pipeline {
                             }
                           }
                         }
+                        results.put(it.join('-'), [:])
+                        results[it.join('-')].put("runOn", ARCH)
+                        results[it.join('-')].put("build", build_result)
+                        results[it.join('-')].put("unit-test", unit_test_result)
+                        results[it.join('-')].put("validation-test", validation_test_result)
+                        cleanWs(deleteDirs:true, disableDeferredWipeout: true)
+                      } catch (err) {
+                        results.put(it.join('-'), [:])
+                        results[it.join('-')].put("runOn", ARCH)
+                        results[it.join('-')].put("build", build_result)
+                        results[it.join('-')].put("unit-test", unit_test_result)
+                        results[it.join('-')].put("validation-test", validation_test_result)
+                        cleanWs(deleteDirs:true, disableDeferredWipeout: true)
+                        error err
                       }
                     }
-                    results.put(it.join('-'), [:])
-                    results[it.join('-')].put("runOn", ARCH)
-                    results[it.join('-')].put("build", build_result)
-                    results[it.join('-')].put("unit-test", unit_test_result)
-                    results[it.join('-')].put("validation-test", validation_test_result)
-                    cleanWs(deleteDirs:true, disableDeferredWipeout: true)
-                  }
-                  catch (err) {
-                    results.put(it.join('-'), [:])
-                    results[it.join('-')].put("runOn", ARCH)
-                    results[it.join('-')].put("build", build_result)
-                    results[it.join('-')].put("unit-test", unit_test_result)
-                    results[it.join('-')].put("validation-test", validation_test_result)
-                    cleanWs(deleteDirs:true, disableDeferredWipeout: true)
-                    error err
                   }
                 }
               }
@@ -551,7 +551,7 @@ pipeline {
             stage('release documentation') {
               when { branch 'master' }
               steps {
-                sh "rm -rf /home/wwwsccs/html/mardyn/doc /home/wwwsccs/html/mardyn/doxys_docs"
+                sh "rm -rf /home/wwwsccs/html/mardyn/doc /home/wwwsccs/html/mardyn/doxygen_doc"
                 sh "cp -r doc /home/wwwsccs/html/mardyn"
                 sh "cp -r doxygen_doc /home/wwwsccs/html/mardyn"
                 sh "chmod -R 775 /home/wwwsccs/html/mardyn/doc"
