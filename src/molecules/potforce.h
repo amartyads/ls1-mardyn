@@ -339,8 +339,8 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 				for (unsigned short d = 0; d < 3; ++d) {
 					for (unsigned e = 0; e < 3; ++e) {
 						virialAll[3*d+e] += drm[d] * f[e];
-						virialRoti[3*d+e] += abs(drm[d]) * momi[e]; // for heatflux
-						virialRotj[3*d+e] -= abs(drm[d]) * momj[e]; // for heatflux
+						virialRoti[3*d+e] += drm[d] * momi[e]; // for heatflux
+						virialRotj[3*d+e] -= drm[d] * momj[e]; // for heatflux
 					}
 				}
 
@@ -593,6 +593,9 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 			}
 		}
 	}
+	
+	//if (mi.getID() == 44) { std::cout << " virialRot1i " << virialRoti[0] << std::endl; }
+	//if (mj.getID() == 44) { std::cout << " virialRot1j " << virialRotj[0] << std::endl; }
 
 	Virial[0] = 0.5*virialAll[0];
 	Virial[1] = 0.5*virialAll[4];
@@ -613,7 +616,7 @@ inline void PotForce(Molecule& mi, Molecule& mj, ParaStrm& params, double drm[3]
 	mi.Viadd(tempVi);
 	mj.Viadd(tempVi);
 
-	for (unsigned short d = 0; d < 9; ++d) { virialRoti[d] *= 0.5; virialRotj[d] *= 0.5; }
+	// for (unsigned short d = 0; d < 9; ++d) { virialRoti[d] *= 0.5; virialRotj[d] *= 0.5; }
 
 	mi.ViRotadd(virialRoti);
 	mj.ViRotadd(virialRotj);

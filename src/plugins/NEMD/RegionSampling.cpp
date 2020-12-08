@@ -1017,6 +1017,9 @@ void SampleRegion::sampleProfiles(Molecule* molecule, int nDimension, unsigned l
 	virial[1] = molecule->Vi(1);
 	virial[2] = molecule->Vi(2);
 
+	//if (molecule->getID() == 44) { std::cout << " MVi " << molecule->getID() << " : " << molecule->ViRot(0) << " " << molecule->ViRot(1) << " " << molecule->ViRot(2) << std::endl; }
+	//if (molecule->getID() == 44) { std::cout << " MM  " << molecule->getID() << " : " << molecule->M(0) << " " << molecule->M(1) << " " << molecule->M(2) << std::endl; }
+
 	// if (molecule->getID() == 30) {
 	// 	std::cout << "jHF" << std::endl;
 	// 	std::cout << " x " << molecule->jHF(0) << " y " << molecule->jHF(1) << " z " << molecule->jHF(2) << std::endl;

@@ -610,6 +610,7 @@ void FullMolecule::calcFM_site(const std::array<double, 3>& dsite, const std::ar
 	_M[0] += dsite[1] * Fsite[2] - dsite[2] * Fsite[1];
 	_M[1] += dsite[2] * Fsite[0] - dsite[0] * Fsite[2];
 	_M[2] += dsite[0] * Fsite[1] - dsite[1] * Fsite[0];
+	// if (getID() == 44) { std::cout << " McalcSite " << getID() << " : " << dsite[1] * Fsite[2] - dsite[2] * Fsite[1] << " " << dsite[2] * Fsite[0] - dsite[0] * Fsite[2] << " " << dsite[0] * Fsite[1] - dsite[1] * Fsite[0] << std::endl; }
 }
 
 void FullMolecule::calcFM() {

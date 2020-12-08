@@ -87,7 +87,8 @@ void Component::readXML(XMLfileUnits& xmlconfig) {
 		// go back to initial level, to be consistent, even if no site information is found.
 		xmlconfig.changecurrentnode("..");
 	}
-	if(xmlconfig.changecurrentnode("momentsofinertia")) {
+
+	if(xmlconfig.changecurrentnode("momentsofinertia")){
 		double II[3];
 		if(xmlconfig.getNodeValueReduced("Ixx", II[0]) > 0) { setI11(II[0]); }
 		if(xmlconfig.getNodeValueReduced("Iyy", II[1]) > 0) { setI22(II[1]); }
