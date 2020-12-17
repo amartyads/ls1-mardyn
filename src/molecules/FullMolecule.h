@@ -86,32 +86,17 @@ public:
 		}
 	}
 
-	/** get coordinate of the rotational "virial" */
-	double ViRot(unsigned short d) const override { return _ViRot[d]; }
-
 	/** get the constant correction of potential energy */
 	double UpotConstCorr() const override { return _upotConstCorr; }
 
 	/** get the constant correction of one virial element */
 	double ViConstCorr() const override { return _ViConstCorr; }
 
-	/** get the heatflux; implemented by Homes in 2020; equation according to Fernandez2006/Evans1978 */
+	/** get the heatflux; equation according to Fernandez2004/Surblys2019 */
 	double jHF(unsigned short d) override {
-		std::array<double, 3> w = _q.rotateinv(D_arr());
-		for (unsigned short e = 0; e < 3; ++e) {
-			w[e] *= _invI[e]; //Angular velocity
-		}
-		// std::cout << " ws " << w[0] << " " << w[1] << " " << w[2] << std::endl;
-		// std::cout << " ViRot*ws " << ViRot(3)*w[0] << " " << ViRot(4)*w[1] << " " << ViRot(5)*w[2] << std::endl;
-		// if (d == 0) 	 { return (U_kin() + U_pot())*v(0) + (Vi(0)*v(0) + Vi(3)*v(1) + Vi(4)*v(2)) + (ViRot(0)*w[0] + ViRot(1)*w[1] + ViRot(2)*w[2]); } // in x direction
-		// else if (d == 1) { return (U_kin() + U_pot())*v(1) + (Vi(6)*v(0) + Vi(1)*v(1) + Vi(5)*v(2)) + (ViRot(3)*w[0] + ViRot(4)*w[1] + ViRot(5)*w[2]); } // in y direction
-		// else if (d == 2) { return (U_kin() + U_pot())*v(2) + (Vi(7)*v(0) + Vi(8)*v(1) + Vi(2)*v(2)) + (ViRot(6)*w[0] + ViRot(7)*w[1] + ViRot(8)*w[2]); } // in z direction
-		if (d == 0) 	 { return (U_kin() + U_pot())*v(1); } // in x direction
-		else if (d == 1) { return (Vi(6)*v(0) + Vi(1)*v(1) + Vi(5)*v(2)); } // in y direction
-		else if (d == 2) { return (ViRot(3)*w[0] + ViRot(4)*w[1] + ViRot(5)*w[2]); } // in z direction
-		// if (d == 0) 	 { return (ViRot(0)*w[0] + ViRot(1)*w[1] + ViRot(2)*w[2]); } // in x direction
-		// else if (d == 1) { return (ViRot(3)*w[0] + ViRot(4)*w[1] + ViRot(5)*w[2]); } // in y direction
-		// else if (d == 2) { return (ViRot(6)*w[0] + ViRot(7)*w[1] + ViRot(8)*w[2]); } // in z direction
+		if (d == 0) 	 { return (U_kin() + U_pot())*v(0) + (Vi(0)*v(0) + Vi(3)*v(1) + Vi(4)*v(2)); } // in x direction
+		else if (d == 1) { return (U_kin() + U_pot())*v(1) + (Vi(6)*v(0) + Vi(1)*v(1) + Vi(5)*v(2)); } // in y direction
+		else if (d == 2) { return (U_kin() + U_pot())*v(2) + (Vi(7)*v(0) + Vi(8)*v(1) + Vi(2)*v(2)); } // in z direction
 		else { return 0.; }
 	}
 
@@ -313,11 +298,9 @@ public:
 	 */
 	void setM(double M[3]) override { for(int d = 0; d < 3; d++ ) { _M[d] = M[d]; } }
 	void setVi(double Vi[9]) override { for(int d = 0; d < 9; d++) { _Vi[d] = Vi[d]; } }
-	void setViRot(double ViRot[9]) override { for(int d = 0; d < 9; d++) { _ViRot[d] = ViRot[d]; } }
 
 	void Fadd(const double a[]) override { for(unsigned short d=0;d<3;++d) _F[d]+=a[d]; }
 	void Madd(const double a[]) override { for(unsigned short d=0;d<3;++d) _M[d]+=a[d]; }
-	void ViRotadd(const double a[]) override { for(unsigned short d=0;d<9;++d) _ViRot[d]+=a[d]; }
 	void Viadd(const double a[]) override { for(unsigned short d=0;d<9;++d) _Vi[d]+=a[d]; }
 
 	void vadd(const double ax, const double ay, const double az) override {
@@ -396,7 +379,6 @@ protected:
 	double _M[3];  /**< torsional moment */
 	double _L[3];  /**< angular momentum */
 	double _Vi[9];  /**< Virial tensor all elements: rxfx, ryfy, rzfz, rxfy, rxfz, ryfz, ryfx, rzfx, rzfy */
-	double _ViRot[9]; // Rotational "virial": rxMx, rxMy, rxMz, ryMx, ryMy, ryMz, rzMx, rzMy, rzMz
     unsigned long _id;  /**< IDentification number of that molecule */
 
 	double _upot; /**< potential energy */

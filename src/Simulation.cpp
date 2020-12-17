@@ -1183,10 +1183,9 @@ void Simulation::pluginEndStepCall(unsigned long simstep) {
 	if (_domain->thermostatWarning())
 		global_log->warning() << "Thermostat!" << endl;
 	/* TODO: thermostat */
-	global_log->info() << "Simstep = " << simstep << std::setprecision(std::numeric_limits<double>::digits10) << "\tT = "
+	global_log->info() << "Simstep = " << simstep << "\tT = "
 					   << _domain->getGlobalCurrentTemperature() << "\tU_pot = "
-					   << _domain->getGlobalUpot() << "\tVi = "
-					   << _domain->getAverageGlobalVirial()*_domain->getglobalNumMolecules() << "\tp = "
+					   << _domain->getGlobalUpot() << "\tp = "
 					   << _domain->getGlobalPressure() << endl;
 	using std::isnan;
 	if (isnan(_domain->getGlobalCurrentTemperature()) || isnan(_domain->getGlobalUpot()) || isnan(_domain->getGlobalPressure())) {
