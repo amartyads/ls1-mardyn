@@ -130,6 +130,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>fillTimeVecs</b> (<a 
 <tr class="memitem:a4993c2e8d91979f6c78e3a74a6210771"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classKDDecomposition.html#a4993c2e8d91979f6c78e3a74a6210771">printTree</a> (std::ostream &amp;ostream)</td></tr>
 <tr class="separator:a4993c2e8d91979f6c78e3a74a6210771"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classDomainDecompMPIBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classDomainDecompMPIBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classDomainDecompMPIBase.html">DomainDecompMPIBase</a></td></tr>
+<tr class="memitem:ac588f83982ea27c645dcd286c1b51cb9 inherit pub_methods_classDomainDecompMPIBase"><td class="memItemLeft" align="right" valign="top"><a id="ac588f83982ea27c645dcd286c1b51cb9" name="ac588f83982ea27c645dcd286c1b51cb9"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DomainDecompMPIBase</b> (MPI_Comm comm)</td></tr>
+<tr class="separator:ac588f83982ea27c645dcd286c1b51cb9 inherit pub_methods_classDomainDecompMPIBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a058b252cd9b375a9f49a252581b28c2c inherit pub_methods_classDomainDecompMPIBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompMPIBase.html#a058b252cd9b375a9f49a252581b28c2c">barrier</a> () const override</td></tr>
 <tr class="memdesc:a058b252cd9b375a9f49a252581b28c2c inherit pub_methods_classDomainDecompMPIBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">synchronizes all processes  <a href="classDomainDecompMPIBase.html#a058b252cd9b375a9f49a252581b28c2c">More...</a><br /></td></tr>
 <tr class="separator:a058b252cd9b375a9f49a252581b28c2c inherit pub_methods_classDomainDecompMPIBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -269,6 +272,24 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>sendLeavingWithCopies
 <tr class="memitem:a54c3c828f83b63c26dc1346df8a680fb inherit pub_methods_classDomainDecompBase"><td class="memItemLeft" align="right" valign="top"><a id="a54c3c828f83b63c26dc1346df8a680fb" name="a54c3c828f83b63c26dc1346df8a680fb"></a>
 virtual std::vector&lt; std::vector&lt; std::vector&lt; int &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getAllRanks</b> ()</td></tr>
 <tr class="separator:a54c3c828f83b63c26dc1346df8a680fb inherit pub_methods_classDomainDecompBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b77e7c36a02f908dcf5d5743aba495d inherit pub_methods_classDomainDecompBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompBase.html#a3b77e7c36a02f908dcf5d5743aba495d">setGlobalBoundaryType</a> (<a class="el" href="namespaceDimensionUtils.html#a3918691c5189c0f99e4579860743c90c">DimensionUtils::DimensionType</a> dimension, <a class="el" href="namespaceBoundaryUtils.html#a7fbe4213bf7d39c9f2e15bbe5f4371ca">BoundaryUtils::BoundaryType</a> boundary)</td></tr>
+<tr class="memdesc:a3b77e7c36a02f908dcf5d5743aba495d inherit pub_methods_classDomainDecompBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the global boundary type for the _boundaryHandler object.  <a href="classDomainDecompBase.html#a3b77e7c36a02f908dcf5d5743aba495d">More...</a><br /></td></tr>
+<tr class="separator:a3b77e7c36a02f908dcf5d5743aba495d inherit pub_methods_classDomainDecompBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3a582d59a573924ba843b41df6e349b inherit pub_methods_classDomainDecompBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompBase.html#ae3a582d59a573924ba843b41df6e349b">setBoundsAndGlobalBoundaries</a> (<a class="el" href="classDomain.html">Domain</a> *domain, <a class="el" href="classEnsemble.html">Ensemble</a> *ensemble)</td></tr>
+<tr class="memdesc:ae3a582d59a573924ba843b41df6e349b inherit pub_methods_classDomainDecompBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the _boundaryHandler object, updating the global and local domain bounds, and triggering <a class="el" href="classBoundaryHandler.html#a7997a552c17276926886ed9e692bed8b" title="Determine which walls in the local region are actually global walls.">BoundaryHandler::updateGlobalWallLookupTable()</a> to refresh boundary conditions.  <a href="classDomainDecompBase.html#ae3a582d59a573924ba843b41df6e349b">More...</a><br /></td></tr>
+<tr class="separator:ae3a582d59a573924ba843b41df6e349b inherit pub_methods_classDomainDecompBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6670cbdcbd8f67730eb3c412a2ce183 inherit pub_methods_classDomainDecompBase"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompBase.html#ac6670cbdcbd8f67730eb3c412a2ce183">hasGlobalInvalidBoundary</a> () const</td></tr>
+<tr class="memdesc:ac6670cbdcbd8f67730eb3c412a2ce183 inherit pub_methods_classDomainDecompBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if any of the global boundaries are invalid.  <a href="classDomainDecompBase.html#ac6670cbdcbd8f67730eb3c412a2ce183">More...</a><br /></td></tr>
+<tr class="separator:ac6670cbdcbd8f67730eb3c412a2ce183 inherit pub_methods_classDomainDecompBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1acbbf9f42e26fb14b1e94ba12c2571 inherit pub_methods_classDomainDecompBase"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompBase.html#ae1acbbf9f42e26fb14b1e94ba12c2571">hasGlobalNonPeriodicBoundary</a> () const</td></tr>
+<tr class="memdesc:ae1acbbf9f42e26fb14b1e94ba12c2571 inherit pub_methods_classDomainDecompBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if any of the global boundaries are non-periodic.  <a href="classDomainDecompBase.html#ae1acbbf9f42e26fb14b1e94ba12c2571">More...</a><br /></td></tr>
+<tr class="separator:ae1acbbf9f42e26fb14b1e94ba12c2571 inherit pub_methods_classDomainDecompBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8afac7840d82e11e49e25dcd00565d4 inherit pub_methods_classDomainDecompBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompBase.html#af8afac7840d82e11e49e25dcd00565d4">processBoundaryConditions</a> (<a class="el" href="classParticleContainer.html">ParticleContainer</a> *moleculeContainer, double timestepLength)</td></tr>
+<tr class="memdesc:af8afac7840d82e11e49e25dcd00565d4 inherit pub_methods_classDomainDecompBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes leaving particles according to the boundary coundition of the wall the particles would be leaving.  <a href="classDomainDecompBase.html#af8afac7840d82e11e49e25dcd00565d4">More...</a><br /></td></tr>
+<tr class="separator:af8afac7840d82e11e49e25dcd00565d4 inherit pub_methods_classDomainDecompBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab301d5c89a3734ed86ff4f86fbdfd5cc inherit pub_methods_classDomainDecompBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompBase.html#ab301d5c89a3734ed86ff4f86fbdfd5cc">removeNonPeriodicHalos</a> (<a class="el" href="classParticleContainer.html">ParticleContainer</a> *moleculeContainer)</td></tr>
+<tr class="memdesc:ab301d5c89a3734ed86ff4f86fbdfd5cc inherit pub_methods_classDomainDecompBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete all halo particles outside global boundas that are non-periodic.  <a href="classDomainDecompBase.html#ab301d5c89a3734ed86ff4f86fbdfd5cc">More...</a><br /></td></tr>
+<tr class="separator:ab301d5c89a3734ed86ff4f86fbdfd5cc inherit pub_methods_classDomainDecompBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -284,9 +305,9 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a95671c5224cd417df58c6e9b2f510199 inherit pro_methods_classDomainDecompMPIBase"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompMPIBase.html#a95671c5224cd417df58c6e9b2f510199">finishNonBlockingStageImpl</a> (<a class="el" href="classParticleContainer.html">ParticleContainer</a> *moleculeContainer, <a class="el" href="classDomain.html">Domain</a> *domain, unsigned int stageNumber, MessageType msgType, bool removeRecvDuplicates=false)</td></tr>
 <tr class="separator:a95671c5224cd417df58c6e9b2f510199 inherit pro_methods_classDomainDecompMPIBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classDomainDecompBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classDomainDecompBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classDomainDecompBase.html">DomainDecompBase</a></td></tr>
-<tr class="memitem:a7437650bc46950a178cf68c2713f1d95 inherit pro_methods_classDomainDecompBase"><td class="memItemLeft" align="right" valign="top"><a id="a7437650bc46950a178cf68c2713f1d95" name="a7437650bc46950a178cf68c2713f1d95"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>addLeavingMolecules</b> (std::vector&lt; <a class="el" href="classFullMolecule.html">Molecule</a> &gt; &amp;&amp;invalidMolecules, <a class="el" href="classParticleContainer.html">ParticleContainer</a> *moleculeContainer)</td></tr>
-<tr class="separator:a7437650bc46950a178cf68c2713f1d95 inherit pro_methods_classDomainDecompBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a758aa91382de3aa9f69ba0836b265565 inherit pro_methods_classDomainDecompBase"><td class="memItemLeft" align="right" valign="top"><a id="a758aa91382de3aa9f69ba0836b265565" name="a758aa91382de3aa9f69ba0836b265565"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addLeavingMolecules</b> (std::vector&lt; <a class="el" href="classFullMolecule.html">Molecule</a> &gt; &amp;invalidMolecules, <a class="el" href="classParticleContainer.html">ParticleContainer</a> *moleculeContainer)</td></tr>
+<tr class="separator:a758aa91382de3aa9f69ba0836b265565 inherit pro_methods_classDomainDecompBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99f5c979858cfa3a3fc8b1d72462c642 inherit pro_methods_classDomainDecompBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompBase.html#a99f5c979858cfa3a3fc8b1d72462c642">handleDomainLeavingParticles</a> (unsigned dim, <a class="el" href="classParticleContainer.html">ParticleContainer</a> *moleculeContainer) const</td></tr>
 <tr class="separator:a99f5c979858cfa3a3fc8b1d72462c642 inherit pro_methods_classDomainDecompBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00a88b98d85fc1ff0db4d11d00e369da inherit pro_methods_classDomainDecompBase"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompBase.html#a00a88b98d85fc1ff0db4d11d00e369da">handleDomainLeavingParticlesDirect</a> (const <a class="el" href="structHaloRegion.html">HaloRegion</a> &amp;haloRegion, <a class="el" href="classParticleContainer.html">ParticleContainer</a> *moleculeContainer, std::vector&lt; <a class="el" href="classFullMolecule.html">Molecule</a> &gt; &amp;invalidParticles) const</td></tr>
@@ -326,6 +347,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_rank</b></td></tr>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>_numProcs</b></td></tr>
 <tr class="memdesc:a25f0ed57fd982d68f0e4e8e3e1a3fa6f inherit pro_attribs_classDomainDecompBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">total number of processes in the simulation <br /></td></tr>
 <tr class="separator:a25f0ed57fd982d68f0e4e8e3e1a3fa6f inherit pro_attribs_classDomainDecompBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d0ce54bb076377a7b56692ecc3d0ca0 inherit pro_attribs_classDomainDecompBase"><td class="memItemLeft" align="right" valign="top"><a id="a2d0ce54bb076377a7b56692ecc3d0ca0" name="a2d0ce54bb076377a7b56692ecc3d0ca0"></a>
+<a class="el" href="classBoundaryHandler.html">BoundaryHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_boundaryHandler</b></td></tr>
+<tr class="separator:a2d0ce54bb076377a7b56692ecc3d0ca0 inherit pro_attribs_classDomainDecompBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >KD tree based domain decomposition for better load balancing. </p>
@@ -542,7 +566,7 @@ Some computation of the deviation / expected deviation is done in <a class="el" 
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000042">Todo:</a></b></dt><dd>comment and thing </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000040">Todo:</a></b></dt><dd>comment and thing </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classDomainDecompBase.html#aee57a85e2402fe6581737898297b1785">DomainDecompBase</a>.</p>
 
@@ -581,7 +605,7 @@ Some computation of the deviation / expected deviation is done in <a class="el" 
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000041">Todo:</a></b></dt><dd>comment and thing </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000039">Todo:</a></b></dt><dd>comment and thing </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classDomainDecompBase.html#a878ed907571f05834fd598fc0f8aaa84">DomainDecompBase</a>.</p>
 
@@ -944,7 +968,7 @@ Some computation of the deviation / expected deviation is done in <a class="el" 
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 17 2023 14:01:53 for ls1-MarDyn by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+Generated on Wed Jan 29 2025 10:34:14 for ls1-MarDyn by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
 </small></address>
 </body>
 </html>

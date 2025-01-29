@@ -163,6 +163,9 @@ virtual double&#160;</td><td class="memItemRight" valign="bottom"><b>getCutoff</
 <tr class="memitem:a6b8815cf2728d49cabf19c4632ab58b5"><td class="memItemLeft" align="right" valign="top"><a id="a6b8815cf2728d49cabf19c4632ab58b5" name="a6b8815cf2728d49cabf19c4632ab58b5"></a>
 virtual double&#160;</td><td class="memItemRight" valign="bottom"><b>getSkin</b> () const</td></tr>
 <tr class="separator:a6b8815cf2728d49cabf19c4632ab58b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c92dcd2b10d1a670722d90b96106e07"><td class="memItemLeft" align="right" valign="top"><a id="a4c92dcd2b10d1a670722d90b96106e07" name="a4c92dcd2b10d1a670722d90b96106e07"></a>
+virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getRebuildFrequency</b> () const</td></tr>
+<tr class="separator:a4c92dcd2b10d1a670722d90b96106e07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad63816bd6453f30da4b7a4ea075dd7d2"><td class="memItemLeft" align="right" valign="top"><a id="ad63816bd6453f30da4b7a4ea075dd7d2" name="ad63816bd6453f30da4b7a4ea075dd7d2"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>deleteMolecule</b> (<a class="el" href="classParticleIterator.html">ParticleIterator</a> &amp;moleculeIter, const bool &amp;rebuildCaches)=0</td></tr>
 <tr class="separator:ad63816bd6453f30da4b7a4ea075dd7d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,9 +198,9 @@ virtual double *&#160;</td><td class="memItemRight" valign="bottom"><b>getCellLe
 <tr class="separator:aa4d61c3484dd8b1fccc1125196bee970"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a08d9cbd08f7141190aa140f3d2064d4e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParticleContainer.html#a08d9cbd08f7141190aa140f3d2064d4e">setCutoff</a> (double rc)</td></tr>
 <tr class="separator:a08d9cbd08f7141190aa140f3d2064d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c85a3cf8b68f301925430b4d4e4b6cc"><td class="memItemLeft" align="right" valign="top"><a id="a7c85a3cf8b68f301925430b4d4e4b6cc" name="a7c85a3cf8b68f301925430b4d4e4b6cc"></a>
-virtual std::vector&lt; <a class="el" href="classFullMolecule.html">Molecule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getInvalidParticles</b> ()</td></tr>
-<tr class="separator:a7c85a3cf8b68f301925430b4d4e4b6cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69fdd249e95810de17aed2daa405347a"><td class="memItemLeft" align="right" valign="top"><a id="a69fdd249e95810de17aed2daa405347a" name="a69fdd249e95810de17aed2daa405347a"></a>
+std::vector&lt; <a class="el" href="classFullMolecule.html">Molecule</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getInvalidParticlesRef</b> ()</td></tr>
+<tr class="separator:a69fdd249e95810de17aed2daa405347a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af686aa97c6acbecc357738cb157d18cc"><td class="memItemLeft" align="right" valign="top"><a id="af686aa97c6acbecc357738cb157d18cc" name="af686aa97c6acbecc357738cb157d18cc"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>isInvalidParticleReturner</b> ()</td></tr>
 <tr class="separator:af686aa97c6acbecc357738cb157d18cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -216,14 +219,12 @@ virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getNam
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:a7f70588a1038510ea1d7dc78b17caaef"><td class="memItemLeft" align="right" valign="top"><a id="a7f70588a1038510ea1d7dc78b17caaef" name="a7f70588a1038510ea1d7dc78b17caaef"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>_boundingBoxMin</b> [3]</td></tr>
-<tr class="memdesc:a7f70588a1038510ea1d7dc78b17caaef"><td class="mdescLeft">&#160;</td><td class="mdescRight">coordinates of the left, lower, front corner of the bounding box <br /></td></tr>
+<tr class="memitem:a7f70588a1038510ea1d7dc78b17caaef"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParticleContainer.html#a7f70588a1038510ea1d7dc78b17caaef">_boundingBoxMin</a> [3]</td></tr>
 <tr class="separator:a7f70588a1038510ea1d7dc78b17caaef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af895921cd0683e8bc291a45fdadfea3f"><td class="memItemLeft" align="right" valign="top"><a id="af895921cd0683e8bc291a45fdadfea3f" name="af895921cd0683e8bc291a45fdadfea3f"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>_boundingBoxMax</b> [3]</td></tr>
-<tr class="memdesc:af895921cd0683e8bc291a45fdadfea3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">coordinates of the right, upper, back corner of the bounding box <br /></td></tr>
+<tr class="memitem:af895921cd0683e8bc291a45fdadfea3f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParticleContainer.html#af895921cd0683e8bc291a45fdadfea3f">_boundingBoxMax</a> [3]</td></tr>
 <tr class="separator:af895921cd0683e8bc291a45fdadfea3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5df549358c249b232a0530b58c5e3d7c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classFullMolecule.html">Molecule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classParticleContainer.html#a5df549358c249b232a0530b58c5e3d7c">_invalidParticles</a> {}</td></tr>
+<tr class="separator:a5df549358c249b232a0530b58c5e3d7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >This Interface is used to get access to particles and pairs of particles. </p>
@@ -532,7 +533,7 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>_boundingBoxMax</b>
 </div><div class="memdoc">
 
 <p>returns the width of the halo stripe (for the given dimension index) </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000047">Todo:</a></b></dt><dd>remove this method, because a halo_L shouldn't be necessary for every <a class="el" href="classParticleContainer.html" title="This Interface is used to get access to particles and pairs of particles.">ParticleContainer</a> e.g. replace it by the cutoff-radius </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000045">Todo:</a></b></dt><dd>remove this method, because a halo_L shouldn't be necessary for every <a class="el" href="classParticleContainer.html" title="This Interface is used to get access to particles and pairs of particles.">ParticleContainer</a> e.g. replace it by the cutoff-radius </dd></dl>
 
 <p>Implemented in <a class="el" href="classAutoPasContainer.html#aa561486114d6c447abf96d5f04bd0c8e">AutoPasContainer</a>, <a class="el" href="classLinkedCells.html#ae5a2eb4ee63005ee220a6381c11fc570">LinkedCells</a>, and <a class="el" href="classParticleContainerToBasisWrapper.html#afc224633afcf307d9c02b208a12a9383">ParticleContainerToBasisWrapper</a>.</p>
 
@@ -634,13 +635,13 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>_boundingBoxMax</b>
 </div><div class="memdoc">
 <p >Return a string representation of the algorithmic configuration of the container. Only used for logging / output. </p><dl class="section note"><dt>Note</dt><dd>: Formatting rules:<ul>
 <li>The whole configuration should be enclosed in curly brackets.</li>
-<li>Different elements should be separated by a comma sourrounded by spaces: " , ".</li>
+<li>Different elements should be separated by a comma surrounded by spaces: " , ".</li>
 <li>Every element should be in the form "key: value" </li>
 </ul>
 </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Implemented in <a class="el" href="classAutoPasContainer.html#ac6003304bac6d9b4372afb42f8021016">AutoPasContainer</a>, <a class="el" href="classLinkedCells.html#aed96d80f71556bf537fccbeea6d3c012">LinkedCells</a>, and <a class="el" href="classParticleContainerToBasisWrapper.html#abb9b1680ccbd10c7e5feff795f6fe3a6">ParticleContainerToBasisWrapper</a>.</p>
+<p>Implemented in <a class="el" href="classAutoPasContainer.html#ac6003304bac6d9b4372afb42f8021016">AutoPasContainer</a>, <a class="el" href="classLinkedCells.html#a1eff78ff0108f18dd1c97b024d5cb775">LinkedCells</a>, and <a class="el" href="classParticleContainerToBasisWrapper.html#a8528f4ec222fdec47c57ca30b2f29916">ParticleContainerToBasisWrapper</a>.</p>
 
 </div>
 </div>
@@ -1121,6 +1122,76 @@ This method has to be implemented in derived classes Precondition: All Particles
 
 </div>
 </div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="af895921cd0683e8bc291a45fdadfea3f" name="af895921cd0683e8bc291a45fdadfea3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af895921cd0683e8bc291a45fdadfea3f">&#9670;&nbsp;</a></span>_boundingBoxMax</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ParticleContainer::_boundingBoxMax[3]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Coordinates of the right, upper, back corner of the local bounding box. </p>
+
+</div>
+</div>
+<a id="a7f70588a1038510ea1d7dc78b17caaef" name="a7f70588a1038510ea1d7dc78b17caaef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f70588a1038510ea1d7dc78b17caaef">&#9670;&nbsp;</a></span>_boundingBoxMin</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double ParticleContainer::_boundingBoxMin[3]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Coordinates of the left, lower, front corner of the local bounding box. </p>
+
+</div>
+</div>
+<a id="a5df549358c249b232a0530b58c5e3d7c" name="a5df549358c249b232a0530b58c5e3d7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5df549358c249b232a0530b58c5e3d7c">&#9670;&nbsp;</a></span>_invalidParticles</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="classFullMolecule.html">Molecule</a>&gt; ParticleContainer::_invalidParticles {}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p >Vector of particles that are about to be removed from the container. Currently only used by <a class="el" href="classAutoPasContainer.html">AutoPasContainer</a> but here for interface reasons. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/particleContainer/<a class="el" href="ParticleContainer_8h_source.html">ParticleContainer.h</a></li>
 <li>src/particleContainer/ParticleContainer.cpp</li>
@@ -1128,7 +1199,7 @@ This method has to be implemented in derived classes Precondition: All Particles
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 17 2023 14:01:54 for ls1-MarDyn by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+Generated on Wed Jan 29 2025 10:34:15 for ls1-MarDyn by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
 </small></address>
 </body>
 </html>

@@ -83,11 +83,12 @@ Inheritance diagram for DomainDecompBase:</div>
  <div class="center">
   <img src="classDomainDecompBase.png" usemap="#DomainDecompBase_map" alt=""/>
   <map id="DomainDecompBase_map" name="DomainDecompBase_map">
-<area href="classMemoryProfilable.html" alt="MemoryProfilable" shape="rect" coords="191,0,372,24"/>
-<area href="classDomainDecompMPIBase.html" alt="DomainDecompMPIBase" shape="rect" coords="191,112,372,136"/>
-<area href="classDomainDecomposition.html" title="Basic domain decomposition based parallelisation, dividing the domain into #procs equal sized cuboids..." alt="DomainDecomposition" shape="rect" coords="0,168,181,192"/>
-<area href="classGeneralDomainDecomposition.html" alt="GeneralDomainDecomposition" shape="rect" coords="191,168,372,192"/>
-<area href="classKDDecomposition.html" title="KD tree based domain decomposition for better load balancing." alt="KDDecomposition" shape="rect" coords="382,168,563,192"/>
+<area href="classMemoryProfilable.html" alt="MemoryProfilable" shape="rect" coords="204,0,398,24"/>
+<area href="classDomainDecompMPIBase.html" alt="DomainDecompMPIBase" shape="rect" coords="204,112,398,136"/>
+<area href="classDomainDecomposition.html" title="Basic domain decomposition based parallelisation, dividing the domain into #procs equal sized cuboids..." alt="DomainDecomposition" shape="rect" coords="0,168,194,192"/>
+<area href="classGeneralDomainDecomposition.html" alt="GeneralDomainDecomposition" shape="rect" coords="204,168,398,192"/>
+<area href="classKDDecomposition.html" title="KD tree based domain decomposition for better load balancing." alt="KDDecomposition" shape="rect" coords="408,168,602,192"/>
+<area href="classStaticIrregDomainDecomposition.html" alt="StaticIrregDomainDecomposition" shape="rect" coords="0,224,194,248"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -239,12 +240,30 @@ virtual MPI_Comm&#160;</td><td class="memItemRight" valign="bottom"><b>getCommun
 <tr class="memitem:a224426f0cd2238c37e4709f23f0e5666"><td class="memItemLeft" align="right" valign="top"><a id="a224426f0cd2238c37e4709f23f0e5666" name="a224426f0cd2238c37e4709f23f0e5666"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>printCommunicationPartners</b> (std::string filename) const</td></tr>
 <tr class="separator:a224426f0cd2238c37e4709f23f0e5666"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b77e7c36a02f908dcf5d5743aba495d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompBase.html#a3b77e7c36a02f908dcf5d5743aba495d">setGlobalBoundaryType</a> (<a class="el" href="namespaceDimensionUtils.html#a3918691c5189c0f99e4579860743c90c">DimensionUtils::DimensionType</a> dimension, <a class="el" href="namespaceBoundaryUtils.html#a7fbe4213bf7d39c9f2e15bbe5f4371ca">BoundaryUtils::BoundaryType</a> boundary)</td></tr>
+<tr class="memdesc:a3b77e7c36a02f908dcf5d5743aba495d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the global boundary type for the _boundaryHandler object.  <a href="classDomainDecompBase.html#a3b77e7c36a02f908dcf5d5743aba495d">More...</a><br /></td></tr>
+<tr class="separator:a3b77e7c36a02f908dcf5d5743aba495d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3a582d59a573924ba843b41df6e349b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompBase.html#ae3a582d59a573924ba843b41df6e349b">setBoundsAndGlobalBoundaries</a> (<a class="el" href="classDomain.html">Domain</a> *domain, <a class="el" href="classEnsemble.html">Ensemble</a> *ensemble)</td></tr>
+<tr class="memdesc:ae3a582d59a573924ba843b41df6e349b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up the _boundaryHandler object, updating the global and local domain bounds, and triggering <a class="el" href="classBoundaryHandler.html#a7997a552c17276926886ed9e692bed8b" title="Determine which walls in the local region are actually global walls.">BoundaryHandler::updateGlobalWallLookupTable()</a> to refresh boundary conditions.  <a href="classDomainDecompBase.html#ae3a582d59a573924ba843b41df6e349b">More...</a><br /></td></tr>
+<tr class="separator:ae3a582d59a573924ba843b41df6e349b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6670cbdcbd8f67730eb3c412a2ce183"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompBase.html#ac6670cbdcbd8f67730eb3c412a2ce183">hasGlobalInvalidBoundary</a> () const</td></tr>
+<tr class="memdesc:ac6670cbdcbd8f67730eb3c412a2ce183"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if any of the global boundaries are invalid.  <a href="classDomainDecompBase.html#ac6670cbdcbd8f67730eb3c412a2ce183">More...</a><br /></td></tr>
+<tr class="separator:ac6670cbdcbd8f67730eb3c412a2ce183"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1acbbf9f42e26fb14b1e94ba12c2571"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompBase.html#ae1acbbf9f42e26fb14b1e94ba12c2571">hasGlobalNonPeriodicBoundary</a> () const</td></tr>
+<tr class="memdesc:ae1acbbf9f42e26fb14b1e94ba12c2571"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if any of the global boundaries are non-periodic.  <a href="classDomainDecompBase.html#ae1acbbf9f42e26fb14b1e94ba12c2571">More...</a><br /></td></tr>
+<tr class="separator:ae1acbbf9f42e26fb14b1e94ba12c2571"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8afac7840d82e11e49e25dcd00565d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompBase.html#af8afac7840d82e11e49e25dcd00565d4">processBoundaryConditions</a> (<a class="el" href="classParticleContainer.html">ParticleContainer</a> *moleculeContainer, double timestepLength)</td></tr>
+<tr class="memdesc:af8afac7840d82e11e49e25dcd00565d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes leaving particles according to the boundary coundition of the wall the particles would be leaving.  <a href="classDomainDecompBase.html#af8afac7840d82e11e49e25dcd00565d4">More...</a><br /></td></tr>
+<tr class="separator:af8afac7840d82e11e49e25dcd00565d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab301d5c89a3734ed86ff4f86fbdfd5cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompBase.html#ab301d5c89a3734ed86ff4f86fbdfd5cc">removeNonPeriodicHalos</a> (<a class="el" href="classParticleContainer.html">ParticleContainer</a> *moleculeContainer)</td></tr>
+<tr class="memdesc:ab301d5c89a3734ed86ff4f86fbdfd5cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete all halo particles outside global boundas that are non-periodic.  <a href="classDomainDecompBase.html#ab301d5c89a3734ed86ff4f86fbdfd5cc">More...</a><br /></td></tr>
+<tr class="separator:ab301d5c89a3734ed86ff4f86fbdfd5cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a7437650bc46950a178cf68c2713f1d95"><td class="memItemLeft" align="right" valign="top"><a id="a7437650bc46950a178cf68c2713f1d95" name="a7437650bc46950a178cf68c2713f1d95"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>addLeavingMolecules</b> (std::vector&lt; <a class="el" href="classFullMolecule.html">Molecule</a> &gt; &amp;&amp;invalidMolecules, <a class="el" href="classParticleContainer.html">ParticleContainer</a> *moleculeContainer)</td></tr>
-<tr class="separator:a7437650bc46950a178cf68c2713f1d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a758aa91382de3aa9f69ba0836b265565"><td class="memItemLeft" align="right" valign="top"><a id="a758aa91382de3aa9f69ba0836b265565" name="a758aa91382de3aa9f69ba0836b265565"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addLeavingMolecules</b> (std::vector&lt; <a class="el" href="classFullMolecule.html">Molecule</a> &gt; &amp;invalidMolecules, <a class="el" href="classParticleContainer.html">ParticleContainer</a> *moleculeContainer)</td></tr>
+<tr class="separator:a758aa91382de3aa9f69ba0836b265565"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99f5c979858cfa3a3fc8b1d72462c642"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompBase.html#a99f5c979858cfa3a3fc8b1d72462c642">handleDomainLeavingParticles</a> (unsigned dim, <a class="el" href="classParticleContainer.html">ParticleContainer</a> *moleculeContainer) const</td></tr>
 <tr class="separator:a99f5c979858cfa3a3fc8b1d72462c642"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00a88b98d85fc1ff0db4d11d00e369da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDomainDecompBase.html#a00a88b98d85fc1ff0db4d11d00e369da">handleDomainLeavingParticlesDirect</a> (const <a class="el" href="structHaloRegion.html">HaloRegion</a> &amp;haloRegion, <a class="el" href="classParticleContainer.html">ParticleContainer</a> *moleculeContainer, std::vector&lt; <a class="el" href="classFullMolecule.html">Molecule</a> &gt; &amp;invalidParticles) const</td></tr>
@@ -271,6 +290,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_rank</b></td></tr>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>_numProcs</b></td></tr>
 <tr class="memdesc:a25f0ed57fd982d68f0e4e8e3e1a3fa6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">total number of processes in the simulation <br /></td></tr>
 <tr class="separator:a25f0ed57fd982d68f0e4e8e3e1a3fa6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d0ce54bb076377a7b56692ecc3d0ca0"><td class="memItemLeft" align="right" valign="top"><a id="a2d0ce54bb076377a7b56692ecc3d0ca0" name="a2d0ce54bb076377a7b56692ecc3d0ca0"></a>
+<a class="el" href="classBoundaryHandler.html">BoundaryHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_boundaryHandler</b></td></tr>
+<tr class="separator:a2d0ce54bb076377a7b56692ecc3d0ca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -1076,7 +1098,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>DirectNeighbourCommu
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classDomainDecomposition.html#ac188d2ad8542de00295d0e0477680df7">DomainDecomposition</a>, <a class="el" href="classGeneralDomainDecomposition.html#acc34d9d57354f129144b584d1b010669">GeneralDomainDecomposition</a>, and <a class="el" href="classKDDecomposition.html#a52e24db5ee541a560b53ffacf4296eb7">KDDecomposition</a>.</p>
+<p>Reimplemented in <a class="el" href="classDomainDecomposition.html#ac188d2ad8542de00295d0e0477680df7">DomainDecomposition</a>, <a class="el" href="classGeneralDomainDecomposition.html#acc34d9d57354f129144b584d1b010669">GeneralDomainDecomposition</a>, <a class="el" href="classKDDecomposition.html#a52e24db5ee541a560b53ffacf4296eb7">KDDecomposition</a>, and <a class="el" href="classStaticIrregDomainDecomposition.html#a1e047e53c26c09bc4f3d017c70643715">StaticIrregDomainDecomposition</a>.</p>
 
 </div>
 </div>
@@ -1123,7 +1145,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>DirectNeighbourCommu
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="classDomainDecomposition.html#a95db57057b474a7492cf69d1c55e5d5d">DomainDecomposition</a>, <a class="el" href="classGeneralDomainDecomposition.html#a70522f8864b2f5e093493e974ad27f8d">GeneralDomainDecomposition</a>, and <a class="el" href="classKDDecomposition.html#a22ea88b23ab0081f890be11463a2f500">KDDecomposition</a>.</p>
+<p>Reimplemented in <a class="el" href="classDomainDecomposition.html#a95db57057b474a7492cf69d1c55e5d5d">DomainDecomposition</a>, <a class="el" href="classGeneralDomainDecomposition.html#a70522f8864b2f5e093493e974ad27f8d">GeneralDomainDecomposition</a>, <a class="el" href="classKDDecomposition.html#a22ea88b23ab0081f890be11463a2f500">KDDecomposition</a>, and <a class="el" href="classStaticIrregDomainDecomposition.html#aa707df7399b18406f8d46e333b54236b">StaticIrregDomainDecomposition</a>.</p>
 
 </div>
 </div>
@@ -1563,6 +1585,68 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>DirectNeighbourCommu
 
 </div>
 </div>
+<a id="ac6670cbdcbd8f67730eb3c412a2ce183" name="ac6670cbdcbd8f67730eb3c412a2ce183"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6670cbdcbd8f67730eb3c412a2ce183">&#9670;&nbsp;</a></span>hasGlobalInvalidBoundary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DomainDecompBase::hasGlobalInvalidBoundary </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if any of the global boundaries are invalid. </p>
+<p >Defers directly to <a class="el" href="classBoundaryHandler.html#a9bd873d739e9e4fc79234709b6731c66" title="Check if any of the global boundaries have invalid types.">BoundaryHandler::hasGlobalInvalidBoundary()</a>, check there for more documentation.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if any of the 6 boundaries are invalid </dd>
+<dd>
+false if all 6 boundaries are valid </dd></dl>
+
+</div>
+</div>
+<a id="ae1acbbf9f42e26fb14b1e94ba12c2571" name="ae1acbbf9f42e26fb14b1e94ba12c2571"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1acbbf9f42e26fb14b1e94ba12c2571">&#9670;&nbsp;</a></span>hasGlobalNonPeriodicBoundary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool DomainDecompBase::hasGlobalNonPeriodicBoundary </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if any of the global boundaries are non-periodic. </p>
+<p >If false, this is used to bypass all boundary-related code, to mimic default behaviour of ls1 (with all periodic boundaries). Defers directly to <a class="el" href="classBoundaryHandler.html#a38e63a532bf532ef403f1f3f287addab" title="Check if any of the global boundaries are non-periodic.">BoundaryHandler::hasGlobalNonPeriodicBoundary()</a>, check there for more documentation.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if any of the 6 boundaries are non-periodic </dd>
+<dd>
+false if all 6 boundaries are periodic </dd></dl>
+
+</div>
+</div>
 <a id="ace0b6e99093f88cd41a86a1bb4da57f9" name="ace0b6e99093f88cd41a86a1bb4da57f9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ace0b6e99093f88cd41a86a1bb4da57f9">&#9670;&nbsp;</a></span>Ndistribution()</h2>
 
@@ -1688,6 +1772,37 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>DirectNeighbourCommu
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classMemoryProfilable.html">MemoryProfilable</a>.</p>
+
+</div>
+</div>
+<a id="af8afac7840d82e11e49e25dcd00565d4" name="af8afac7840d82e11e49e25dcd00565d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8afac7840d82e11e49e25dcd00565d4">&#9670;&nbsp;</a></span>processBoundaryConditions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DomainDecompBase::processBoundaryConditions </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classParticleContainer.html">ParticleContainer</a> *&#160;</td>
+          <td class="paramname"><em>moleculeContainer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>timestepLength</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Processes leaving particles according to the boundary coundition of the wall the particles would be leaving. </p>
+<p >Completely bypassed internally if ::hasGlobalNonPeriodicBoundary() is false Defers directly to <a class="el" href="classBoundaryHandler.html#ad288df4c7746689353f2ca6fc9dcc251" title="Processes all particles that would leave the global domain.">BoundaryHandler::processGlobalWallLeavingParticles()</a>, check there for more documentation. </p>
 
 </div>
 </div>
@@ -1835,7 +1950,103 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>DirectNeighbourCommu
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classDomainDecompMPIBase.html#a66ca8bb621af5d189cf1dc4b4aa4007a">DomainDecompMPIBase</a>, <a class="el" href="classDomainDecomposition.html#a4da5e28631b20b8a676caf624e315939">DomainDecomposition</a>, <a class="el" href="classGeneralDomainDecomposition.html#a0f897cb153078abce964e8c5167644d0">GeneralDomainDecomposition</a>, and <a class="el" href="classKDDecomposition.html#a3c5a774a7f6589e14855640391a04eae">KDDecomposition</a>.</p>
+<p>Reimplemented in <a class="el" href="classDomainDecompMPIBase.html#a66ca8bb621af5d189cf1dc4b4aa4007a">DomainDecompMPIBase</a>, <a class="el" href="classDomainDecomposition.html#a4da5e28631b20b8a676caf624e315939">DomainDecomposition</a>, <a class="el" href="classGeneralDomainDecomposition.html#a0f897cb153078abce964e8c5167644d0">GeneralDomainDecomposition</a>, <a class="el" href="classKDDecomposition.html#a3c5a774a7f6589e14855640391a04eae">KDDecomposition</a>, and <a class="el" href="classStaticIrregDomainDecomposition.html#a4675ccbd5fd2717ec35e14914ec02d0a">StaticIrregDomainDecomposition</a>.</p>
+
+</div>
+</div>
+<a id="ab301d5c89a3734ed86ff4f86fbdfd5cc" name="ab301d5c89a3734ed86ff4f86fbdfd5cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab301d5c89a3734ed86ff4f86fbdfd5cc">&#9670;&nbsp;</a></span>removeNonPeriodicHalos()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DomainDecompBase::removeNonPeriodicHalos </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classParticleContainer.html">ParticleContainer</a> *&#160;</td>
+          <td class="paramname"><em>moleculeContainer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Delete all halo particles outside global boundas that are non-periodic. </p>
+<p >Completely bypassed internally if ::hasGlobalNonPeriodicBoundary() is false Defers directly to <a class="el" href="classBoundaryHandler.html#a7ed4343167bf1081ceb41149829c56ca" title="Processes all halo particles outside the global domain.">BoundaryHandler::removeNonPeriodicHalos()</a>, check there for more documentation. </p>
+
+</div>
+</div>
+<a id="ae3a582d59a573924ba843b41df6e349b" name="ae3a582d59a573924ba843b41df6e349b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3a582d59a573924ba843b41df6e349b">&#9670;&nbsp;</a></span>setBoundsAndGlobalBoundaries()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DomainDecompBase::setBoundsAndGlobalBoundaries </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classDomain.html">Domain</a> *&#160;</td>
+          <td class="paramname"><em>domain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classEnsemble.html">Ensemble</a> *&#160;</td>
+          <td class="paramname"><em>ensemble</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets up the _boundaryHandler object, updating the global and local domain bounds, and triggering <a class="el" href="classBoundaryHandler.html#a7997a552c17276926886ed9e692bed8b" title="Determine which walls in the local region are actually global walls.">BoundaryHandler::updateGlobalWallLookupTable()</a> to refresh boundary conditions. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">domain</td><td><a class="el" href="classDomain.html" title="This class is used to read in the phasespace and to handle macroscopic values.">Domain</a> object to get the local bounding boxes </td></tr>
+    <tr><td class="paramname">ensemble</td><td><a class="el" href="classEnsemble.html" title="Base class for ensembles.">Ensemble</a> object to get the global bounding boxes </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3b77e7c36a02f908dcf5d5743aba495d" name="a3b77e7c36a02f908dcf5d5743aba495d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b77e7c36a02f908dcf5d5743aba495d">&#9670;&nbsp;</a></span>setGlobalBoundaryType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DomainDecompBase::setGlobalBoundaryType </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceDimensionUtils.html#a3918691c5189c0f99e4579860743c90c">DimensionUtils::DimensionType</a>&#160;</td>
+          <td class="paramname"><em>dimension</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceBoundaryUtils.html#a7fbe4213bf7d39c9f2e15bbe5f4371ca">BoundaryUtils::BoundaryType</a>&#160;</td>
+          <td class="paramname"><em>boundary</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the global boundary type for the _boundaryHandler object. </p>
+<p >Defers directly to <a class="el" href="classBoundaryHandler.html#a7ae8c45637a23647a8d4fc499d3bb52c" title="Set the boundary type of a global wall for a particular dimension.">BoundaryHandler::setGlobalWallType()</a>, check there for more documentation.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dimension</td><td>the dimension of interest, must be DimensionType enum member </td></tr>
+    <tr><td class="paramname">boundary</td><td>the type of the boundary, must be BoundaryType enum member </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1927,7 +2138,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>DirectNeighbourCommu
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 17 2023 14:01:52 for ls1-MarDyn by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+Generated on Wed Jan 29 2025 10:34:13 for ls1-MarDyn by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
 </small></address>
 </body>
 </html>
