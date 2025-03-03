@@ -143,9 +143,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>update_via_sliced_tra
 <tr class="memitem:a6f45705d09a93602c09ed48d6bb06313"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinkedCells.html#a6f45705d09a93602c09ed48d6bb06313">deleteOuterParticles</a> () override</td></tr>
 <tr class="memdesc:a6f45705d09a93602c09ed48d6bb06313"><td class="mdescLeft">&#160;</td><td class="mdescRight">delete all Particles which are not within the bounding box  <a href="classLinkedCells.html#a6f45705d09a93602c09ed48d6bb06313">More...</a><br /></td></tr>
 <tr class="separator:a6f45705d09a93602c09ed48d6bb06313"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5a2eb4ee63005ee220a6381c11fc570"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinkedCells.html#ae5a2eb4ee63005ee220a6381c11fc570">get_halo_L</a> (int index) const override</td></tr>
-<tr class="memdesc:ae5a2eb4ee63005ee220a6381c11fc570"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets the width of the halo region in dimension index  <a href="classLinkedCells.html#ae5a2eb4ee63005ee220a6381c11fc570">More...</a><br /></td></tr>
-<tr class="separator:ae5a2eb4ee63005ee220a6381c11fc570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4af1dd59eb5f01e544705646806a97e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinkedCells.html#ac4af1dd59eb5f01e544705646806a97e">getHaloWidthForDimension</a> (int index) const override</td></tr>
+<tr class="memdesc:ac4af1dd59eb5f01e544705646806a97e"><td class="mdescLeft">&#160;</td><td class="mdescRight">gets the width of the halo region in dimension index  <a href="classLinkedCells.html#ac4af1dd59eb5f01e544705646806a97e">More...</a><br /></td></tr>
+<tr class="separator:ac4af1dd59eb5f01e544705646806a97e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a783dcfb0a35b61626beb6f6155cfdb46"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinkedCells.html#a783dcfb0a35b61626beb6f6155cfdb46">getCutoff</a> () const override</td></tr>
 <tr class="separator:a783dcfb0a35b61626beb6f6155cfdb46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fbbede9c3cc20a146eb0510d2a4c8f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinkedCells.html#a6fbbede9c3cc20a146eb0510d2a4c8f7">setCutoff</a> (double rc) override</td></tr>
@@ -192,8 +192,8 @@ int *&#160;</td><td class="memItemRight" valign="bottom"><b>getBoxWidthInNumCell
 <tr class="separator:a36badcd4d76109db8982052afd687a03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23d1f907a9525b5fbcf707f4d49a4822"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinkedCells.html#a23d1f907a9525b5fbcf707f4d49a4822">requiresForceExchange</a> () const override</td></tr>
 <tr class="separator:a23d1f907a9525b5fbcf707f4d49a4822"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a471c16a915e70422f17122e057d547ab"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinkedCells.html#a471c16a915e70422f17122e057d547ab">initCubicGrid</a> (std::array&lt; unsigned long, 3 &gt; numMoleculesPerDimension, std::array&lt; double, 3 &gt; simBoxLength, size_t seed_offset) override</td></tr>
-<tr class="separator:a471c16a915e70422f17122e057d547ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d60d6a262f2456aced77d06c58c5b4f"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinkedCells.html#a2d60d6a262f2456aced77d06c58c5b4f">initCubicGrid</a> (std::array&lt; unsigned long, 3 &gt; numMoleculesPerDimension, std::array&lt; double, 3 &gt; simBoxLength) override</td></tr>
+<tr class="separator:a2d60d6a262f2456aced77d06c58c5b4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbfa13c1086a824515fbf11a99e43a74"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned long &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinkedCells.html#adbfa13c1086a824515fbf11a99e43a74">getParticleCellStatistics</a> () override</td></tr>
 <tr class="separator:adbfa13c1086a824515fbf11a99e43a74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1eff78ff0108f18dd1c97b024d5cb775"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLinkedCells.html#a1eff78ff0108f18dd1c97b024d5cb775">getConfigurationAsString</a> () override</td></tr>
@@ -535,37 +535,6 @@ But the corners of this class have to include the halo cells. </p><dl class="par
 
 </div>
 </div>
-<a id="ae5a2eb4ee63005ee220a6381c11fc570" name="ae5a2eb4ee63005ee220a6381c11fc570"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5a2eb4ee63005ee220a6381c11fc570">&#9670;&nbsp;</a></span>get_halo_L()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double LinkedCells::get_halo_L </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>index</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>gets the width of the halo region in dimension index </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000044">Todo:</a></b></dt><dd>remove this method, because a halo_L shouldn't be necessary for every <a class="el" href="classParticleContainer.html" title="This Interface is used to get access to particles and pairs of particles.">ParticleContainer</a> e.g. replace it by the cutoff-radius </dd></dl>
-
-<p>Implements <a class="el" href="classParticleContainer.html#a10d6b8f8418cd1ff98ed6bf42ca8dcaf">ParticleContainer</a>.</p>
-
-</div>
-</div>
 <a id="a2557bca31abc75e594216c351f7c4901" name="a2557bca31abc75e594216c351f7c4901"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2557bca31abc75e594216c351f7c4901">&#9670;&nbsp;</a></span>getCellIndexOfMolecule()</h2>
 
@@ -741,6 +710,37 @@ If the point is not inside the bounding box, an error is printed </p>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classParticleContainer.html">ParticleContainer</a>.</p>
+
+</div>
+</div>
+<a id="ac4af1dd59eb5f01e544705646806a97e" name="ac4af1dd59eb5f01e544705646806a97e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4af1dd59eb5f01e544705646806a97e">&#9670;&nbsp;</a></span>getHaloWidthForDimension()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double LinkedCells::getHaloWidthForDimension </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>gets the width of the halo region in dimension index </p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000044">Todo:</a></b></dt><dd>remove this method, because a halo_L shouldn't be necessary for every <a class="el" href="classParticleContainer.html" title="This Interface is used to get access to particles and pairs of particles.">ParticleContainer</a> e.g. replace it by the cutoff-radius </dd></dl>
+
+<p>Implements <a class="el" href="classParticleContainer.html#adbde2eaf6d2eba509118bfc45e2018ee">ParticleContainer</a>.</p>
 
 </div>
 </div>
@@ -928,8 +928,8 @@ If the point is not inside the bounding box, an error is printed </p>
 
 </div>
 </div>
-<a id="a471c16a915e70422f17122e057d547ab" name="a471c16a915e70422f17122e057d547ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a471c16a915e70422f17122e057d547ab">&#9670;&nbsp;</a></span>initCubicGrid()</h2>
+<a id="a2d60d6a262f2456aced77d06c58c5b4f" name="a2d60d6a262f2456aced77d06c58c5b4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d60d6a262f2456aced77d06c58c5b4f">&#9670;&nbsp;</a></span>initCubicGrid()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -947,13 +947,7 @@ If the point is not inside the bounding box, an error is printed </p>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::array&lt; double, 3 &gt;&#160;</td>
-          <td class="paramname"><em>simBoxLength</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>seed_offset</em>&#160;</td>
+          <td class="paramname"><em>simBoxLength</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -971,13 +965,12 @@ If the point is not inside the bounding box, an error is printed </p>
   <table class="params">
     <tr><td class="paramname">numMoleculesPerDimension</td><td></td></tr>
     <tr><td class="paramname">simBoxLength</td><td></td></tr>
-    <tr><td class="paramname">seed_offset</td><td></td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
-<p>Implements <a class="el" href="classParticleContainer.html#a8039569759a8b57164b836d04797736d">ParticleContainer</a>.</p>
+<p>Implements <a class="el" href="classParticleContainer.html#adf67c905609452063f29a1441f41a916">ParticleContainer</a>.</p>
 
 </div>
 </div>
@@ -1473,7 +1466,7 @@ Only forces on the Molecules which are in the inner and boundary region have to 
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jan 29 2025 10:34:14 for ls1-MarDyn by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+Generated on Mon Mar 3 2025 12:32:37 for ls1-MarDyn by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
 </small></address>
 </body>
 </html>
