@@ -206,6 +206,8 @@ void TimerProfiler::readInitialTimersFromFile(std::string fileName){
 		std::make_tuple("SIMULATION_MPI_OMP_COMMUNICATION", std::vector<std::string>{"SIMULATION_DECOMPOSITION"}, true),
 		std::make_tuple("SIMULATION_UPDATE_CACHES", std::vector<std::string>{"SIMULATION_DECOMPOSITION"}, true),
 		std::make_tuple("SIMULATION_FORCE_CALCULATION", std::vector<std::string>{"SIMULATION_COMPUTATION"}, true),
+		std::make_tuple("SIMULATION_TRAVERSAL", std::vector<std::string>{"SIMULATION_FORCE_CALCULATION"}, true),
+		std::make_tuple("SIMULATION_LRC", std::vector<std::string>{"SIMULATION_FORCE_CALCULATION"}, true),
 		std::make_tuple("COMMUNICATION_PARTNER_INIT_SEND", std::vector<std::string>{"COMMUNICATION_PARTNER", "SIMULATION_MPI_OMP_COMMUNICATION"}, true),
 		std::make_tuple("COMMUNICATION_PARTNER_TEST_RECV", std::vector<std::string>{"COMMUNICATION_PARTNER", "SIMULATION_MPI_OMP_COMMUNICATION"}, true),
 		std::make_tuple("UNIFORM_PSEUDO_PARTICLE_CONTAINER_PROCESS_CELLS", std::vector<std::string>{"UNIFORM_PSEUDO_PARTICLE_CONTAINER"}, true),

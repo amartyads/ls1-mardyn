@@ -1158,7 +1158,9 @@ void Simulation::simulateOneTimestep()
 		global_simulation->timers()->start("SIMULATION_COMPUTATION");
 		global_simulation->timers()->start("SIMULATION_FORCE_CALCULATION");
 
+		global_simulation->timers()->start("SIMULATION_TRAVERSAL");
 		_moleculeContainer->traverseCells(*_cellProcessor);
+		global_simulation->timers()->stop("SIMULATION_TRAVERSAL");
 		// Force timer and computation timer are running at this point!
 	}
 
@@ -1172,7 +1174,9 @@ void Simulation::simulateOneTimestep()
 		}
 
 	// longRangeCorrection is a site-wise force plugin, so we have to call it before updateForces()
+	global_simulation->timers()->start("SIMULATION_LRC");
 	_longRangeCorrection->calculateLongRange();
+	global_simulation->timers()->stop("SIMULATION_LRC");
 
 	// Update forces in molecules so they can be exchanged
 	updateForces();
