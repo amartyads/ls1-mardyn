@@ -1045,6 +1045,8 @@ void Simulation::preSimLoopSteps()
 	global_simulation->timers()->setOutputString("COMMUNICATION_PARTNER_INIT_SEND", "initSend() took:");
 	global_simulation->timers()->setOutputString("COMMUNICATION_PARTNER_TEST_RECV", "testRecv() took:");
 	global_simulation->timers()->setOutputString("SIMULATION_BOUNDARY_TREATMENT", "Enforcing boundary conditions took:");
+	global_simulation->timers()->setOutputString("SIMULATION_LRC", "LRC took:");
+	global_simulation->timers()->setOutputString("SIMULATION_TRAVERSAL", "Traversal took:");
 
 	// all timers except the ioTimer measure inside the main loop
 
