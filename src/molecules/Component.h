@@ -95,6 +95,8 @@ public:
 	/** functions to fix the LJTS after rc is read in the simulation*/
 	void updateAllLJcentersShift(double rc);
 
+	void updateAllCutoffs(double rc);
+
 	/** delete the last site stored in the vector -- these are used by the external generators*/
 	void deleteLJCenter() { _ljcenters.pop_back() ;}
 	void deleteCharge() { _charges.pop_back() ;}

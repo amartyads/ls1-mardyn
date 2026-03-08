@@ -134,6 +134,27 @@ void Component::updateAllLJcentersShift(double rc) {
 	}
 }
 
+void Component::updateAllCutoffs(double rc) {
+	for(LJcenter &ljcenter : _ljcenters) {
+		switch (ljcenter.cutoffType()) {
+		case LJcenter::CutoffType::GLOBAL: {
+			ljcenter.setCutoff(rc);
+			break;
+		}
+		case LJcenter::CutoffType::RELTOGLOBAL: {
+			ljcenter.setCutoff(ljcenter.cutoff() * rc);
+			break;
+		}
+		case LJcenter::CutoffType::ABSOLUTE:
+			// already set through XML
+			break;
+		default: // should never be reached
+			MARDYN_EXIT("Illegal cutoff type!");
+			break;
+		}
+	}
+}
+
 void Component::updateMassInertia() {
 	_m = 0;
 	for (int i = 0; i < 6; i++) {

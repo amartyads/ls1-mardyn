@@ -160,6 +160,8 @@ public:
 	double sigma() const { return _sigma; }  /**< get interaction diameter */
 	double shift6() const { return _uLJshift6; }  /**< get energy shift of interaction potential */
 	bool shiftRequested() const { return _shiftRequested; } /**< get the shift request value */
+	double cutoff() const { return _cutoff; }
+	CutoffType cutoffType() const { return _cutoffType; }
 
 	/** set the interaction strength */
 	void setEps(double epsilon) { _epsilon = epsilon; }
@@ -167,6 +169,10 @@ public:
 	void setSigma(double sigma) { _sigma = sigma; }
 	/** set the energy shift of the interaction potential */
 	void setULJShift6(double uLJshift6) { _uLJshift6 = uLJshift6; }
+
+	void setCutoff(double cutoff) { _cutoff = cutoff; }
+
+	void setCutoffType(CutoffType cutoffType) { _cutoffType = cutoffType; }
 
 
 private:
