@@ -97,9 +97,10 @@ protected:
  */
 class LJcenter : public Site {
 public:
-	enum CutoffType { GLOBAL, SCALEDTOGLOBAL, ABSOLUTE };
+	enum CutoffType { GLOBAL, RELTOGLOBAL, ABSOLUTE };
 	/** @brief Constructor */
-	LJcenter(): Site(0., 0., 0., 0.), _epsilon(0.), _sigma(0.), _uLJshift6(0.), _shiftRequested(false) {}
+	LJcenter(): Site(0., 0., 0., 0.), _epsilon(0.), _sigma(0.), _uLJshift6(0.), _shiftRequested(false),
+	_cutoff(0), _cutoffType(CutoffType::GLOBAL) {}
 	/** @brief Constructor
 	 * \param[in] x        relative x coordinate
 	 * \param[in] y        relative y coordinate
@@ -110,7 +111,8 @@ public:
 	 * \param[in] shift    0. for full LJ potential
 	 */
 	LJcenter(double x, double y, double z, double m, double epsilon, double sigma, double shift)
-		: Site(x, y, z, m), _epsilon(epsilon), _sigma(sigma), _uLJshift6(shift), _shiftRequested(false) {}
+		: Site(x, y, z, m), _epsilon(epsilon), _sigma(sigma), _uLJshift6(shift), _shiftRequested(false),
+		_cutoff(0), _cutoffType(CutoffType::GLOBAL) {}
 
 	/** @brief Read in XML configuration for a LJcenter and all its included objects.
 	 *
@@ -130,7 +132,22 @@ public:
 		xmlconfig.getNodeValueReduced("epsilon", _epsilon);
 		xmlconfig.getNodeValueReduced("sigma", _sigma);
 		xmlconfig.getNodeValue("shifted", _shiftRequested);
-		Log::global_log->info() << "Site parameters: epsilon = " << _epsilon << ", sigma: " << _sigma << ", shifted: " << _shiftRequested << std::endl;
+		std::string temp;
+		xmlconfig.getNodeValue("cutoff@type", temp);
+		if (temp == "" || temp == "global") {
+			_cutoffType = CutoffType::GLOBAL;
+		}
+		else if (temp == "relToGlobal" || temp == "absolute") {
+			xmlconfig.getNodeValueReduced("cutoff", _cutoff);
+			if (temp == "relToGlobal")
+				_cutoffType = CutoffType::RELTOGLOBAL;
+			else
+				_cutoffType = CutoffType::ABSOLUTE;
+		}
+		else
+			MARDYN_EXIT("Illegal cutoff type!");
+		Log::global_log->info() << "Site parameters: epsilon = " << _epsilon << ", sigma: " << _sigma << ", shifted: " << _shiftRequested 
+		<< ", cutoff type: " << temp << ", cutoff: " << _cutoff << std::endl;
 	}
 
 	/// write to stream
