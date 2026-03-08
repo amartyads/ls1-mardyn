@@ -97,6 +97,7 @@ protected:
  */
 class LJcenter : public Site {
 public:
+	enum CutoffType { GLOBAL, SCALEDTOGLOBAL, ABSOLUTE };
 	/** @brief Constructor */
 	LJcenter(): Site(0., 0., 0., 0.), _epsilon(0.), _sigma(0.), _uLJshift6(0.), _shiftRequested(false) {}
 	/** @brief Constructor
@@ -156,6 +157,8 @@ private:
 	double _sigma;  /**< interaction diameter */
 	double _uLJshift6; /**< energy shift of the interaction potential, used to implement the LJ truncated and shifted (LJTS) potential */
 	bool _shiftRequested; /***< whether the LJTS potential shift needs to be calculated or not */
+	double _cutoff;
+	CutoffType _cutoffType;
 };
 
 /** @brief Charge center
