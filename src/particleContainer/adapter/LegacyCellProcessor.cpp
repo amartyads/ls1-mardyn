@@ -35,6 +35,7 @@ double LegacyCellProcessor::processSingleMolecule(Molecule* m1, ParticleCell& ce
 
 	int neighbourParticleCount = cell2.getMoleculeCount();
 	double u = 0.0;
+	double cutoff1 = m1->component()->ljcenter(0).cutoff();
 
 	auto begin2 = cell2.iterator();
 
@@ -44,10 +45,9 @@ double LegacyCellProcessor::processSingleMolecule(Molecule* m1, ParticleCell& ce
 		double dd = molecule2.dist2(*m1, distanceVector);
 		bool doComp = false;
 		if (m1->component()->numLJcenters() == 1 && molecule2.component()->numLJcenters() == 1) {
-			double cutoff1 = m1->component()->ljcenter(0).cutoff();
 			double cutoff2 = molecule2.component()->ljcenter(0).cutoff();
 			double avgCutoff = (cutoff1 + cutoff2) / 2;
-			if (dd <   avgCutoff*avgCutoff) {
+			if (dd < avgCutoff*avgCutoff) {
 				doComp = true;
 			}
 		}
@@ -71,16 +71,16 @@ void LegacyCellProcessor::processCellPair(ParticleCell& cell1, ParticleCell& cel
 		// loop over all particles in the cell
 		for (auto it1 = begin1; it1.isValid(); ++it1) {
 			Molecule& molecule1 = *it1;
+			double cutoff1 = molecule1.component()->ljcenter(0).cutoff();
 			for (auto it2 = begin2; it2.isValid(); ++it2) {
 				Molecule& molecule2 = *it2;
 				if(molecule1.getID() == molecule2.getID()) continue;  // for grand canonical ensemble and traversal of pseudocells
 				double dd = molecule2.dist2(molecule1, distanceVector);
 				bool doComp = false;
 				if (molecule1.component()->numLJcenters() == 1 && molecule2.component()->numLJcenters() == 1) {
-					double cutoff1 = molecule1.component()->ljcenter(0).cutoff();
 					double cutoff2 = molecule2.component()->ljcenter(0).cutoff();
 					double avgCutoff = (cutoff1 + cutoff2) / 2;
-					if (dd <   avgCutoff*avgCutoff) {
+					if (dd < avgCutoff*avgCutoff) {
 						doComp = true;
 					}
 				}
@@ -97,6 +97,7 @@ void LegacyCellProcessor::processCellPair(ParticleCell& cell1, ParticleCell& cel
 
 			for (auto it1 = begin1; it1.isValid(); ++it1) {
 				Molecule& molecule1 = *it1;
+				double cutoff1 = molecule1.component()->ljcenter(0).cutoff();
 
 				for (auto it2 = begin2; it2.isValid(); ++it2) {
 					Molecule& molecule2 = *it2;
@@ -105,10 +106,9 @@ void LegacyCellProcessor::processCellPair(ParticleCell& cell1, ParticleCell& cel
 					double dd = molecule2.dist2(molecule1, distanceVector);
 					bool doComp = false;
 					if (molecule1.component()->numLJcenters() == 1 && molecule2.component()->numLJcenters() == 1) {
-						double cutoff1 = molecule1.component()->ljcenter(0).cutoff();
 						double cutoff2 = molecule2.component()->ljcenter(0).cutoff();
 						double avgCutoff = (cutoff1 + cutoff2) / 2;
-						if (dd <   avgCutoff*avgCutoff) {
+						if (dd < avgCutoff*avgCutoff) {
 							doComp = true;
 						}
 					}
@@ -131,15 +131,15 @@ void LegacyCellProcessor::processCellPair(ParticleCell& cell1, ParticleCell& cel
 
 			for (auto it1 = begin1; it1.isValid(); ++it1) {
 				Molecule& molecule1 = *it1;
+				double cutoff1 = molecule1.component()->ljcenter(0).cutoff();
 				for (auto it2 = begin2; it2.isValid(); ++it2) {
 					Molecule& molecule2 = *it2;
 					double dd = molecule2.dist2(molecule1, distanceVector);
 					bool doComp = false;
 					if (molecule1.component()->numLJcenters() == 1 && molecule2.component()->numLJcenters() == 1) {
-						double cutoff1 = molecule1.component()->ljcenter(0).cutoff();
 						double cutoff2 = molecule2.component()->ljcenter(0).cutoff();
 						double avgCutoff = (cutoff1 + cutoff2) / 2;
-						if (dd <   avgCutoff*avgCutoff) {
+						if (dd < avgCutoff*avgCutoff) {
 							doComp = true;
 						}
 					}
@@ -168,6 +168,7 @@ void LegacyCellProcessor::processCell(ParticleCell& cell) {
 
 		for (auto it1 = begin; it1.isValid(); ++it1) {
 			Molecule& molecule1 = *it1;
+			double cutoff1 = molecule1.component()->ljcenter(0).cutoff();
 
 			auto it2 = it1;
 			++it2;
@@ -178,7 +179,6 @@ void LegacyCellProcessor::processCell(ParticleCell& cell) {
 				double dd = molecule2.dist2(molecule1, distanceVector);
 				bool doComp = false;
 				if (molecule1.component()->numLJcenters() == 1 && molecule2.component()->numLJcenters() == 1) {
-					double cutoff1 = molecule1.component()->ljcenter(0).cutoff();
 					double cutoff2 = molecule2.component()->ljcenter(0).cutoff();
 					double avgCutoff = (cutoff1 + cutoff2) / 2;
 					if (dd <   avgCutoff*avgCutoff) {
