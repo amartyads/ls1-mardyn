@@ -133,8 +133,8 @@ void Component::updateAllLJCutoffsAndShifts(double rc) {
 				ljcenter.setCutoff(rc);
 				break;
 			}
-			case LJcenter::CutoffType::RELTOGLOBAL: {
-				ljcenter.setCutoff(ljcenter.cutoff() * rc);
+			case LJcenter::CutoffType::RELATIVE: {
+				ljcenter.setCutoff(ljcenter.cutoff() * ljcenter.sigma());
 				break;
 			}
 			case LJcenter::CutoffType::ABSOLUTE:
@@ -143,6 +143,9 @@ void Component::updateAllLJCutoffsAndShifts(double rc) {
 			default: // should never be reached
 				MARDYN_EXIT("Illegal cutoff type!");
 				break;
+		}
+		if (ljcenter.cutoff() > rc) {
+			MARDYN_EXIT("LJ site has greater cutoff than global cutoff!");
 		}
 		if (ljcenter.shiftRequested()) {
 			ljcenter.setULJShift6(calculateLJshift(ljcenter.eps(), ljcenter.sigma(), ljcenter.cutoff()));

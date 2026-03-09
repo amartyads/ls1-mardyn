@@ -97,7 +97,7 @@ protected:
  */
 class LJcenter : public Site {
 public:
-	enum CutoffType { GLOBAL, RELTOGLOBAL, ABSOLUTE };
+	enum CutoffType { GLOBAL, RELATIVE, ABSOLUTE };
 	/** @brief Constructor */
 	LJcenter(): Site(0., 0., 0., 0.), _epsilon(0.), _sigma(0.), _uLJshift6(0.), _shiftRequested(false),
 	_cutoff(0), _cutoffType(CutoffType::GLOBAL) {}
@@ -137,10 +137,10 @@ public:
 		if (temp == "" || temp == "global") {
 			_cutoffType = CutoffType::GLOBAL;
 		}
-		else if (temp == "relToGlobal" || temp == "absolute") {
+		else if (temp == "relative" || temp == "absolute") {
 			xmlconfig.getNodeValueReduced("cutoff", _cutoff);
-			if (temp == "relToGlobal")
-				_cutoffType = CutoffType::RELTOGLOBAL;
+			if (temp == "relative")
+				_cutoffType = CutoffType::RELATIVE;
 			else
 				_cutoffType = CutoffType::ABSOLUTE;
 		}
