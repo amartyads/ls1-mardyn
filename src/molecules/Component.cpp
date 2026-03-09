@@ -127,24 +127,24 @@ void Component::addLJcenter(LJcenter& ljsite) {
 }
 
 void Component::updateAllLJCutoffsAndShifts(double rc) {
-	for(LJcenter &ljcenter : _ljcenters) {
+	for (LJcenter &ljcenter : _ljcenters) {
 		switch (ljcenter.cutoffType()) {
-		case LJcenter::CutoffType::GLOBAL: {
-			ljcenter.setCutoff(rc);
-			break;
+			case LJcenter::CutoffType::GLOBAL: {
+				ljcenter.setCutoff(rc);
+				break;
+			}
+			case LJcenter::CutoffType::RELTOGLOBAL: {
+				ljcenter.setCutoff(ljcenter.cutoff() * rc);
+				break;
+			}
+			case LJcenter::CutoffType::ABSOLUTE:
+				// already set through XML
+				break;
+			default: // should never be reached
+				MARDYN_EXIT("Illegal cutoff type!");
+				break;
 		}
-		case LJcenter::CutoffType::RELTOGLOBAL: {
-			ljcenter.setCutoff(ljcenter.cutoff() * rc);
-			break;
-		}
-		case LJcenter::CutoffType::ABSOLUTE:
-			// already set through XML
-			break;
-		default: // should never be reached
-			MARDYN_EXIT("Illegal cutoff type!");
-			break;
-		}
-		if(ljcenter.shiftRequested()) {
+		if (ljcenter.shiftRequested()) {
 			ljcenter.setULJShift6(calculateLJshift(ljcenter.eps(), ljcenter.sigma(), ljcenter.cutoff()));
 		}
 	}
