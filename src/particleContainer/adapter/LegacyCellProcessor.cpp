@@ -42,7 +42,16 @@ double LegacyCellProcessor::processSingleMolecule(Molecule* m1, ParticleCell& ce
 		Molecule& molecule2 = *it2;
 		if(m1->getID() == molecule2.getID()) continue;
 		double dd = molecule2.dist2(*m1, distanceVector);
-		if (dd < _cutoffRadiusSquare)
+		bool doComp = false;
+		if (m1->component()->numLJcenters() == 1 && molecule2.component()->numLJcenters() == 1) {
+			double cutoff1 = m1->component()->ljcenter(0).cutoff();
+			double cutoff2 = molecule2.component()->ljcenter(0).cutoff();
+			double avgCutoff = (cutoff1 + cutoff2) / 2;
+			if (dd <   avgCutoff*avgCutoff) {
+				doComp = true;
+			}
+		}
+		if (dd < _cutoffRadiusSquare || doComp)
 		{
 			PairType pairType = MOLECULE_MOLECULE_FLUID;
 			u += _particlePairsHandler->processPair(*m1, molecule2, distanceVector, pairType, dd, (dd < _LJCutoffRadiusSquare));
@@ -66,7 +75,16 @@ void LegacyCellProcessor::processCellPair(ParticleCell& cell1, ParticleCell& cel
 				Molecule& molecule2 = *it2;
 				if(molecule1.getID() == molecule2.getID()) continue;  // for grand canonical ensemble and traversal of pseudocells
 				double dd = molecule2.dist2(molecule1, distanceVector);
-				if (dd < _cutoffRadiusSquare) {
+				bool doComp = false;
+				if (molecule1.component()->numLJcenters() == 1 && molecule2.component()->numLJcenters() == 1) {
+					double cutoff1 = molecule1.component()->ljcenter(0).cutoff();
+					double cutoff2 = molecule2.component()->ljcenter(0).cutoff();
+					double avgCutoff = (cutoff1 + cutoff2) / 2;
+					if (dd <   avgCutoff*avgCutoff) {
+						doComp = true;
+					}
+				}
+				if (dd < _cutoffRadiusSquare || doComp) {
 					_particlePairsHandler->processPair(molecule1, molecule2, distanceVector, MOLECULE_MOLECULE, dd, (dd < _LJCutoffRadiusSquare));
 				}
 			}
@@ -85,7 +103,16 @@ void LegacyCellProcessor::processCellPair(ParticleCell& cell1, ParticleCell& cel
 
 					if(molecule1.getID() == molecule2.getID()) continue;  // for grand canonical ensemble and traversal of pseudocells
 					double dd = molecule2.dist2(molecule1, distanceVector);
-					if (dd < _cutoffRadiusSquare) {
+					bool doComp = false;
+					if (molecule1.component()->numLJcenters() == 1 && molecule2.component()->numLJcenters() == 1) {
+						double cutoff1 = molecule1.component()->ljcenter(0).cutoff();
+						double cutoff2 = molecule2.component()->ljcenter(0).cutoff();
+						double avgCutoff = (cutoff1 + cutoff2) / 2;
+						if (dd <   avgCutoff*avgCutoff) {
+							doComp = true;
+						}
+					}
+					if (dd < _cutoffRadiusSquare || doComp) {
 						_particlePairsHandler->processPair(molecule1, molecule2, distanceVector, MOLECULE_MOLECULE, dd, (dd < _LJCutoffRadiusSquare));
 					}
 				}
@@ -107,7 +134,16 @@ void LegacyCellProcessor::processCellPair(ParticleCell& cell1, ParticleCell& cel
 				for (auto it2 = begin2; it2.isValid(); ++it2) {
 					Molecule& molecule2 = *it2;
 					double dd = molecule2.dist2(molecule1, distanceVector);
-					if (dd < _cutoffRadiusSquare) {
+					bool doComp = false;
+					if (molecule1.component()->numLJcenters() == 1 && molecule2.component()->numLJcenters() == 1) {
+						double cutoff1 = molecule1.component()->ljcenter(0).cutoff();
+						double cutoff2 = molecule2.component()->ljcenter(0).cutoff();
+						double avgCutoff = (cutoff1 + cutoff2) / 2;
+						if (dd <   avgCutoff*avgCutoff) {
+							doComp = true;
+						}
+					}
+					if (dd < _cutoffRadiusSquare || doComp) {
 						_particlePairsHandler->processPair(molecule1, molecule2, distanceVector, pairType, dd, (dd < _LJCutoffRadiusSquare));
 					}
 				}
@@ -140,8 +176,17 @@ void LegacyCellProcessor::processCell(ParticleCell& cell) {
 
 				mardyn_assert(&molecule1 != &molecule2);
 				double dd = molecule2.dist2(molecule1, distanceVector);
+				bool doComp = false;
+				if (molecule1.component()->numLJcenters() == 1 && molecule2.component()->numLJcenters() == 1) {
+					double cutoff1 = molecule1.component()->ljcenter(0).cutoff();
+					double cutoff2 = molecule2.component()->ljcenter(0).cutoff();
+					double avgCutoff = (cutoff1 + cutoff2) / 2;
+					if (dd <   avgCutoff*avgCutoff) {
+						doComp = true;
+					}
+				}
 
-				if (dd < _cutoffRadiusSquare) {
+				if (dd < _cutoffRadiusSquare || doComp) {
 					_particlePairsHandler->processPair(molecule1, molecule2, distanceVector, MOLECULE_MOLECULE, dd, (dd < _LJCutoffRadiusSquare));
 				}
 			}
