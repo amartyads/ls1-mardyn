@@ -259,8 +259,7 @@ void Simulation::readXML(XMLfileUnits& xmlconfig) {
 			if(xmlconfig.getNodeValueReduced("radiusLJ", _LJCutoffRadius)) {
 				Log::global_log->info() << "dimensionless LJ cutoff radius:\t" << _LJCutoffRadius << std::endl;
 				for(auto &component: *(_ensemble->getComponents())) {
-					component.updateAllLJcentersShift(_LJCutoffRadius);
-					component.updateAllCutoffs(_LJCutoffRadius);
+					component.updateAllLJCutoffsAndShifts(_LJCutoffRadius);
 				}
 			}
 			/** @todo introduce maxCutoffRadius here for datastructures, ...

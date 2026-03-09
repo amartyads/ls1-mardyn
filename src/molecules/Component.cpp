@@ -126,15 +126,7 @@ void Component::addLJcenter(LJcenter& ljsite) {
 	updateMassInertia(ljsite);
 }
 
-void Component::updateAllLJcentersShift(double rc) {
-	for(LJcenter &ljcenter : _ljcenters) {
-		if(ljcenter.shiftRequested()) {
-			ljcenter.setULJShift6(calculateLJshift(ljcenter.eps(), ljcenter.sigma(), rc));
-		}
-	}
-}
-
-void Component::updateAllCutoffs(double rc) {
+void Component::updateAllLJCutoffsAndShifts(double rc) {
 	for(LJcenter &ljcenter : _ljcenters) {
 		switch (ljcenter.cutoffType()) {
 		case LJcenter::CutoffType::GLOBAL: {
@@ -151,6 +143,9 @@ void Component::updateAllCutoffs(double rc) {
 		default: // should never be reached
 			MARDYN_EXIT("Illegal cutoff type!");
 			break;
+		}
+		if(ljcenter.shiftRequested()) {
+			ljcenter.setULJShift6(calculateLJshift(ljcenter.eps(), ljcenter.sigma(), ljcenter.cutoff()));
 		}
 	}
 }
