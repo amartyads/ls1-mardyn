@@ -50,8 +50,10 @@ double LegacyCellProcessor::processSingleMolecule(Molecule* m1, ParticleCell& ce
 			if (dd < avgCutoff*avgCutoff) {
 				doComp = true;
 			}
+		} else {
+			doComp = dd < _cutoffRadiusSquare;
 		}
-		if (dd < _cutoffRadiusSquare || doComp)
+		if (doComp)
 		{
 			PairType pairType = MOLECULE_MOLECULE_FLUID;
 			u += _particlePairsHandler->processPair(*m1, molecule2, distanceVector, pairType, dd, (dd < _LJCutoffRadiusSquare));
@@ -83,8 +85,10 @@ void LegacyCellProcessor::processCellPair(ParticleCell& cell1, ParticleCell& cel
 					if (dd < avgCutoff*avgCutoff) {
 						doComp = true;
 					}
+				} else {
+					doComp = dd < _cutoffRadiusSquare;
 				}
-				if (dd < _cutoffRadiusSquare || doComp) {
+				if (doComp) {
 					_particlePairsHandler->processPair(molecule1, molecule2, distanceVector, MOLECULE_MOLECULE, dd, (dd < _LJCutoffRadiusSquare));
 				}
 			}
@@ -101,7 +105,6 @@ void LegacyCellProcessor::processCellPair(ParticleCell& cell1, ParticleCell& cel
 
 				for (auto it2 = begin2; it2.isValid(); ++it2) {
 					Molecule& molecule2 = *it2;
-
 					if(molecule1.getID() == molecule2.getID()) continue;  // for grand canonical ensemble and traversal of pseudocells
 					double dd = molecule2.dist2(molecule1, distanceVector);
 					bool doComp = false;
@@ -111,8 +114,10 @@ void LegacyCellProcessor::processCellPair(ParticleCell& cell1, ParticleCell& cel
 						if (dd < avgCutoff*avgCutoff) {
 							doComp = true;
 						}
+					} else {
+						doComp = dd < _cutoffRadiusSquare;
 					}
-					if (dd < _cutoffRadiusSquare || doComp) {
+					if (doComp) {
 						_particlePairsHandler->processPair(molecule1, molecule2, distanceVector, MOLECULE_MOLECULE, dd, (dd < _LJCutoffRadiusSquare));
 					}
 				}
@@ -142,8 +147,10 @@ void LegacyCellProcessor::processCellPair(ParticleCell& cell1, ParticleCell& cel
 						if (dd < avgCutoff*avgCutoff) {
 							doComp = true;
 						}
+					} else {
+						doComp = dd < _cutoffRadiusSquare;
 					}
-					if (dd < _cutoffRadiusSquare || doComp) {
+					if (doComp) {
 						_particlePairsHandler->processPair(molecule1, molecule2, distanceVector, pairType, dd, (dd < _LJCutoffRadiusSquare));
 					}
 				}
@@ -174,7 +181,6 @@ void LegacyCellProcessor::processCell(ParticleCell& cell) {
 			++it2;
 			for (; it2.isValid(); ++it2) {
 				Molecule& molecule2 = *it2;
-
 				mardyn_assert(&molecule1 != &molecule2);
 				double dd = molecule2.dist2(molecule1, distanceVector);
 				bool doComp = false;
@@ -184,9 +190,10 @@ void LegacyCellProcessor::processCell(ParticleCell& cell) {
 					if (dd <   avgCutoff*avgCutoff) {
 						doComp = true;
 					}
+				} else {
+					doComp = dd < _cutoffRadiusSquare;
 				}
-
-				if (dd < _cutoffRadiusSquare || doComp) {
+				if (doComp) {
 					_particlePairsHandler->processPair(molecule1, molecule2, distanceVector, MOLECULE_MOLECULE, dd, (dd < _LJCutoffRadiusSquare));
 				}
 			}
