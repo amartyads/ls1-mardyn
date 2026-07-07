@@ -9,7 +9,7 @@
 #include "utils/mardyn_assert.h"
 
 void ProfileBase::writeMatrix (std::ofstream& outfile) {
-	if (_samplInfo.cylinder) {
+	if (_samplInfo.coordSystem == CoordSystem::CYLINDRICAL) {
 		writeCylMatrix(outfile);
 	} else {
 		writeKartMatrix(outfile);

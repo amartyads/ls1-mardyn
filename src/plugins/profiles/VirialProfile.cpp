@@ -31,7 +31,7 @@ void VirialProfile::output(std::string prefix, long unsigned accumulatedDatasets
 	unsigned long unID;
 	double layerVolume;
 	double layerHeight = _samplInfo.globalLength[1] / _samplInfo.universalProfileUnit[1];
-	if (_samplInfo.cylinder) {
+	if (_samplInfo.coordSystem == CoordSystem::CYLINDRICAL) {
 		// V = height * PI * R^2
 		// Get max radius of the cylinder inside the box domain
 		double radius = _samplInfo.globalLength[0]/2;
@@ -60,7 +60,7 @@ void VirialProfile::output(std::string prefix, long unsigned accumulatedDatasets
 		// b: z in cart / phi in cyl
 		for (unsigned a = 0; a < _samplInfo.universalProfileUnit[0]; a++) {
 			for (unsigned b = 0; b < _samplInfo.universalProfileUnit[2]; b++) {
-				if (_samplInfo.cylinder) {
+				if (_samplInfo.coordSystem == CoordSystem::CYLINDRICAL) {
 					// CRUCIAL:
 					// Do not change unID calculation. Has to be the same as in SpatialProfile.cpp
 					// VirialProfile overwrites the default output routine of ProfileBase, so has to calculate unID on its own

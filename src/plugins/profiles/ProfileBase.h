@@ -10,6 +10,12 @@
 
 class SpatialProfile;
 
+enum class CoordSystem {
+	CARTESIAN,
+	CYLINDRICAL,
+	SPHERICAL
+};
+
 struct SamplingInformation {
 	double universalInvProfileUnit[3]; // Inv. Bin Sizes
 	double universalProfileUnit[3]; // Bin Sizes
@@ -18,7 +24,7 @@ struct SamplingInformation {
 	double universalCentre[3]; // Centre coords for cylinder system
 	unsigned long globalNumMolecules; // number of molecules in system
 	unsigned long numMolFixRegion; // number of molecules in Fix Region
-	bool cylinder; // Cartesian or Cylinder output
+	CoordSystem coordSystem; // Cartesian or Cylinder output
 };
 
 /** @brief Base class for all Profile outputs used by KartesianProfile.

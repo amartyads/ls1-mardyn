@@ -38,12 +38,12 @@ void SpatialProfile::readXML(XMLfileUnits& xmlconfig) {
 		xmlconfig.getNodeValue("r", samplInfo.universalProfileUnit[0]);
 		xmlconfig.getNodeValue("h", samplInfo.universalProfileUnit[1]);
 		xmlconfig.getNodeValue("phi", samplInfo.universalProfileUnit[2]);
-		samplInfo.cylinder = true;
+		samplInfo.coordSystem = CoordSystem::CYLINDRICAL;
 	} else if (_mode == "cartesian") {
 		xmlconfig.getNodeValue("x", samplInfo.universalProfileUnit[0]);
 		xmlconfig.getNodeValue("y", samplInfo.universalProfileUnit[1]);
 		xmlconfig.getNodeValue("z", samplInfo.universalProfileUnit[2]);
-		samplInfo.cylinder = false;
+		samplInfo.coordSystem = CoordSystem::CARTESIAN;
 	} else {
 		std::ostringstream error_message;
 		error_message << "[SpatialProfile] Invalid mode. cylinder/cartesian" << std::endl;
@@ -161,7 +161,7 @@ void SpatialProfile::init(ParticleContainer* particleContainer, DomainDecompBase
 	Log::global_log->info() << "getDomain was called with Molecules in Fix Region: " << samplInfo.numMolFixRegion << std::endl;
 
 	// Calculate sampling units
-	if (samplInfo.cylinder) {
+	if (samplInfo.coordSystem == CoordSystem::CYLINDRICAL) {
 		double minXZ = this->samplInfo.globalLength[0];
 		if (this->samplInfo.globalLength[2] < minXZ) {
 			minXZ = this->samplInfo.globalLength[2];
@@ -194,7 +194,7 @@ void SpatialProfile::init(ParticleContainer* particleContainer, DomainDecompBase
 	Log::global_log->info() << "[SpatialProfile] number uID " << _uIDs << "\n";
 
 	// Calculate bin Volume
-	if (samplInfo.cylinder) {
+	if (samplInfo.coordSystem == CoordSystem::CYLINDRICAL) {
 		// When linearly sampling in R^2 domain -> Slice size stays constant with V = PI * (R_max^2 / nR) * (H / nH) * (1 / nPhi)
 		samplInfo.segmentVolume = M_PI / (this->samplInfo.universalInvProfileUnit[0] *
 										  this->samplInfo.universalInvProfileUnit[1] *
@@ -245,7 +245,7 @@ void SpatialProfile::endStep(ParticleContainer* particleContainer, DomainDecompB
 			if ((_profiledCompString != "all") && (thismol->componentid() == _profiledComp-1)) {
 
 				// Get uID
-				if (samplInfo.cylinder) {
+				if (samplInfo.coordSystem == CoordSystem::CYLINDRICAL) {
 					uID = getCylUID(thismol);
 					if (uID == -1) {
 						// Invalid uID -> Molecule not in cylinder -> continue
@@ -263,7 +263,7 @@ void SpatialProfile::endStep(ParticleContainer* particleContainer, DomainDecompB
 			if (_profiledCompString == "all"){
 
 				// Get uID
-				if (samplInfo.cylinder) {
+				if (samplInfo.coordSystem == CoordSystem::CYLINDRICAL) {
 					uID = getCylUID(thismol);
 					if (uID == -1) {
 						// Invalid uID -> Molecule not in cylinder -> continue
