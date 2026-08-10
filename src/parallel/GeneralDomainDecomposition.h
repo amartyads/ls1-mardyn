@@ -94,12 +94,7 @@ public:
 		throw std::runtime_error("GeneralDomainDecomposition::getNeighboursFromHaloRegion() not yet implemented");
 	}
 
-private:
-	/**
-	 * Method that initializes the ALLLoadBalancer
-	 */
-	void initializeALL();
-
+protected:
 	/**
 	 * Get the optimal grid for the given dimensions of the box and the number of processes.
 	 * The grid is produced, s.t., the number of grid[0] * grid[1] * grid[2] == numProcs
@@ -189,6 +184,12 @@ private:
 
 	std::array<double, 3> _domainLength;
 	double _interactionLength;
+
+private:
+	/**
+	 * Method that initializes the ALLLoadBalancer
+	 */
+	void initializeALL();
 
 	size_t _steps{0};
 	size_t _rebuildFrequency{10000};
