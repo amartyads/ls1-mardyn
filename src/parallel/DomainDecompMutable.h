@@ -11,14 +11,15 @@
 
 /**
  * @brief Class containing methods that are shared between all domain decompositions that change during runtime.
- * 
+ *
  */
 class DomainDecompMutable : public DomainDecompMPIBase {
 public:
 	DomainDecompMutable();
 	DomainDecompMutable(MPI_Comm comm);
 	DomainDecompMutable(std::array<double, 3> boxMin, std::array<double, 3> boxMax, std::array<double, 3> domainLength);
-	DomainDecompMutable(MPI_Comm comm, std::array<double, 3> boxMin, std::array<double, 3> boxMax, std::array<double, 3> domainLength);
+	DomainDecompMutable(MPI_Comm comm, std::array<double, 3> boxMin, std::array<double, 3> boxMax,
+						std::array<double, 3> domainLength);
 	virtual ~DomainDecompMutable();
 
 	// functions shifted here from GeneralDomainDecomposition.h
@@ -27,7 +28,7 @@ public:
 
 	// documentation see father class (DomainDecompBase.h)
 	double getBoundingBoxMax(int dimension, Domain* domain) override;
-	
+
 	/**
 	 * Get the optimal grid for the given dimensions of the box and the number of processes.
 	 * The grid is produced, s.t., the number of grid[0] * grid[1] * grid[2] == numProcs
@@ -58,7 +59,7 @@ public:
 	static std::tuple<std::array<double, 3>, std::array<double, 3>> initializeRegularGrid(
 		const std::array<double, 3>& domainLength, const std::array<size_t, 3>& gridSize,
 		const std::array<size_t, 3>& gridCoords);
-	
+
 	/**
 	 * Initializes communication partners
 	 * @param moleculeContainer
@@ -75,8 +76,7 @@ public:
 	 * @param newMax new maximum of the own subdomain
 	 */
 	virtual void migrateParticles(Domain* domain, ParticleContainer* particleContainer, std::array<double, 3> newMin,
-						  std::array<double, 3> newMax);
-
+								  std::array<double, 3> newMax);
 
 protected:
 	std::array<double, 3> _boxMin;

@@ -7,21 +7,24 @@
 
 #include "DomainDecompMutable.h"
 
+#include "Domain.h"
 #include "NeighborAcquirer.h"
 #include "NeighbourCommunicationScheme.h"
-#include "Domain.h"
+#include "utils/Math.h"	 // isNearRel
 
-#include "utils/Math.h" // isNearRel
+DomainDecompMutable::DomainDecompMutable()
+	: DomainDecompMutable(MPI_COMM_WORLD, {0., 0., 0.}, {0., 0., 0.}, {0., 0., 0.}) {}
 
-DomainDecompMutable::DomainDecompMutable() :  DomainDecompMutable(MPI_COMM_WORLD, {0., 0., 0.,}, {0., 0., 0.,}, {0., 0., 0.,}){}
-
-DomainDecompMutable::DomainDecompMutable(MPI_Comm comm) : DomainDecompMutable(comm, {0., 0., 0.,}, {0., 0., 0.,}, {0., 0., 0.,}) {}
+DomainDecompMutable::DomainDecompMutable(MPI_Comm comm)
+	: DomainDecompMutable(comm, {0., 0., 0.}, {0., 0., 0.}, {0., 0., 0.}) {}
 
 DomainDecompMutable::DomainDecompMutable(std::array<double, 3> boxMin, std::array<double, 3> boxMax,
-										 std::array<double, 3> domainLength) : DomainDecompMutable(MPI_COMM_WORLD, boxMin, boxMax, domainLength){}
+										 std::array<double, 3> domainLength)
+	: DomainDecompMutable(MPI_COMM_WORLD, boxMin, boxMax, domainLength) {}
 
 DomainDecompMutable::DomainDecompMutable(MPI_Comm comm, std::array<double, 3> boxMin, std::array<double, 3> boxMax,
-										 std::array<double, 3> domainLength) : DomainDecompMPIBase(comm), _boxMin(boxMin), _boxMax(boxMax), _domainLength(domainLength) {}
+										 std::array<double, 3> domainLength)
+	: DomainDecompMPIBase(comm), _boxMin(boxMin), _boxMax(boxMax), _domainLength(domainLength) {}
 
 DomainDecompMutable::~DomainDecompMutable() = default;
 
@@ -46,8 +49,7 @@ std::vector<size_t> getOrdering(const ArrayType& data) {
 	return index;
 }
 
-std::array<size_t, 3> DomainDecompMutable::getOptimalGrid(const std::array<double, 3>& domainLength,
-																 int numProcs) {
+std::array<size_t, 3> DomainDecompMutable::getOptimalGrid(const std::array<double, 3>& domainLength, int numProcs) {
 	// generate default grid
 	std::array<int, 3> gridSize{0};
 	MPI_CHECK(MPI_Dims_create(numProcs, 3, gridSize.data()));
@@ -90,7 +92,7 @@ std::tuple<std::array<double, 3>, std::array<double, 3>> DomainDecompMutable::in
 }
 
 void DomainDecompMutable::initCommPartners(ParticleContainer* moleculeContainer,
-												  Domain* domain) {  // init communication partners
+										   Domain* domain) {  // init communication partners
 	bool coversWholeDomain;
 	for (int d = 0; d < DIMgeom; ++d) {
 		coversWholeDomain = isNearRel(_boxMin[d], 0.0) && isNearRel(_boxMax[d], _domainLength[d]);
@@ -102,7 +104,7 @@ void DomainDecompMutable::initCommPartners(ParticleContainer* moleculeContainer,
 }
 
 void DomainDecompMutable::migrateParticles(Domain* domain, ParticleContainer* particleContainer,
-												  std::array<double, 3> newMin, std::array<double, 3> newMax) {
+										   std::array<double, 3> newMin, std::array<double, 3> newMax) {
 	std::array<double, 3> oldBoxMin{particleContainer->getBoundingBoxMin(0), particleContainer->getBoundingBoxMin(1),
 									particleContainer->getBoundingBoxMin(2)};
 	std::array<double, 3> oldBoxMax{particleContainer->getBoundingBoxMax(0), particleContainer->getBoundingBoxMax(1),
@@ -119,13 +121,13 @@ void DomainDecompMutable::migrateParticles(Domain* domain, ParticleContainer* pa
 	}
 	Log::global_log->set_mpi_output_all();
 	Log::global_log->debug() << "migrating from"
-						<< " [" << oldBoxMin[0] << ", " << oldBoxMax[0] << "] x"
-						<< " [" << oldBoxMin[1] << ", " << oldBoxMax[1] << "] x"
-						<< " [" << oldBoxMin[2] << ", " << oldBoxMax[2] << "] " << std::endl;
+							 << " [" << oldBoxMin[0] << ", " << oldBoxMax[0] << "] x"
+							 << " [" << oldBoxMin[1] << ", " << oldBoxMax[1] << "] x"
+							 << " [" << oldBoxMin[2] << ", " << oldBoxMax[2] << "] " << std::endl;
 	Log::global_log->debug() << "to"
-						<< " [" << newMin[0] << ", " << newMax[0] << "] x"
-						<< " [" << newMin[1] << ", " << newMax[1] << "] x"
-						<< " [" << newMin[2] << ", " << newMax[2] << "]." << std::endl;
+							 << " [" << newMin[0] << ", " << newMax[0] << "] x"
+							 << " [" << newMin[1] << ", " << newMax[1] << "] x"
+							 << " [" << newMin[2] << ", " << newMax[2] << "]." << std::endl;
 	Log::global_log->set_mpi_output_root(0);
 	std::vector<HaloRegion> desiredDomain{newDomain};
 	std::vector<CommunicationPartner> sendNeighbors{}, recvNeighbors{};
@@ -150,18 +152,15 @@ void DomainDecompMutable::migrateParticles(Domain* domain, ParticleContainer* pa
 		// TODO: This check should be in debug mode only
 		if (not iter->inBox(newMin.data(), newMax.data())) {
 			std::ostringstream error_message;
-			error_message
-				<< "Particle still in domain that should have been migrated."
-				<< "BoxMin: "
-				<< particleContainer->getBoundingBoxMin(0) << ", "
-				<< particleContainer->getBoundingBoxMin(1) << ", "
-				<< particleContainer->getBoundingBoxMin(2) << "\n"
-				<< "BoxMax: "
-				<< particleContainer->getBoundingBoxMax(0) << ", "
-				<< particleContainer->getBoundingBoxMax(1) << ", "
-				<< particleContainer->getBoundingBoxMax(2) << "\n"
-				<< "Particle: \n" << *iter
-				<< std::endl;
+			error_message << "Particle still in domain that should have been migrated."
+						  << "BoxMin: " << particleContainer->getBoundingBoxMin(0) << ", "
+						  << particleContainer->getBoundingBoxMin(1) << ", " << particleContainer->getBoundingBoxMin(2)
+						  << "\n"
+						  << "BoxMax: " << particleContainer->getBoundingBoxMax(0) << ", "
+						  << particleContainer->getBoundingBoxMax(1) << ", " << particleContainer->getBoundingBoxMax(2)
+						  << "\n"
+						  << "Particle: \n"
+						  << *iter << std::endl;
 			MARDYN_EXIT(error_message.str());
 		}
 	}
@@ -190,7 +189,7 @@ void DomainDecompMutable::migrateParticles(Domain* domain, ParticleContainer* pa
 		double waitingTime = MPI_Wtime() - startTime;
 		if (waitingTime > waitCounter) {
 			Log::global_log->warning() << "KDDecomposition::migrateParticles: Deadlock warning: Rank " << _rank
-								  << " is waiting for more than " << waitCounter << " seconds" << std::endl;
+									   << " is waiting for more than " << waitCounter << " seconds" << std::endl;
 			waitCounter += 1.0;
 			for (auto& sender : sendNeighbors) {
 				sender.deadlockDiagnosticSend();
@@ -202,7 +201,7 @@ void DomainDecompMutable::migrateParticles(Domain* domain, ParticleContainer* pa
 
 		if (waitingTime > deadlockTimeOut) {
 			Log::global_log->error() << "KDDecomposition::migrateParticles: Deadlock error: Rank " << _rank
-								<< " is waiting for more than " << deadlockTimeOut << " seconds" << std::endl;
+									 << " is waiting for more than " << deadlockTimeOut << " seconds" << std::endl;
 			for (auto& sender : sendNeighbors) {
 				sender.deadlockDiagnosticSend();
 			}
