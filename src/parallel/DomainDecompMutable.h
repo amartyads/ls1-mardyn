@@ -58,6 +58,24 @@ public:
 	static std::tuple<std::array<double, 3>, std::array<double, 3>> initializeRegularGrid(
 		const std::array<double, 3>& domainLength, const std::array<size_t, 3>& gridSize,
 		const std::array<size_t, 3>& gridCoords);
+	
+	/**
+	 * Initializes communication partners
+	 * @param moleculeContainer
+	 * @param domain
+	 */
+	virtual void initCommPartners(ParticleContainer* moleculeContainer, Domain* domain);
+
+	/**
+	 * Exchange the particles, s.t., particles are withing the particleContainer of the process they belong to.
+	 * This function will rebuild the particleContainer.
+	 * @param domain
+	 * @param particleContainer
+	 * @param newMin new minimum of the own subdomain
+	 * @param newMax new maximum of the own subdomain
+	 */
+	virtual void migrateParticles(Domain* domain, ParticleContainer* particleContainer, std::array<double, 3> newMin,
+						  std::array<double, 3> newMax);
 
 
 protected:

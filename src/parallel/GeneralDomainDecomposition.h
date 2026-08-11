@@ -111,18 +111,7 @@ private:
 	 * @param moleculeContainer
 	 * @param domain
 	 */
-	void initCommPartners(ParticleContainer* moleculeContainer, Domain* domain);
-
-	/**
-	 * Exchange the particles, s.t., particles are withing the particleContainer of the process they belong to.
-	 * This function will rebuild the particleContainer.
-	 * @param domain
-	 * @param particleContainer
-	 * @param newMin new minimum of the own subdomain
-	 * @param newMax new maximum of the own subdomain
-	 */
-	void migrateParticles(Domain* domain, ParticleContainer* particleContainer, std::array<double, 3> newMin,
-						  std::array<double, 3> newMax);
+	void initCommPartners(ParticleContainer* moleculeContainer, Domain* domain) override;
 
 	/**
 	 * Latches domain boundaries (given as boxMin and boxMax) to a grid, which is defined by _gridSize.
