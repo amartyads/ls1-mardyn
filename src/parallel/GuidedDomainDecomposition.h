@@ -21,15 +21,19 @@ public:
 		return -1;
 	}
 	StaticDDAtTime getCurrentDD() { return _weightList[_currentPositionInList]; }
-	bool isValid() {
+	bool isValid(unsigned int numProcs) {
 		if (_weightList.size() <= 0)
 			return false;
 		sortList();
 		bool check = true;
 		unsigned int prevTime = _weightList[0].timestep;
-		for (unsigned int i = 1; i < _weightList.size(); i++) {
-			check &= _weightList[i].timestep > prevTime;
-			prevTime = _weightList[i].timestep;
+		for (unsigned int i = 0; i < _weightList.size(); i++) {
+			check &= (_weightList[i].numRanksInDim(0) * _weightList[i].numRanksInDim(1) *
+					  _weightList[i].numRanksInDim(2)) == numProcs;
+			if (i != 0) {
+				check &= _weightList[i].timestep > prevTime;
+				prevTime = _weightList[i].timestep;
+			}
 		}
 		return check;
 	}
@@ -71,13 +75,14 @@ public:
 
 	void readXML(XMLfileUnits& xmlconfig) override;
 
-	static std::tuple<std::array<double, 3>, std::array<double, 3>> getBoxBounds(const StaticDDAtTime& staticDD,
-		const std::array<double, 3>& domainLength, 
+	static std::tuple<std::array<double, 3>, std::array<double, 3>> getBoxBounds(
+		const StaticDDAtTime& staticDD, const std::array<double, 3>& domainLength,
 		const std::array<size_t, 3>& gridCoords);
 
-	void balanceAndExchange(double lastTraversalTime, bool forceRebalancing,
-									ParticleContainer* moleculeContainer, Domain* domain) override;
-	void rebalance(std::array<double, 3> newBoxMin, std::array<double, 3> newboxmax);
+	void balanceAndExchange(double lastTraversalTime, bool forceRebalancing, ParticleContainer* moleculeContainer,
+							Domain* domain) override;
+	void rebalance(ParticleContainer* moleculeContainer, Domain* domain, std::array<double, 3> newBoxMin,
+				   std::array<double, 3> newBoxMax);
 
 	// returns a vector of the neighbour ranks in x y and z direction (only neighbours connected by an area to local
 	// area)
