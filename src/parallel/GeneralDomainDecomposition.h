@@ -11,13 +11,13 @@
 #include "Domain.h"
 
 #include "particleContainer/ParticleContainer.h"
-#include "DomainDecompMPIBase.h"
+#include "DomainDecompMutable.h"
 #include "LoadBalancer.h"
 
 /**
  * This decomposition is meant to be able to call arbitrary load balancers.
  */
-class GeneralDomainDecomposition : public DomainDecompMPIBase {
+class GeneralDomainDecomposition : public DomainDecompMutable {
 public:
 	/**
 	 * Constructor for the GeneralDomainDecomposition.
@@ -49,12 +49,6 @@ public:
 	   \endcode
 	 */
 	void readXML(XMLfileUnits& xmlconfig) override;
-
-	// documentation see father class (DomainDecompBase.h)
-	double getBoundingBoxMin(int dimension, Domain* domain) override;
-
-	// documentation see father class (DomainDecompBase.h)
-	double getBoundingBoxMax(int dimension, Domain* domain) override;
 
 	void balanceAndExchange(double lastTraversalTime, bool forceRebalancing, ParticleContainer* moleculeContainer,
 							Domain* domain) override;
@@ -94,38 +88,11 @@ public:
 		throw std::runtime_error("GeneralDomainDecomposition::getNeighboursFromHaloRegion() not yet implemented");
 	}
 
-protected:
+private:
 	/**
-	 * Get the optimal grid for the given dimensions of the box and the number of processes.
-	 * The grid is produced, s.t., the number of grid[0] * grid[1] * grid[2] == numProcs
-	 * The edge lengths of the grid will resemble the lengths of the domain, i.e., the longest edge of the domain will
-	 * also have the largest amount of grid points.
-	 * @param domainLength
-	 * @param numProcs
-	 * @return
+	 * Method that initializes the ALLLoadBalancer
 	 */
-	static std::array<size_t, 3> getOptimalGrid(const std::array<double, 3>& domainLength, int numProcs);
-
-	/**
-	 * Get the coordinates from the rank.
-	 * S.t. rank = x * gridSize[1]*gridSize[2] + y * gridSize[2] + z
-	 * @param gridSize
-	 * @param rank
-	 * @return
-	 */
-	static std::array<size_t, 3> getCoordsFromRank(const std::array<size_t, 3>& gridSize, int rank);
-
-	/**
-	 * Returns boxMin and boxMax according to regular grid.
-	 * @param domainLength
-	 * @param gridSize
-	 * @param gridCoords
-	 * @return boxMin and boxMax
-	 */
-	static std::tuple<std::array<double, 3>, std::array<double, 3>> initializeRegularGrid(
-		const std::array<double, 3>& domainLength, const std::array<size_t, 3>& gridSize,
-		const std::array<size_t, 3>& gridCoords);
-
+	void initializeALL();
 	/**
 	 * Check whether a rebalancing is necessary.
 	 * @param step the step number
@@ -179,17 +146,7 @@ protected:
 	}
 
 	// variables
-	std::array<double, 3> _boxMin;
-	std::array<double, 3> _boxMax;
-
-	std::array<double, 3> _domainLength;
 	double _interactionLength;
-
-private:
-	/**
-	 * Method that initializes the ALLLoadBalancer
-	 */
-	void initializeALL();
 
 	size_t _steps{0};
 	size_t _rebuildFrequency{10000};

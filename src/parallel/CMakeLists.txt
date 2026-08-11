@@ -11,6 +11,7 @@ if(ENABLE_MPI)
             CommunicationBuffer.cpp
             CommunicationPartner.cpp
             DomainDecompMPIBase.cpp
+            DomainDecompMutable.cpp
             DomainDecomposition.cpp
             GeneralDomainDecomposition.cpp
             KDDecomposition.cpp
