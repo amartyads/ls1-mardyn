@@ -32,6 +32,7 @@
 #include "parallel/KDDecomposition.h"
 #include "parallel/GeneralDomainDecomposition.h"
 #include "parallel/StaticIrregDomainDecomposition.h"
+#include "parallel/GuidedDomainDecomposition.h"
 #endif
 
 #include "particleContainer/adapter/ParticlePairs2PotForceAdapter.h"
@@ -335,6 +336,10 @@ void Simulation::readXML(XMLfileUnits& xmlconfig) {
 				coupling::interface::LS1StaticCommData::getInstance().getSubdomainWeights()
 #endif
 				);
+			}
+			else if(parallelisationtype == "GuidedDomainDecomposition"){
+				delete _domainDecomposition;
+				_domainDecomposition = new GuidedDomainDecomposition(_domain);
 			}
 			else if(parallelisationtype == "KDDecomposition") {
 				delete _domainDecomposition;

@@ -137,7 +137,6 @@ private:
 	// variables
 	double _interactionLength;
 
-	size_t _steps{0};
 	size_t _rebuildFrequency{10000};
 
 	size_t _initPhase{0};

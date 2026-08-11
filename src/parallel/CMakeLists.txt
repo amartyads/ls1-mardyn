@@ -14,6 +14,7 @@ if(ENABLE_MPI)
             DomainDecompMutable.cpp
             DomainDecomposition.cpp
             GeneralDomainDecomposition.cpp
+            GuidedDomainDecomposition.cpp
             KDDecomposition.cpp
             KDDStaticValues.cpp
             KDNode.cpp

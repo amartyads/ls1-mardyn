@@ -188,7 +188,7 @@ void DomainDecompMutable::migrateParticles(Domain* domain, ParticleContainer* pa
 		// catch deadlocks
 		double waitingTime = MPI_Wtime() - startTime;
 		if (waitingTime > waitCounter) {
-			Log::global_log->warning() << "KDDecomposition::migrateParticles: Deadlock warning: Rank " << _rank
+			Log::global_log->warning() << "DomainDecompMutable::migrateParticles: Deadlock warning: Rank " << _rank
 									   << " is waiting for more than " << waitCounter << " seconds" << std::endl;
 			waitCounter += 1.0;
 			for (auto& sender : sendNeighbors) {
@@ -200,7 +200,7 @@ void DomainDecompMutable::migrateParticles(Domain* domain, ParticleContainer* pa
 		}
 
 		if (waitingTime > deadlockTimeOut) {
-			Log::global_log->error() << "KDDecomposition::migrateParticles: Deadlock error: Rank " << _rank
+			Log::global_log->error() << "DomainDecompMutable::migrateParticles: Deadlock error: Rank " << _rank
 									 << " is waiting for more than " << deadlockTimeOut << " seconds" << std::endl;
 			for (auto& sender : sendNeighbors) {
 				sender.deadlockDiagnosticSend();

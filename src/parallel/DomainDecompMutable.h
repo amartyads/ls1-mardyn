@@ -79,6 +79,7 @@ public:
 								  std::array<double, 3> newMax);
 
 protected:
+	size_t _steps{0};
 	std::array<double, 3> _boxMin;
 	std::array<double, 3> _boxMax;
 	std::array<double, 3> _domainLength;

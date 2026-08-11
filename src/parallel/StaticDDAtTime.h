@@ -12,8 +12,10 @@
 #include "utils/xmlfileUnits.h"
 
 struct StaticDDAtTime {
-	unsigned int timestep = 0;
+	int timestep = -1;
 	std::array<std::vector<unsigned int>, 3> subdomainWeights{{{}, {}, {}}};
+
+	unsigned int numRanksInDim (unsigned int dim) { return subdomainWeights[dim].size(); }
 
 	void readXML(XMLfileUnits& xmlconfig) {
 		xmlconfig.getNodeValue("@t", timestep);
