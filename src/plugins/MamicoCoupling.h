@@ -4,6 +4,7 @@
 
 #include <coupling/interface/impl/ls1/LS1RegionWrapper.h>
 #include <coupling/services/CouplingCellService.h>
+
 #include "PluginBase.h"
 
 /**
@@ -15,9 +16,12 @@
  * distinct. From the inside, MaMiCo code needs to be executed at specific points within the same simulation step. This
  * plugin enables the "inside" behaviour.
  *
- * MaMiCo coupling requires the MAMICO_COUPLING flag to be set, and the MAMICO_SRD_DIR flag to point to MaMiCo source
+ * MaMiCo coupling requires the MAMICO_COUPLING flag to be set, and the MAMICO_SRC_DIR flag to point to MaMiCo source
  * files. With these enabled, ls1 compiles as a library. To make sure the program compiles and works with tests, the
  * relevant MaMiCo portions for the code are put in #ifdef regions.
+ * 
+ * This plugin alters the simulation state, as leaving particles get communicated in the beforeForces() step. Any plugins
+ * running after this plugin that wants to work on leaving particles will find zero leaving particles.
  *
  * \code{.xml}
  * <plugin name="MamicoCoupling">
@@ -49,7 +53,8 @@ public:
 	 *
 	 * The distributeMass method calls the updateParticleContainerAndDecomposition() function at the end, so we end up
 	 * with a container with halo particles present. Hence a manual halo clearance is done to restore the state of the
-	 * container.
+	 * container. Unfortunately, this does not fully restore the state, since leaving particles are communicated and
+	 * hence do not exist on source ranks anymore.
 	 */
 	void beforeForces(ParticleContainer *particleContainer, DomainDecompBase *domainDecomp,
 					  unsigned long simstep) override;
@@ -99,8 +104,7 @@ public:
 	 * when equilibrating the simulation initially.
 	 *
 	 * Set from within MaMiCo, check
-	 * https://github.com/HSU-HPC/MaMiCo/blob/master/coupling/interface/MDSimulationFactory.h,
-	 * class LS1MDSimulation
+	 * https://github.com/HSU-HPC/MaMiCo/blob/master/coupling/interface/MDSimulationFactory.h, class LS1MDSimulation
 	 */
 	void switchOffCoupling() { _couplingEnabled = false; }
 
@@ -116,4 +120,4 @@ private:
 	bool _couplingEnabled = false;
 };
 
-#endif  // MAMICO_COUPLING
+#endif	// MAMICO_COUPLING
