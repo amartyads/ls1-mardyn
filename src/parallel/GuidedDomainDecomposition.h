@@ -13,7 +13,7 @@
 
 class GuidedDDList {
 public:
-	bool hasMoreRebalancings() { return _currentPositionInList < _weightList.size() - 1; }
+	bool hasMoreRebalancings() { return _currentPositionInList < static_cast<int>(_weightList.size()) - 1; }
 	void goToNextRebalancing() { _currentPositionInList++; }
 	int nextRebalancingTime() {
 		if (hasMoreRebalancings())
@@ -26,8 +26,8 @@ public:
 			return false;
 		sortList();
 		bool check = true;
-		unsigned int prevTime = _weightList[0].timestep;
-		for (unsigned int i = 0; i < _weightList.size(); i++) {
+		int prevTime = _weightList[0].timestep;
+		for (size_t i = 0; i < _weightList.size(); i++) {
 			check &= (_weightList[i].numRanksInDim(0) * _weightList[i].numRanksInDim(1) *
 					  _weightList[i].numRanksInDim(2)) == numProcs;
 			if (i != 0) {
@@ -46,7 +46,7 @@ public:
 	void reserve(unsigned int s) { _weightList.reserve(s); }
 	void print() {
 		std::stringstream ss;
-		for (int i = 0; i < _weightList.size(); i++) {
+		for (size_t i = 0; i < _weightList.size(); i++) {
 			ss << "Timestep " << _weightList[i].timestep << std::endl;
 			for (int j = 0; j < 3; j++) {
 				ss << "Weights for axis " << j << ": ";
@@ -61,7 +61,7 @@ public:
 
 private:
 	std::vector<StaticDDAtTime> _weightList{};
-	unsigned int _currentPositionInList = 0;
+	int _currentPositionInList = 0;
 };
 
 class GuidedDomainDecomposition : public DomainDecompMutable {

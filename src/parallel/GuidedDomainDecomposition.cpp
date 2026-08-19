@@ -39,7 +39,7 @@ void GuidedDomainDecomposition::readXML(XMLfileUnits& xmlconfig) {
 			initWeightsGiven = true;
 		_guidedDDList.insertWeights(temp);
 	}
-	if (!_guidedDDList.isValid(_numProcs)) {
+	if (numWeights != 0 && !_guidedDDList.isValid(_numProcs)) {
 		MARDYN_EXIT("INV");
 	}
 	_guidedDDList.reset();

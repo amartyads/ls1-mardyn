@@ -20,7 +20,7 @@ struct StaticDDAtTime {
 	void readXML(XMLfileUnits& xmlconfig) {
 		xmlconfig.getNodeValue("@t", timestep);
 		const std::array<std::string, 3> axes = {"x", "y", "z"};
-		for (int i = 0; i < axes.size(); i++) {
+		for (size_t i = 0; i < axes.size(); i++) {
 			subdomainWeights[i].clear();
 			const std::string weights = xmlconfig.getNodeValue_string(axes.at(i));
 			if (!weights.empty()) {
