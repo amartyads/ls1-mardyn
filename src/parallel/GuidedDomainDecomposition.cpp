@@ -9,6 +9,10 @@
 
 #include "Domain.h"
 
+#ifdef MAMICO_COUPLING
+#include <coupling/interface/impl/ls1/LS1StaticCommData.h>
+#endif
+
 GuidedDomainDecomposition::GuidedDomainDecomposition(Domain* domain)
 	: GuidedDomainDecomposition(domain, MPI_COMM_WORLD) {}
 
@@ -26,7 +30,7 @@ void GuidedDomainDecomposition::readXML(XMLfileUnits& xmlconfig) {
 	std::string oldpath = xmlconfig.getcurrentnodepath();
 	XMLfile::Query query = xmlconfig.query("subdomainWeights");
 	auto numWeights = query.card();
-	bool initWeightsGiven = false;
+	bool initWeightsGiven = false, initSetupDone = false;
 	_guidedDDList.reserve(numWeights);
 	for (auto subWeightsXML = query.begin(); subWeightsXML; ++subWeightsXML) {
 		xmlconfig.changecurrentnode(subWeightsXML);
@@ -39,16 +43,28 @@ void GuidedDomainDecomposition::readXML(XMLfileUnits& xmlconfig) {
 			initWeightsGiven = true;
 		_guidedDDList.insertWeights(temp);
 	}
+	_guidedDDList.sortList();
 	if (numWeights != 0 && !_guidedDDList.isValid(_numProcs)) {
 		MARDYN_EXIT("INV");
 	}
 	_guidedDDList.reset();
 	if (numWeights < 1 || !initWeightsGiven) {
 		// default behaviour, create default config
+#ifdef MAMICO_COUPLING
+		auto grid = coupling::interface::LS1StaticCommData::getInstance().getDomainGridDecomp();
+		for (int i = 0; i < DIMgeom; i++)
+			_gridSize[i] = static_cast<size_t>(grid[i]);
+#else
 		_gridSize = getOptimalGrid(_domainLength, this->getNumProcs());
+#endif
 		_coords = getCoordsFromRank(_gridSize, _rank);
 		std::tie(_boxMin, _boxMax) = initializeRegularGrid(_domainLength, _gridSize, _coords);
-	} else {
+		StaticDDAtTime temp(0, _gridSize);
+		_guidedDDList.insertWeights(temp);
+		_guidedDDList.sortList();
+		initSetupDone = true;
+	} 
+	if (!initSetupDone) {
 		auto initDD = _guidedDDList.getCurrentDD();
 		mardyn_assert(initDD.timestep == 0);
 		for (int i = 0; i < 3; i++) {

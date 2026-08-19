@@ -15,6 +15,17 @@ struct StaticDDAtTime {
 	int timestep = -1;
 	std::array<std::vector<unsigned int>, 3> subdomainWeights{{{}, {}, {}}};
 
+	StaticDDAtTime() {};
+	StaticDDAtTime(int time, std::array<size_t, 3> gridSize) {
+		timestep = time;
+		for (int i = 0; i < 3; i++) {
+			subdomainWeights[i].reserve(gridSize[i]);
+			for (size_t j = 0; j < gridSize[i]; j++) {
+				subdomainWeights[i].push_back(1); // equal subdomains, so weight = 1
+			}
+		}
+	}
+
 	unsigned int numRanksInDim (unsigned int dim) { return subdomainWeights[dim].size(); }
 
 	void readXML(XMLfileUnits& xmlconfig) {

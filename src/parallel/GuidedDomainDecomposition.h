@@ -24,7 +24,6 @@ public:
 	bool isValid(unsigned int numProcs) {
 		if (_weightList.size() <= 0)
 			return false;
-		sortList();
 		bool check = true;
 		int prevTime = _weightList[0].timestep;
 		for (size_t i = 0; i < _weightList.size(); i++) {

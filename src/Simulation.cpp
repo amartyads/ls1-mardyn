@@ -339,7 +339,12 @@ void Simulation::readXML(XMLfileUnits& xmlconfig) {
 			}
 			else if(parallelisationtype == "GuidedDomainDecomposition"){
 				delete _domainDecomposition;
-				_domainDecomposition = new GuidedDomainDecomposition(_domain);
+				_domainDecomposition = new GuidedDomainDecomposition(_domain
+#ifdef MAMICO_COUPLING
+				,
+				coupling::interface::LS1StaticCommData::getInstance().getLocalCommunicator()
+#endif
+				);
 			}
 			else if(parallelisationtype == "KDDecomposition") {
 				delete _domainDecomposition;
